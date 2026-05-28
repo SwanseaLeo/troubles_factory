@@ -1,11 +1,11 @@
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
 import { Resvg, type ResvgRenderOptions } from '@resvg/resvg-js';
 import type { APIRoute } from 'astro';
 import satori from 'satori';
 import { html as toReactElement } from 'satori-html';
 
-const fontFile = await fetch('https://og-playground.vercel.app/inter-latin-ext-700-normal.woff');
-
-const fontData: ArrayBuffer = await fontFile.arrayBuffer();
+const fontData = await readFile(resolve(process.cwd(), 'src/assets/fonts/Inter-Bold.ttf'));
 
 const height = 630;
 const width = 1200;

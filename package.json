@@ -15,6 +15,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "deploy:cf": "pnpm dlx wrangler pages deploy dist",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "astro check && biome check .",
