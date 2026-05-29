@@ -13,16 +13,17 @@ const { headings = [] } = Astro.props;
 ---
 
 <aside>
-  <nav class='hidden lg:block sticky top-6'>
-    <ul>
+  <nav class='hidden lg:block sticky top-6 poppins'>
+    <p class='mb-3 text-xs font-semibold uppercase tracking-wider text-stone-400'>
+      On this page
+    </p>
+    <ul class='border-l border-stone-200'>
       {
         headings.map((heading) => (
-          <li class='py-1'>
-            {[...Array(heading.depth - 1)].map((_, _i) => (
-              <span class='inline-block w-4' />
-            ))}
+          <li>
             <a
-              class='text-black transition-all duration-150 ease-in-out hover:text-stone-500 poppins'
+              class='block border-l-2 border-transparent py-1.5 text-sm text-stone-600 transition-colors duration-150 ease-in-out hover:border-stone-900 hover:text-stone-900'
+              style={`padding-left: ${(heading.depth - 1) * 0.75 + 0.75}rem`}
               href={`#${heading.slug}`}
             >
               {heading.text}

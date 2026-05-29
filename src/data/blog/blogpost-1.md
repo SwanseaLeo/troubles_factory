@@ -1,5 +1,5 @@
 ---
-title: Offline Installation of NVIDIA Container Toolkit
+title: How to Install NVIDIA Container Toolkit Offline on Ubuntu or Debian
 pubDate: 11/09/2022 14:25
 author: "Leo"
 tags:
@@ -7,12 +7,14 @@ tags:
   - Docker
   - Linux
 imgUrl: '../../assets/blog1.jpeg'
-description: Step-by-step offline installation of NVIDIA Container Toolkit on Debian/Ubuntu, with package order, runtime setup, and verification.
+description: Install NVIDIA Container Toolkit offline on Ubuntu or Debian, including required DEB packages, installation order, Docker runtime setup, and verification.
 ---
 
-## Offline Installation of NVIDIA Container Toolkit
+## How to Install NVIDIA Container Toolkit Offline on Ubuntu or Debian
 
-### Download
+This guide is for environments without direct internet access, such as private servers, air-gapped machines, or restricted production networks.
+
+### Download NVIDIA Container Toolkit DEB Packages
 
 Download packages from:
 
@@ -73,7 +75,7 @@ https://github.com/NVIDIA/libnvidia-container/tree/gh-pages/stable/deb/amd64
   </tbody>
 </table>
 
-### Install
+### Install the Packages in Dependency Order
 
 Install packages in this order:
 
@@ -84,7 +86,7 @@ sudo dpkg -i nvidia-container-toolkit-base_1.18.0-1_amd64.deb
 sudo dpkg -i nvidia-container-toolkit_1.18.0-1_amd64.deb
 ```
 
-### Verify the installation
+### Verify NVIDIA Container Toolkit Installation
 
 Check the installed toolkit version:
 
