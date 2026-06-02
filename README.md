@@ -1,103 +1,29 @@
-# Brutal - The neobrutalist Astro theme
+# Troubles Factory
 
-Brutal is a minimal neobrutalist theme for [Astro](https://astro.build/). It's based on Neobrutalist Web Design, a movement that aims to create websites with a minimalistic and functional design. It has some integrations like Image Optimization, RSS, Sitemap, ready to get your SEO done right.
+一个收集编程/工程问题并提供可落地解决方案的知识库站点，基于 [Astro](https://astro.build/) + Tailwind CSS 构建。
 
-The theme has no JavaScript integration out of the box, but can always be added of course.
-
-This template is based on [my own personal website](<https://www.elian.codes/>), with some more generic things added.
-
-## Usage
-
-You can bootstrap a new Astro project using Brutal with the following command:
+## 本地开发
 
 ```bash
-# npm
-npm create astro@latest -- --template eliancodes/brutal
-
-# pnpm
-pnpm create astro@latest --template eliancodes/brutal
-
-# yarn
-yarn create astro --template eliancodes/brutal
+pnpm install
+pnpm dev
 ```
 
-### Commands
-
-All commands are run from the root of the project, from a terminal:
-
-(Here I use PNPM, no problem if you use NPM or Yarn)
-
-| Command             | Action                                             |
-| :------------------ | :------------------------------------------------- |
-| `pnpm install`      | Installs dependencies                              |
-| `pnpm dev`          | Starts local dev server at `localhost:4321`        |
-| `pnpm lint`         | Runs Biome lint checks                             |
-| `pnpm format`       | Formats the project with Biome                     |
-| `pnpm check`        | Runs Astro checks plus `biome check`               |
-| `pnpm build`        | Build your production site to `./dist/`            |
-| `pnpm preview`      | Preview your build locally, before deploying       |
-| `pnpm astro ...`    | Run CLI commands like `astro add`, `astro preview` |
-| `pnpm astro --help` | Get help using the Astro CLI                       |
-
-## Tooling
-
-This project uses [Biome](https://biomejs.dev/) for formatting, linting, and import organization.
-Astro-specific diagnostics still run through `astro check`, so CI and local validation use both:
+## 常用命令
 
 ```bash
-pnpm run check
+pnpm lint
+pnpm format
+pnpm check
+pnpm build
+pnpm preview
 ```
 
-## Integrations
+## 部署（Cloudflare Pages）
 
-### Tailwind CSS
+构建产物目录：`dist`（见 `wrangler.toml`）。
 
-In this theme, I'm using [Tailwind CSS](https://tailwindcss.com/) to generate the utility classes. The project uses Astro's Tailwind setup with the Vite plugin, plus a small amount of regular CSS for the theme-specific scrollbar and shadow styling.
-
-### Sitemap
-
-To generate the sitemap, you don't need to do anything. It's automatically generated when you build your site. You'll just need to switch out the `site` on `astro.config.ts` to your own.
-
-```js title="astro.config.mjs"
-import { defineConfig } from 'astro/config';
-
-export default defineConfig({
-  site: 'https://example.com',
-});
+```bash
+pnpm build
+pnpm deploy:cf
 ```
-
-### RSS
-
-The RSS feed is automatically generated from the Markdown files in the `src/content/blog` folder. You can ofcourse completely change this to your own needs.
-
-The RSS will output to `https://example.com/feed.xml` by default. You can change this, by renaming `src/pages/feed.xml.js`.
-
-### Image
-
-## Components
-
-### `components/blog/`
-
-This directory contains all components for the blog.
-
-### `components/errors/`
-
-This directory contains all error components.
-
-#### `components/errors/404.astro`
-
-This component is used when a page is not found.
-
-### `components/generic/`
-
-This directory contains all generic components, reused over multiple pages.
-
-### `components/home/`
-
-This directory contains all components for the home page.
-
-### `components/layout/`
-
-This directory contains all layout components. For instance, the header and footer and `<head>` section.
-
-If you need more from this theme, don't hesitate to open an issue or reach out to me!
