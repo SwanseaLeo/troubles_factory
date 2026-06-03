@@ -1,5 +1,6 @@
 ---
 import SocialIcon from '@components/generic/SocialIcon.astro';
+import SearchBar from '@components/layout/SearchBar.astro';
 
 type SocialIconName = 'github' | 'twitter' | 'linkedin' | 'rss';
 
@@ -19,7 +20,7 @@ const socialIcons: Array<{ name: string; url: string; icon: SocialIconName }> = 
 const { pageTitle } = Astro.props;
 ---
 
-<header class='border-b-4 border-black flex justify-between p-6 items-center'>
+<header class='border-b-4 border-black flex flex-wrap items-center gap-4 p-6 md:gap-6'>
   {pageTitle && <h1 class='hidden'>{pageTitle}</h1>}
   <a href='/' title='Back to Home'>
     <span class='sr-only'>Troubles Factory</span>
@@ -31,6 +32,9 @@ const { pageTitle } = Astro.props;
       decoding='async'
     />
   </a>
+  <div class='order-last w-full md:order-none md:ml-auto md:w-72 lg:w-96'>
+    <SearchBar />
+  </div>
   <nav class='hidden md:inline-block'>
     <h2 class='hidden'>Navigation</h2>
     <ul class='flex gap-8 poppins'>
@@ -64,7 +68,7 @@ const { pageTitle } = Astro.props;
       }
     </ul>
   </nav>
-  <nav class='md:hidden flex'>
+  <nav class='md:hidden flex ml-auto'>
     <h2 class='hidden'>Mobile Navigation</h2>
     <ul>
       <li><a href='/cases/'>Cases</a></li>

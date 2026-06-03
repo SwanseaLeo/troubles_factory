@@ -1,0 +1,105 @@
+---
+// src/components/layout/SearchBar.astro
+---
+
+<div class='tf-search relative w-full' data-tf-search>
+  <input
+    type='search'
+    autocomplete='off'
+    placeholder='Search cases...'
+    aria-label='Search cases'
+    class='w-full border-2 border-black bg-white px-4 py-2 rounded poppins text-base focus:outline-none'
+    data-tf-search-input
+  />
+  <ul
+    class='absolute left-0 right-0 mt-2 hidden max-h-80 overflow-y-auto rounded border-2 border-black bg-white z-50'
+    data-tf-search-results
+  >
+  </ul>
+</div>
+
+<script>
+  type SearchEntry = {
+    title: string;
+    description: string;
+    tags: string[];
+    url: string;
+  };
+
+  let cache: SearchEntry[] | null = null;
+
+  async function loadIndex(): Promise<SearchEntry[]> {
+    if (cache) return cache;
+    const res = await fetch('/search.json');
+    cache = (await res.json()) as SearchEntry[];
+    return cache;
+  }
+
+  function filterEntries(entries: SearchEntry[], query: string) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return entries.filter((e) => {
+      const haystack = [e.title, e.description, ...e.tags]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  function escapeHtml(value: string) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-tf-search]').forEach((root) => {
+    const input = root.querySelector<HTMLInputElement>(
+      '[data-tf-search-input]'
+    );
+    const results = root.querySelector<HTMLUListElement>(
+      '[data-tf-search-results]'
+    );
+    if (!input || !results) return;
+
+    const close = () => results.classList.add('hidden');
+
+    const render = async () => {
+      const entries = await loadIndex();
+      const matches = filterEntries(entries, input.value).slice(0, 6);
+      if (!input.value.trim()) {
+        close();
+        return;
+      }
+      if (matches.length === 0) {
+        results.innerHTML =
+          '<li class="px-4 py-3 poppins text-sm">No matching cases.</li>';
+        results.classList.remove('hidden');
+        return;
+      }
+      results.innerHTML = matches
+        .map(
+          (m) =>
+            `<li class="border-b-2 border-black last:border-b-0"><a href="${m.url}" class="block px-4 py-3 hover:bg-green-theme transition-colors"><span class="block poppins font-medium">${escapeHtml(m.title)}</span><span class="block text-sm mt-1 line-clamp-1">${escapeHtml(m.description)}</span></a></li>`
+        )
+        .join('');
+      results.classList.remove('hidden');
+    };
+
+    input.addEventListener('focus', render);
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const q = input.value.trim();
+        if (q) window.location.href = `/search?q=${encodeURIComponent(q)}`;
+      } else if (event.key === 'Escape') {
+        close();
+        input.blur();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!root.contains(event.target as Node)) close();
+    });
+  });
+</script>

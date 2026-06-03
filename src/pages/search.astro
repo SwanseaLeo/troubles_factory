@@ -1,0 +1,104 @@
+---
+// src/pages/search.astro
+import { Button } from '@eliancodes/brutal-ui';
+import Layout from '@layouts/Default.astro';
+---
+
+<Layout
+  title='Search'
+  description='Search Troubles Factory cases'
+  pageTitle='Troubles Factory | Search'
+>
+  <main class='grid gap-6 bg-blue-theme p-6'>
+    <div class='flex items-center justify-between gap-4'>
+      <h2 class='outfit text-3xl md:text-5xl' data-search-heading>
+        Search
+      </h2>
+      <Button href='/cases/'>&larr; Back to cases</Button>
+    </div>
+    <ul
+      class='grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:[&>li]:h-full'
+      data-search-results
+    >
+    </ul>
+  </main>
+</Layout>
+
+<script>
+  type SearchEntry = {
+    title: string;
+    description: string;
+    tags: string[];
+    url: string;
+    img: string;
+  };
+
+  function escapeHtml(value: string) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function filterEntries(entries: SearchEntry[], query: string) {
+    const q = query.trim().toLowerCase();
+    if (!q) return [];
+    return entries.filter((e) => {
+      const haystack = [e.title, e.description, ...e.tags]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  function cardHtml(entry: SearchEntry) {
+    const tags = entry.tags
+      .map(
+        (tag) =>
+          `<li><span class="inline-block rounded-full border-2 border-black bg-white px-3 py-1 text-sm sanchez">${escapeHtml(tag)}</span></li>`
+      )
+      .join('');
+    return `<li><article class="h-full flex flex-col justify-between gap-4 border-2 border-black bg-white p-6 rounded card-shadow">
+      <div>
+        <h3 class="poppins text-lg md:text-xl">${escapeHtml(entry.title)}</h3>
+        <div class="my-4 h-56 rounded-lg border-[3px] border-black">
+          <img src="${entry.img}" alt="${escapeHtml(entry.title)}" width="800" height="400" class="rounded h-full w-full object-cover" />
+        </div>
+        <p class="poppins">${escapeHtml(entry.description)}</p>
+      </div>
+      <ul class="flex flex-wrap gap-2">${tags}</ul>
+      <a href="${entry.url}" class="self-end inline-block rounded border-2 border-black bg-white px-4 py-2 poppins font-medium card-shadow hover:bg-green-theme transition-colors">Case Details &rarr;</a>
+    </article></li>`;
+  }
+
+  async function init() {
+    const heading = document.querySelector<HTMLElement>(
+      '[data-search-heading]'
+    );
+    const results = document.querySelector<HTMLUListElement>(
+      '[data-search-results]'
+    );
+    if (!heading || !results) return;
+
+    const query = new URLSearchParams(window.location.search).get('q') ?? '';
+    heading.textContent = query
+      ? `Results for "${query}"`
+      : 'Search';
+
+    if (!query.trim()) {
+      results.innerHTML =
+        '<li class="poppins">Type a keyword in the search bar above.</li>';
+      return;
+    }
+
+    const res = await fetch('/search.json');
+    const entries = (await res.json()) as SearchEntry[];
+    const matches = filterEntries(entries, query);
+
+    results.innerHTML = matches.length
+      ? matches.map(cardHtml).join('')
+      : `<li class="poppins">No cases match "${escapeHtml(query)}".</li>`;
+  }
+
+  init();
+</script>
