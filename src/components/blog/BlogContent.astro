@@ -1,10 +1,15 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+
 interface Props {
   pubDate: Date;
   author: string;
+  imgSrc: ImageMetadata;
+  imgAlt: string;
 }
 
-const { pubDate, author } = Astro.props;
+const { pubDate, author, imgSrc, imgAlt } = Astro.props;
 ---
 
 <article class='w-full max-w-sm poppins md:max-w-3xl lg:max-w-4xl lg:col-span-2 md:prose md:prose-lg md:prose-slate'>
@@ -12,6 +17,15 @@ const { pubDate, author } = Astro.props;
   <p class='text-sm text-slate-700 md:text-base'>
     Published on {pubDate} by {author}
   </p>
+  <div class='not-prose my-6 rounded-lg border-[3px] border-black'>
+    <Image
+      src={imgSrc}
+      alt={imgAlt}
+      width={800}
+      height={400}
+      class='rounded h-full w-full object-cover'
+    />
+  </div>
   <slot />
   <p class='text-slate-700'>Written by {author}</p>
   <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>

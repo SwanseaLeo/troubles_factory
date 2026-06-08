@@ -1,4 +1,5 @@
 ---
+import type { ImageMetadata } from 'astro';
 import BlogContent from '@components/blog/BlogContent.astro';
 import BlogSideBar from '@components/blog/BlogSideBar.astro';
 import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
@@ -18,15 +19,16 @@ interface Props {
   headings?: Heading[];
   description: string;
   title: string;
+  imgSrc: ImageMetadata;
 }
 
-const { author, pubDate, headings, description, title } = Astro.props;
+const { author, pubDate, headings, description, title, imgSrc } = Astro.props;
 ---
 
 <Layout title={title} description={description} ogImage={ogImage}>
   <main class='p-6 lg:grid lg:grid-cols-3 flex justify-center'>
     <BlogSideBar headings={headings ?? []} />
-    <BlogContent {pubDate} {author}>
+    <BlogContent {pubDate} {author} {imgSrc} imgAlt={title}>
       <slot />
     </BlogContent>
   </main>
