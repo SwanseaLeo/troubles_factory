@@ -61,9 +61,9 @@ import Layout from '@layouts/Default.astro';
     return `<li><article class="h-full flex flex-col justify-between gap-4 border-2 border-black bg-white p-6 rounded card-shadow">
       <div>
         <h3 class="poppins text-lg md:text-xl">${escapeHtml(entry.title)}</h3>
-        <div class="my-4 h-56 rounded-lg border-[3px] border-black">
+        <a href="${entry.url}" title="${escapeHtml(entry.title)}" class="my-4 block h-56 rounded-lg border-[3px] border-black transition-colors hover:bg-green-theme">
           <img src="${entry.img}" alt="${escapeHtml(entry.title)}" width="800" height="400" class="rounded h-full w-full object-cover" />
-        </div>
+        </a>
         <p class="poppins">${escapeHtml(entry.description)}</p>
       </div>
       <ul class="flex flex-wrap gap-2">${tags}</ul>

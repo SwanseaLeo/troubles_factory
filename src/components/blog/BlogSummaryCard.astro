@@ -15,6 +15,7 @@ const { post } = Astro.props;
   imgAlt={post.data.title}
   imgSrc={post.data.imgUrl}
   description={post.data.description}
+  imgHref={`/cases/${post.id}/`}
 >
   <div class='flex justify-end my-4'>
     <Button href={`/cases/${post.id}/`}>Case Details &rarr;</Button>
