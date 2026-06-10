@@ -10,16 +10,18 @@ interface Props {
   classList?: string;
   pageTitle?: string;
   ogImage?: URL;
+  navVariant?: 'default' | 'minimal';
 }
 
-const { title, description, classList, pageTitle, ogImage } = Astro.props;
+const { title, description, classList, pageTitle, ogImage, navVariant } =
+  Astro.props;
 ---
 
 <html lang='en' class='h-full'>
   <BaseHead ogImage={ogImage} title={title} description={description} />
 
   <body class:list={[classList]}>
-    <BaseNavigation {pageTitle} />
+    <BaseNavigation {pageTitle} variant={navVariant} />
     <slot />
     <BaseFooter />
   </body>

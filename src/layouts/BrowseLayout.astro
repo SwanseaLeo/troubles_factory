@@ -1,0 +1,45 @@
+---
+import BrowseSidebar from '@components/layout/BrowseSidebar.astro';
+import Layout from '@layouts/Default.astro';
+import { buildTagIndex, getPublishedCases } from '../utils/cases';
+
+interface Props {
+  title: string;
+  description: string;
+  pageTitle?: string;
+  ogImage?: URL;
+  mainClass?: string;
+}
+
+const { title, description, pageTitle, ogImage, mainClass } = Astro.props;
+
+const posts = await getPublishedCases();
+const tags = buildTagIndex(posts);
+---
+
+<Layout
+  {title}
+  {description}
+  {pageTitle}
+  {ogImage}
+  classList='bg-[#f5f5f5]'
+>
+  <main class:list={['min-h-[calc(100dvh-4.5rem)]', mainClass]}>
+    <div class='flex min-h-[calc(100dvh-4.5rem)] flex-col lg:flex-row'>
+      <div
+        class='hidden shrink-0 border-b border-neutral-200 bg-[#fafafa] lg:block lg:w-60 lg:border-b-0 lg:border-r xl:w-64'
+      >
+        <div class='browse-sidebar-scroll sticky top-0 h-[calc(100dvh-4.5rem)] overflow-y-auto p-4'>
+          <BrowseSidebar
+            tags={tags}
+            recentPosts={posts}
+            caseCount={posts.length}
+          />
+        </div>
+      </div>
+      <div class='min-w-0 flex-1 p-4 md:p-6 lg:p-8'>
+        <slot />
+      </div>
+    </div>
+  </main>
+</Layout>

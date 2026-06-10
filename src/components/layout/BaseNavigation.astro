@@ -1,11 +1,13 @@
 ---
 import SocialIcon from '@components/generic/SocialIcon.astro';
 import SearchBar from '@components/layout/SearchBar.astro';
+import { communityLinks } from '../../data/community-links';
 
-type SocialIconName = 'github' | 'twitter' | 'linkedin' | 'rss';
+type SocialIconName = 'github' | 'twitter' | 'linkedin' | 'rss' | 'discord';
 
 interface Props {
   pageTitle?: string;
+  variant?: 'default' | 'minimal';
 }
 
 const navigationItems = [
@@ -13,14 +15,25 @@ const navigationItems = [
   { name: 'Cases', url: '/cases/' },
 ];
 
+const discordLink = communityLinks.find((link) => link.type === 'discord');
+
 const socialIcons: Array<{ name: string; url: string; icon: SocialIconName }> = [
+  ...(discordLink
+    ? [{ name: 'Discord', url: discordLink.url, icon: 'discord' as const }]
+    : []),
   { name: 'RSS', url: '/feed.xml', icon: 'rss' },
 ];
 
-const { pageTitle } = Astro.props;
+const { pageTitle, variant = 'default' } = Astro.props;
+const isMinimal = variant === 'minimal';
 ---
 
-<header class='border-b-4 border-black flex flex-wrap items-center gap-4 p-6 md:gap-6'>
+<header
+  class:list={[
+    'flex flex-wrap items-center gap-4 p-4 md:gap-6 md:px-6',
+    isMinimal ? 'border-b border-black/10 bg-white' : 'border-b-4 border-black',
+  ]}
+>
   {pageTitle && <h1 class='hidden'>{pageTitle}</h1>}
   <a href='/' title='Back to Home'>
     <span class='sr-only'>Troubles Factory</span>
@@ -32,12 +45,21 @@ const { pageTitle } = Astro.props;
       decoding='async'
     />
   </a>
-  <div class='order-last w-full md:order-none md:ml-auto md:w-72 lg:w-96'>
-    <SearchBar />
-  </div>
-  <nav class='hidden md:inline-block'>
+  {
+    !isMinimal && (
+      <div class='order-last w-full md:order-none md:ml-auto md:w-72 lg:w-96'>
+        <SearchBar />
+      </div>
+    )
+  }
+  <nav
+    class:list={[
+      'hidden md:block',
+      isMinimal && 'md:ml-auto',
+    ]}
+  >
     <h2 class='hidden'>Navigation</h2>
-    <ul class='flex gap-8 poppins'>
+    <ul class='flex items-center gap-6 poppins'>
       {
         navigationItems.map((item) => (
           <li>
@@ -68,10 +90,27 @@ const { pageTitle } = Astro.props;
       }
     </ul>
   </nav>
-  <nav class='md:hidden flex ml-auto'>
+  <nav class='flex ml-auto items-center md:hidden'>
     <h2 class='hidden'>Mobile Navigation</h2>
-    <ul>
-      <li><a href='/cases/'>Cases</a></li>
+    <ul class='flex items-center gap-4 poppins'>
+      <li>
+        <a href='/cases/' class='text-sm font-medium'>Cases</a>
+      </li>
+      {
+        socialIcons.map((item) => (
+          <li>
+            <a
+              href={item.url}
+              class='text-neutral-600 hover:text-neutral-900'
+              target='_blank'
+              rel='noopener noreferrer'
+              title={`Open ${item.name}`}
+            >
+              <SocialIcon icon={item.icon} class='h-5 w-5' />
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </nav>
 </header>

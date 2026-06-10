@@ -1,19 +1,21 @@
 ---
-import { getCollection } from 'astro:content';
 import BlogList from '@components/blog/BlogList.astro';
-import Layout from '@layouts/Default.astro';
+import BrowseLayout from '@layouts/BrowseLayout.astro';
+import { getPublishedCases } from '../../utils/cases';
 
-const posts = await getCollection('blog').then((collection) =>
-  collection.sort((a, b) => b.id.localeCompare(a.id))
-);
+const posts = await getPublishedCases();
 ---
 
-<Layout
+<BrowseLayout
   title='Cases'
-  description='Troubles Factory Cases'
+  description='Browse all documented software issues and solutions'
   pageTitle='Troubles Factory Cases'
 >
-  <main class='bg-green-theme p-6'>
-    <BlogList posts={posts} />
-  </main>
-</Layout>
+  <div class='mb-6'>
+    <h1 class='outfit text-2xl font-semibold md:text-3xl'>All cases</h1>
+    <p class='mt-1 poppins text-sm text-black/55'>
+      {posts.length} documented {posts.length === 1 ? 'issue' : 'issues'}
+    </p>
+  </div>
+  <BlogList posts={posts} />
+</BrowseLayout>

@@ -1,0 +1,114 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { TagEntry } from '../../utils/cases';
+
+interface Props {
+  tags: TagEntry[];
+  recentPosts: CollectionEntry<'blog'>[];
+  caseCount: number;
+  activePath?: string;
+}
+
+const { tags, recentPosts, caseCount, activePath = Astro.url.pathname } =
+  Astro.props;
+
+function isActive(href: string) {
+  if (href === '/') return activePath === '/';
+  const normalized = href.replace(/\/$/, '');
+  const path = activePath.replace(/\/$/, '');
+  return path === normalized || path.startsWith(`${normalized}/`);
+}
+
+function isAllCasesActive() {
+  const path = activePath.replace(/\/$/, '');
+  return (path === '/cases' || path.startsWith('/cases/')) && !path.includes('/tags/');
+}
+
+function navClass(href: string, active?: boolean) {
+  const selected = active ?? isActive(href);
+  return ['browse-nav-link poppins text-sm', selected && 'is-active']
+    .filter(Boolean)
+    .join(' ');
+}
+---
+
+<aside class='flex h-full flex-col gap-5' aria-label='Browse cases'>
+  <div>
+    <p class='poppins text-xs font-medium text-neutral-400'>Index</p>
+    <p class='mt-0.5 poppins text-sm text-neutral-500'>
+      {caseCount} {caseCount === 1 ? 'case' : 'cases'} · {tags.length}{' '}
+      {tags.length === 1 ? 'topic' : 'topics'}
+    </p>
+  </div>
+
+  <nav>
+    <h2 class='poppins text-xs font-medium text-neutral-400'>Quick links</h2>
+    <ul class='mt-1.5 space-y-0.5'>
+      <li>
+        <a href='/' class:list={[navClass('/'), 'px-3 py-2']}>Search</a>
+      </li>
+      <li>
+        <a href='/cases/' class:list={[navClass('/cases/', isAllCasesActive()), 'px-3 py-2']}>
+          All cases
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  {
+    tags.length > 0 && (
+      <nav class='min-h-0'>
+        <h2 class='poppins text-xs font-medium text-neutral-400'>Topics</h2>
+        <ul class='browse-sidebar-scroll mt-1.5 max-h-64 space-y-0.5 overflow-y-auto'>
+          {tags.map((tag) => {
+            const href = `/cases/tags/${tag.slug}/`;
+            return (
+              <li>
+                <a
+                  href={href}
+                  class:list={[navClass(href), 'flex items-center justify-between gap-2 px-3 py-2']}
+                >
+                  <span class='truncate'>{tag.label}</span>
+                  <span
+                    class:list={[
+                      'shrink-0 text-xs tabular-nums',
+                      isActive(href) ? 'text-blue-600/70' : 'text-neutral-400',
+                    ]}
+                  >
+                    {tag.count}
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    )
+  }
+
+  {
+    recentPosts.length > 0 && (
+      <nav class='min-h-0 flex-1'>
+        <h2 class='poppins text-xs font-medium text-neutral-400'>Recent</h2>
+        <ul class='browse-sidebar-scroll mt-1.5 space-y-0.5 overflow-y-auto'>
+          {recentPosts.slice(0, 5).map((post) => {
+            const href = `/cases/${post.id}/`;
+            return (
+              <li>
+                <a
+                  href={href}
+                  class:list={[
+                    navClass(href),
+                    'browse-nav-link-muted px-3 py-2 leading-snug',
+                  ]}
+                >
+                  {post.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    )
+  }
+</aside>

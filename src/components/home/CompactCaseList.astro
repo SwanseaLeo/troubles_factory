@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class='w-full border-t border-black/10 pt-8'>
+      <div class='mb-4 flex items-center justify-between gap-4'>
+        <h2 class='poppins text-sm font-semibold uppercase tracking-wide text-black/50'>
+          Latest cases
+        </h2>
+        <a
+          href='/cases/'
+          class='poppins text-sm text-black/60 hover:text-black hover:underline'
+        >
+          View all
+        </a>
+      </div>
+      <ul class='divide-y divide-black/10 rounded-lg border border-black/10 bg-white'>
+        {posts.map((post) => (
+          <li>
+            <a
+              href={`/cases/${post.id}/`}
+              class='block px-4 py-3 transition-colors hover:bg-black/[0.03]'
+            >
+              <p class='poppins font-medium text-black leading-snug'>
+                {post.data.title}
+              </p>
+              <p class='mt-1 poppins text-sm text-black/55 line-clamp-2'>
+                {post.data.description}
+              </p>
+              {
+                post.data.tags.length > 0 && (
+                  <p class='mt-2 poppins text-xs text-black/40'>
+                    {post.data.tags.join(' · ')}
+                  </p>
+                )
+              }
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

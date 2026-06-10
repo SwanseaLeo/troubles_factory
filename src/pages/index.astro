@@ -1,47 +1,96 @@
 ---
-import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
-import CommunityLinks from '@components/home/CommunityLinks.astro';
-import MobileSocials from '@components/home/MobileSocials.astro';
-import { Button, Card } from '@eliancodes/brutal-ui';
+import CompactCaseList from '@components/home/CompactCaseList.astro';
+import SearchSuggestions from '@components/home/SearchSuggestions.astro';
+import BrowseSidebar from '@components/layout/BrowseSidebar.astro';
+import SearchBar from '@components/layout/SearchBar.astro';
 import Layout from '@layouts/Default.astro';
+import { buildTagIndex, getPublishedCases } from '../utils/cases';
+
+const posts = await getPublishedCases();
+const tags = buildTagIndex(posts);
+const caseCount = posts.length;
+
+const suggestions = [
+  ...new Set(
+    posts.flatMap((post) => post.data.tags).slice(0, 6)
+  ),
+]
+  .slice(0, 5)
+  .map((tag) => ({ query: tag, label: tag }));
 ---
 
 <Layout
   title='Home'
-  pageTitle='Troubles Factory | Home'
-  description='Troubles Factory website built on the Brutal Astro template.'
+  pageTitle='Troubles Factory | Software issue search'
+  description='Search software issues, errors, and architecture problems with proven, implementable solutions.'
+  navVariant='minimal'
+  classList='bg-[#f5f5f5]'
 >
-  <main class='bg-pink-theme p-6'>
-    <MobileSocials />
-    <section id='hero' class='mt-4'>
-      <h2 class='hidden'>Troubles Factory</h2>
-      <Card>
-        <div class='flex flex-col items-start gap-4'>
-          <p class='mt-4 outfit text-2xl md:text-5xl lg:text-7xl'>
-            Troubles Factory
-          </p>
-          <p class='mt-2 outfit text-xl md:text-3xl lg:text-5xl'>
-            Collecting programming challenges and providing practical solutions..
-          </p>
-          <Button target={'_self'} href='/cases/'>
-            Visit our updates &rarr;
-          </Button>
+  <main class='min-h-[calc(100dvh-4.5rem)]'>
+    <div class='flex min-h-[calc(100dvh-4.5rem)] flex-col lg:flex-row'>
+      <div
+        class='hidden shrink-0 border-b border-neutral-200 bg-[#fafafa] lg:block lg:w-60 lg:border-b-0 lg:border-r xl:w-64'
+      >
+        <div class='browse-sidebar-scroll sticky top-0 h-[calc(100dvh-4.5rem)] overflow-y-auto p-4'>
+          <BrowseSidebar
+            tags={tags}
+            recentPosts={posts}
+            caseCount={caseCount}
+          />
         </div>
-      </Card>
-    </section>
-    <RecentBlogPosts />
-    <section id='about' class='mt-8 flex flex-col gap-8'>
-      <Card>
-        <h2 class='text-xl md:text-2xl lg:text-3xl mb-3 dm-serif'>
-          About Troubles Factory
-        </h2>
-        <p class='poppins text-sm md:text-base'>
-          Troubles Factory is a knowledge base that collects software-related issues (including those related to architecture, code, and exceptions) and provides proven, truly implementable solutions.
-        </p>
-      </Card>
-      <Card>
-        <CommunityLinks />
-      </Card>
-    </section>
+      </div>
+
+      <div class='flex min-w-0 flex-1 flex-col px-4 py-6 md:px-8 md:py-10'>
+        {
+          tags.length > 0 && (
+            <div class='mb-6 lg:hidden'>
+              <p class='poppins mb-2 text-xs font-semibold uppercase tracking-wide text-black/45'>
+                Topics
+              </p>
+              <ul class='flex gap-2 overflow-x-auto pb-1'>
+                {tags.slice(0, 8).map((tag) => (
+                  <li class='shrink-0'>
+                    <a
+                      href={`/cases/tags/${tag.slug}/`}
+                      class='inline-block rounded-full border border-black/15 bg-white px-3 py-1 poppins text-sm text-black/70'
+                    >
+                      {tag.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <section
+          id='hero'
+          class='flex flex-1 flex-col items-center justify-center py-8 md:py-14'
+        >
+          <a href='/' class='mb-6' title='Troubles Factory home'>
+            <img
+              src='/logo_a.png'
+              alt='Troubles Factory'
+              class='h-12 w-auto md:h-14'
+              loading='eager'
+              decoding='async'
+            />
+          </a>
+          <h1 class='sr-only'>Troubles Factory — software issue search</h1>
+          <p class='mb-8 max-w-xl text-center poppins text-base text-black/55 md:text-lg'>
+            Search documented software problems and proven fixes
+          </p>
+
+          <div class='w-full max-w-2xl'>
+            <SearchBar size='hero' autofocus />
+            <SearchSuggestions suggestions={suggestions} />
+          </div>
+        </section>
+
+        <div class='mx-auto w-full max-w-2xl'>
+          <CompactCaseList posts={posts.slice(0, 5)} />
+        </div>
+      </div>
+    </div>
   </main>
 </Layout>

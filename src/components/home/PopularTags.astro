@@ -1,0 +1,40 @@
+---
+import { Button, Card, Pill } from '@eliancodes/brutal-ui';
+
+interface TagEntry {
+  slug: string;
+  label: string;
+}
+
+interface Props {
+  tags: TagEntry[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <section class='mt-8'>
+      <Card>
+        <div class='flex flex-wrap items-end justify-between gap-4 mb-6'>
+          <h2 class='text-xl md:text-2xl lg:text-3xl dm-serif'>Browse by topic</h2>
+          <Button href='/cases/'>All cases &rarr;</Button>
+        </div>
+        <ul class='flex flex-wrap gap-3'>
+          {tags.map((tag) => (
+            <li>
+              <a
+                href={`/cases/tags/${tag.slug}/`}
+                class='inline-block transition-transform duration-150 hover:translate-x-0.5 hover:translate-y-0.5'
+                title={`Cases tagged ${tag.label}`}
+              >
+                <Pill>{tag.label}</Pill>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Card>
+    </section>
+  )
+}

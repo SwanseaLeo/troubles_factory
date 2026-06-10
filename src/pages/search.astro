@@ -1,93 +1,67 @@
 ---
-// src/pages/search.astro
-import { Button } from '@eliancodes/brutal-ui';
-import Layout from '@layouts/Default.astro';
+import SearchBar from '@components/layout/SearchBar.astro';
+import BrowseLayout from '@layouts/BrowseLayout.astro';
 ---
 
-<Layout
+<BrowseLayout
   title='Search'
   description='Search Troubles Factory cases'
   pageTitle='Troubles Factory | Search'
 >
-  <main class='grid gap-6 bg-blue-theme p-6'>
-    <div class='flex items-center justify-between gap-4'>
-      <h2 class='outfit text-3xl md:text-5xl' data-search-heading>
-        Search
-      </h2>
-      <Button href='/cases/'>&larr; Back to cases</Button>
-    </div>
-    <ul
-      class='grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:[&>li]:h-full'
-      data-search-results
+  <div class='mx-auto max-w-3xl'>
+    <h1 class='sr-only' data-search-heading>Search</h1>
+    <SearchBar size='hero' />
+    <p
+      class='mt-4 poppins text-sm text-black/55'
+      data-search-meta
     >
+    </p>
+    <ul class='mt-6 divide-y divide-black/10 rounded-lg border border-black/10 bg-white' data-search-results>
     </ul>
-  </main>
-</Layout>
+  </div>
+</BrowseLayout>
 
 <script>
-  type SearchEntry = {
-    title: string;
-    description: string;
-    tags: string[];
-    url: string;
-    img: string;
-  };
+  import {
+    type SearchEntry,
+    filterEntries,
+    highlightText,
+  } from '../scripts/search-utils';
 
-  function escapeHtml(value: string) {
-    return value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
-
-  function filterEntries(entries: SearchEntry[], query: string) {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return entries.filter((e) => {
-      const haystack = [e.title, e.description, ...e.tags]
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(q);
-    });
-  }
-
-  function cardHtml(entry: SearchEntry) {
-    const tags = entry.tags
-      .map(
-        (tag) =>
-          `<li><span class="inline-block rounded-full border-2 border-black bg-white px-3 py-1 text-sm sanchez">${escapeHtml(tag)}</span></li>`
-      )
-      .join('');
-    return `<li><article class="h-full flex flex-col justify-between gap-4 border-2 border-black bg-white p-6 rounded card-shadow">
-      <div>
-        <h3 class="poppins text-lg md:text-xl">${escapeHtml(entry.title)}</h3>
-        <a href="${entry.url}" title="${escapeHtml(entry.title)}" class="my-4 block h-56 rounded-lg border-[3px] border-black transition-colors hover:bg-green-theme">
-          <img src="${entry.img}" alt="${escapeHtml(entry.title)}" width="800" height="400" class="rounded h-full w-full object-cover" />
-        </a>
-        <p class="poppins">${escapeHtml(entry.description)}</p>
-      </div>
-      <ul class="flex flex-wrap gap-2">${tags}</ul>
-      <a href="${entry.url}" class="self-end inline-block rounded border-2 border-black bg-white px-4 py-2 poppins font-medium card-shadow hover:bg-green-theme transition-colors">Case Details &rarr;</a>
-    </article></li>`;
+  function resultHtml(entry: SearchEntry, query: string) {
+    const tags = entry.tags.map((tag) => highlightText(tag, query)).join(' · ');
+    return `<li>
+      <a href="${entry.url}" class="block px-4 py-3 transition-colors hover:bg-black/[0.03]">
+        <p class="poppins font-medium text-black leading-snug">${highlightText(entry.title, query)}</p>
+        <p class="mt-1 poppins text-sm text-black/55 line-clamp-2">${highlightText(entry.description, query)}</p>
+        ${tags ? `<p class="mt-2 poppins text-xs text-black/40">${tags}</p>` : ''}
+      </a>
+    </li>`;
   }
 
   async function init() {
     const heading = document.querySelector<HTMLElement>(
       '[data-search-heading]'
     );
+    const meta = document.querySelector<HTMLElement>('[data-search-meta]');
     const results = document.querySelector<HTMLUListElement>(
       '[data-search-results]'
     );
-    if (!heading || !results) return;
+    const input = document.querySelector<HTMLInputElement>(
+      '[data-tf-search-input]'
+    );
+    if (!heading || !meta || !results) return;
 
     const query = new URLSearchParams(window.location.search).get('q') ?? '';
+    if (input && query) input.value = query;
+
     heading.textContent = query
       ? `Results for "${query}"`
-      : 'Search';
+      : 'Search cases';
 
     if (!query.trim()) {
-      results.innerHTML =
-        '<li class="poppins">Type a keyword in the search bar above.</li>';
+      meta.textContent = 'Enter a keyword above to search documented cases.';
+      results.innerHTML = '';
       return;
     }
 
@@ -95,10 +69,15 @@ import Layout from '@layouts/Default.astro';
     const entries = (await res.json()) as SearchEntry[];
     const matches = filterEntries(entries, query);
 
+    meta.textContent = matches.length
+      ? `About ${matches.length} ${matches.length === 1 ? 'result' : 'results'}`
+      : `No results for "${query}"`;
+
     results.innerHTML = matches.length
-      ? matches.map(cardHtml).join('')
-      : `<li class="poppins">No cases match "${escapeHtml(query)}".</li>`;
+      ? matches.map((entry) => resultHtml(entry, query)).join('')
+      : `<li class="px-4 py-6 poppins text-sm text-black/55">Try different error text, a tool name, or a topic tag.</li>`;
   }
 
   init();
+  document.addEventListener('astro:page-load', init);
 </script>

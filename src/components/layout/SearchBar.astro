@@ -1,32 +1,69 @@
 ---
 // src/components/layout/SearchBar.astro
+interface Props {
+  size?: 'default' | 'hero';
+  autofocus?: boolean;
+}
+
+const { size = 'default', autofocus = false } = Astro.props;
+
+const isHero = size === 'hero';
+
+const inputClass = isHero
+  ? 'min-w-0 flex-1 border-0 bg-transparent px-5 py-4 poppins text-lg md:text-xl focus:outline-none'
+  : 'w-full border-2 border-black bg-white px-4 py-2 rounded poppins text-base focus:outline-none';
 ---
 
-<div class='tf-search relative w-full' data-tf-search>
+<div
+  class:list={[
+    'tf-search relative w-full',
+    isHero &&
+      'flex items-stretch overflow-hidden rounded-full border border-black/15 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] focus-within:border-black/30 focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-shadow',
+  ]}
+  data-tf-search
+  data-tf-search-size={size}
+>
   <input
     type='search'
     autocomplete='off'
-    placeholder='Search cases...'
+    placeholder='Search error messages, tools, or topics...'
     aria-label='Search cases'
-    class='w-full border-2 border-black bg-white px-4 py-2 rounded poppins text-base focus:outline-none'
+    class={inputClass}
     data-tf-search-input
+    autofocus={autofocus || undefined}
   />
+  {
+    isHero && (
+      <button
+        type='button'
+        class='shrink-0 border-l border-black/10 px-5 poppins text-sm font-medium text-black/70 transition-colors hover:bg-black/5 hover:text-black'
+        data-tf-search-submit
+      >
+        Search
+      </button>
+    )
+  }
   <ul
-    class='absolute left-0 right-0 mt-2 hidden max-h-80 overflow-y-auto rounded border-2 border-black bg-white z-50'
+    class:list={[
+      'absolute left-0 right-0 mt-2 hidden max-h-80 overflow-y-auto bg-white z-50',
+      isHero
+        ? 'rounded-2xl border border-black/15 shadow-lg top-full'
+        : 'rounded border-2 border-black',
+    ]}
     data-tf-search-results
   >
   </ul>
 </div>
 
 <script>
-  type SearchEntry = {
-    title: string;
-    description: string;
-    tags: string[];
-    url: string;
-  };
+  import {
+    type SearchEntry,
+    filterEntries,
+    highlightText,
+  } from '../../scripts/search-utils';
 
   let cache: SearchEntry[] | null = null;
+  let outsideClickBound = false;
 
   async function loadIndex(): Promise<SearchEntry[]> {
     if (cache) return cache;
@@ -35,25 +72,24 @@
     return cache;
   }
 
-  function filterEntries(entries: SearchEntry[], query: string) {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return entries.filter((e) => {
-      const haystack = [e.title, e.description, ...e.tags]
-        .join(' ')
-        .toLowerCase();
-      return haystack.includes(q);
+  function bindOutsideClick() {
+    if (outsideClickBound) return;
+    outsideClickBound = true;
+    document.addEventListener('click', (event) => {
+      document.querySelectorAll<HTMLElement>('[data-tf-search]').forEach((root) => {
+        const results = root.querySelector<HTMLUListElement>(
+          '[data-tf-search-results]'
+        );
+        if (results && !root.contains(event.target as Node)) {
+          results.classList.add('hidden');
+        }
+      });
     });
   }
 
-  function escapeHtml(value: string) {
-    return value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
-  }
+  function initSearchBar(root: HTMLElement) {
+    if (root.dataset.tfSearchBound === '1') return;
 
-  document.querySelectorAll<HTMLElement>('[data-tf-search]').forEach((root) => {
     const input = root.querySelector<HTMLInputElement>(
       '[data-tf-search-input]'
     );
@@ -61,6 +97,8 @@
       '[data-tf-search-results]'
     );
     if (!input || !results) return;
+
+    root.dataset.tfSearchBound = '1';
 
     const close = () => results.classList.add('hidden');
 
@@ -77,29 +115,44 @@
         results.classList.remove('hidden');
         return;
       }
+      const query = input.value;
       results.innerHTML = matches
         .map(
           (m) =>
-            `<li class="border-b-2 border-black last:border-b-0"><a href="${m.url}" class="block px-4 py-3 hover:bg-green-theme transition-colors"><span class="block poppins font-medium">${escapeHtml(m.title)}</span><span class="block text-sm mt-1 line-clamp-1">${escapeHtml(m.description)}</span></a></li>`
+            `<li class="border-b-2 border-black last:border-b-0"><a href="${m.url}" class="block px-4 py-3 hover:bg-green-theme transition-colors"><span class="block poppins font-medium">${highlightText(m.title, query)}</span><span class="block text-sm mt-1 line-clamp-1">${highlightText(m.description, query)}</span></a></li>`
         )
         .join('');
       results.classList.remove('hidden');
+    };
+
+    const submit = () => {
+      const q = input.value.trim();
+      if (q) window.location.href = `/search?q=${encodeURIComponent(q)}`;
     };
 
     input.addEventListener('focus', render);
     input.addEventListener('input', render);
     input.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
-        const q = input.value.trim();
-        if (q) window.location.href = `/search?q=${encodeURIComponent(q)}`;
+        submit();
       } else if (event.key === 'Escape') {
         close();
         input.blur();
       }
     });
 
-    document.addEventListener('click', (event) => {
-      if (!root.contains(event.target as Node)) close();
-    });
-  });
+    root
+      .querySelector<HTMLButtonElement>('[data-tf-search-submit]')
+      ?.addEventListener('click', submit);
+  }
+
+  function initSearchBars() {
+    bindOutsideClick();
+    document
+      .querySelectorAll<HTMLElement>('[data-tf-search]')
+      .forEach(initSearchBar);
+  }
+
+  initSearchBars();
+  document.addEventListener('astro:page-load', initSearchBars);
 </script>

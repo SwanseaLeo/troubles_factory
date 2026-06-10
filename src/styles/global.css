@@ -168,3 +168,60 @@ html {
 ::selection {
   background-color: aliceblue;
 }
+
+/* Browse sidebar — TypingMind-like nav, hidden scrollbar */
+.browse-sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.browse-sidebar-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.browse-nav-link {
+  display: block;
+  border-radius: 0.5rem;
+  color: #525252;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.browse-nav-link:hover {
+  background-color: #f5f5f5;
+  color: #171717;
+}
+
+.browse-nav-link.is-active {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 500;
+}
+
+.browse-nav-link.is-active:hover {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.browse-nav-link-muted {
+  color: #737373;
+}
+
+.browse-nav-link-muted:hover {
+  color: #171717;
+}
+
+.browse-nav-link-muted.is-active {
+  color: #1d4ed8;
+}
+
+.search-hit {
+  background-color: #fef08a;
+  color: #713f12;
+  border-radius: 2px;
+  padding: 0 2px;
+  font-weight: 500;
+}
