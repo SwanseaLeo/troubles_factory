@@ -1,24 +1,9 @@
 ---
 import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import CommunityLinks from '@components/home/CommunityLinks.astro';
 import MobileSocials from '@components/home/MobileSocials.astro';
-import { Button, Card, Pill } from '@eliancodes/brutal-ui';
+import { Button, Card } from '@eliancodes/brutal-ui';
 import Layout from '@layouts/Default.astro';
-
-const builtWith = [
-  { name: 'Astro', url: 'https://astro.build/' },
-  { name: 'Tailwind CSS', url: 'https://tailwindcss.com/' },
-  {
-    name: 'Content Collections',
-    url: 'https://docs.astro.build/en/guides/content-collections/',
-  },
-  { name: 'RSS', url: 'https://docs.astro.build/en/guides/rss/' },
-  {
-    name: 'Sitemap',
-    url: 'https://docs.astro.build/en/guides/integrations-guide/sitemap/',
-  },
-  { name: 'Vercel', url: 'https://vercel.com' },
-  { name: 'TypeScript', url: 'https://www.typescriptlang.org/' },
-];
 ---
 
 <Layout
@@ -28,60 +13,35 @@ const builtWith = [
 >
   <main class='bg-pink-theme p-6'>
     <MobileSocials />
-    <section id='about' class='grid md:grid-cols-8 gap-8 mt-4'>
-      <h2 class='hidden'>About Troubles Factory</h2>
-      <div class='col-span-4 md:[&>*]:h-full'>
-        <Card>
-          <div class='flex flex-col justify-between items-start gap-4'>
-            <p class='mt-4 outfit text-2xl md:text-5xl lg:text-7xl'>
-              Troubles Factory 
-            </p>
-            <p class='mt-2 outfit text-xl md:text-3xl lg:text-5xl'>
-              Collecting programming challenges and providing practical solutions..
-            </p>
-            <Button target={'_self'} href='/cases/'>
-              Visit our updates &rarr;
-            </Button>
-          </div>
-        </Card>
-      </div>
-      <div class='col-span-2 md:[&>*]:h-full'>
-        <Card>
-          <h2 class='text-2xl md:text-4xl lg:text-6xl mb-8 dm-serif'>
-            Built with
-          </h2>
-          <ul class='flex gap-4 flex-wrap'>
-            {
-              builtWith.map((item) => (
-                <li>
-                  <Pill>
-                    <a
-                      class='sanchez'
-                      href={item.url}
-                      target='_blank'
-                      rel='noopener'
-                      title={`Go to ${item.name}`}
-                    >
-                      {item.name}
-                    </a>
-                  </Pill>
-                </li>
-              ))
-            }
-          </ul>
-        </Card>
-      </div>
-      <div class='col-span-2 md:[&>*]:h-full'>
-        <Card>
-          <h2 class='text-2xl md:text-4xl lg:text-6xl mb-4 dm-serif'>
-            About Troubles Factory
-          </h2>
-          <p class='poppins'>
-            Troubles Factory is a knowledge base that collects software-related issues (including those related to architecture, code, and exceptions) and provides proven, truly implementable solutions.
+    <section id='hero' class='mt-4'>
+      <h2 class='hidden'>Troubles Factory</h2>
+      <Card>
+        <div class='flex flex-col items-start gap-4'>
+          <p class='mt-4 outfit text-2xl md:text-5xl lg:text-7xl'>
+            Troubles Factory
           </p>
-        </Card>
-      </div>
+          <p class='mt-2 outfit text-xl md:text-3xl lg:text-5xl'>
+            Collecting programming challenges and providing practical solutions..
+          </p>
+          <Button target={'_self'} href='/cases/'>
+            Visit our updates &rarr;
+          </Button>
+        </div>
+      </Card>
     </section>
     <RecentBlogPosts />
+    <section id='about' class='mt-8 flex flex-col gap-8'>
+      <Card>
+        <h2 class='text-xl md:text-2xl lg:text-3xl mb-3 dm-serif'>
+          About Troubles Factory
+        </h2>
+        <p class='poppins text-sm md:text-base'>
+          Troubles Factory is a knowledge base that collects software-related issues (including those related to architecture, code, and exceptions) and provides proven, truly implementable solutions.
+        </p>
+      </Card>
+      <Card>
+        <CommunityLinks />
+      </Card>
+    </section>
   </main>
 </Layout>
