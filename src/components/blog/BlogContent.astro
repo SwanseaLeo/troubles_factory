@@ -12,18 +12,18 @@ interface Props {
 const { pubDate, author, imgSrc, imgAlt } = Astro.props;
 ---
 
-<article class='w-full max-w-sm poppins md:max-w-3xl lg:max-w-4xl lg:col-span-2 md:prose md:prose-lg md:prose-slate'>
+<article class='w-full max-w-sm poppins md:max-w-3xl lg:max-w-[1200px] lg:col-span-2 md:prose md:prose-lg md:prose-slate'>
   <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
   <p class='text-sm text-slate-700 md:text-base'>
     Published on {pubDate} by {author}
   </p>
-  <div class='not-prose my-6 rounded-lg border-[3px] border-black'>
+  <div class='not-prose my-6 aspect-[2/1] overflow-hidden rounded-lg border-[3px] border-black'>
     <Image
       src={imgSrc}
       alt={imgAlt}
-      width={800}
-      height={400}
-      class='rounded h-full w-full object-cover'
+      width={1200}
+      height={600}
+      class='h-full w-full rounded object-cover'
     />
   </div>
   <slot />
