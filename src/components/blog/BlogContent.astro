@@ -1,23 +1,70 @@
 ---
-import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 
 interface Props {
   pubDate: Date;
   author: string;
   imgSrc: ImageMetadata;
   imgAlt: string;
+  title: string;
+  description: string;
+  tags: string[];
 }
 
-const { pubDate, author, imgSrc, imgAlt } = Astro.props;
+const { pubDate, author, imgSrc, imgAlt, title, description, tags } = Astro.props;
+
+const formattedDate = new Intl.DateTimeFormat('en', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(pubDate);
 ---
 
-<article class='w-full max-w-sm poppins md:max-w-3xl lg:max-w-[1200px] lg:col-span-2 md:prose md:prose-lg md:prose-slate'>
+<article class='case-content w-full min-w-0 max-w-3xl poppins md:prose md:prose-lg md:prose-slate'>
   <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
-  <p class='text-sm text-slate-700 md:text-base'>
-    Published on {pubDate} by {author}
-  </p>
-  <div class='not-prose my-6 aspect-[2/1] overflow-hidden rounded-lg border-[3px] border-black'>
+
+  <header class='not-prose mt-5'>
+    <h1 class='outfit text-3xl font-semibold leading-tight text-black md:text-4xl'>
+      {title}
+    </h1>
+    <p class='mt-3 poppins text-sm text-black/50'>
+      Published <time datetime={pubDate.toISOString()}>{formattedDate}</time> by {author}
+    </p>
+  </header>
+
+  <section
+    class='not-prose my-6 rounded-lg border border-black/10 bg-[#f7f8f8] p-4 md:p-5'
+    aria-labelledby='case-summary-title'
+  >
+    <div class='flex flex-wrap items-center gap-2'>
+      <h2 id='case-summary-title' class='outfit text-base font-semibold text-black'>
+        Case summary
+      </h2>
+      <span class='rounded border border-emerald-700/20 bg-emerald-50 px-2 py-1 poppins text-xs font-medium text-emerald-800'>
+        Documented case
+      </span>
+    </div>
+    <p class='mt-3 poppins text-sm leading-relaxed text-black/70 md:text-base'>
+      {description}
+    </p>
+    {
+      tags.length > 0 && (
+        <div class='mt-4 flex flex-wrap gap-2' aria-label='Case topics'>
+          {tags.map((tag) => (
+            <a
+              href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}
+              class='rounded border border-black/10 bg-white px-2 py-1 poppins text-xs text-black/60 hover:border-black/20 hover:text-black'
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </section>
+
+  <div class='not-prose my-6 aspect-[2/1] overflow-hidden rounded-lg border border-black/15'>
     <Image
       src={imgSrc}
       alt={imgAlt}
@@ -30,3 +77,20 @@ const { pubDate, author, imgSrc, imgAlt } = Astro.props;
   <p class='text-slate-700'>Written by {author}</p>
   <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
 </article>
+
+<style>
+  .case-content > :global(h2:first-of-type) {
+    display: none;
+  }
+
+  .case-content :global(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .case-content :global(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+</style>

@@ -28,6 +28,7 @@ const headings = blogpost.rendered?.metadata?.headings as Heading[] | undefined;
   author={blogpost.data.author}
   headings={headings}
   imgSrc={blogpost.data.imgUrl}
+  tags={blogpost.data.tags}
 >
   <Content />
 </Layout>

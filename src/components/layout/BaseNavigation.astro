@@ -34,7 +34,7 @@ const isMinimal = variant === 'minimal';
     isMinimal ? 'border-b border-black/10 bg-white' : 'border-b-4 border-black',
   ]}
 >
-  {pageTitle && <h1 class='hidden'>{pageTitle}</h1>}
+  {pageTitle && <span class='sr-only'>{pageTitle}</span>}
   <a href='/' title='Back to Home'>
     <span class='sr-only'>Troubles Factory</span>
     <img
