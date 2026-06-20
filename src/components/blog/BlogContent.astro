@@ -21,7 +21,7 @@ const formattedDate = new Intl.DateTimeFormat('en', {
 }).format(pubDate);
 ---
 
-<article class='case-content w-full min-w-0 max-w-3xl poppins md:prose md:prose-lg md:prose-slate'>
+<article class='case-content w-full min-w-0 max-w-3xl poppins'>
   <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
 
   <header class='not-prose mt-5'>
@@ -73,24 +73,111 @@ const formattedDate = new Intl.DateTimeFormat('en', {
       class='h-full w-full rounded object-cover'
     />
   </div>
-  <slot />
-  <p class='text-slate-700'>Written by {author}</p>
-  <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
+  <div class='case-body prose prose-slate md:prose-lg'>
+    <slot />
+  </div>
+  <footer class='mt-12 border-t border-black/10 pt-5'>
+    <p class='text-sm text-slate-600'>Written by {author}</p>
+    <a class='mt-2 inline-block' href='/cases/' title='Back to cases'>
+      &larr; Back to cases
+    </a>
+  </footer>
 </article>
 
 <style>
-  .case-content > :global(h2:first-of-type) {
+  .case-body > :global(h2:first-of-type) {
     display: none;
   }
 
-  .case-content :global(pre) {
+  .case-body {
+    margin-top: 2.5rem;
+  }
+
+  .case-body :global(h3) {
+    margin-top: 3rem;
+    border-top: 1px solid rgb(0 0 0 / 0.1);
+    padding-top: 2rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #171717;
+  }
+
+  .case-body :global(h4) {
+    margin-top: 2rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #262626;
+  }
+
+  .case-body :global(p),
+  .case-body :global(li) {
+    line-height: 1.8;
+  }
+
+  .case-body :global(strong) {
+    color: #171717;
+  }
+
+  .case-body :global(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid #262626;
+    border-radius: 6px;
+    background: #171717;
+    scrollbar-color: #737373 #262626;
+    scrollbar-width: thin;
+  }
+
+  .case-body :global(pre::-webkit-scrollbar) {
+    height: 10px;
+    background: #262626;
+  }
+
+  .case-body :global(pre::-webkit-scrollbar-track) {
+    border: 0;
+    background: #262626;
+  }
+
+  .case-body :global(pre::-webkit-scrollbar-thumb) {
+    border: 2px solid #262626;
+    border-radius: 5px;
+    background: #737373;
+  }
+
+  .case-body :global(pre::-webkit-scrollbar-button) {
+    display: none;
+  }
+
+  .case-body :global(:not(pre) > code) {
+    border-radius: 4px;
+    background: #f3f4f6;
+    padding: 0.15rem 0.35rem;
+    color: #b42318;
+  }
+
+  .case-body :global(blockquote) {
+    border-left-color: #d97706;
+    background: #fffbeb;
+    padding: 0.75rem 1rem;
+    color: #525252;
+  }
+
+  .case-body :global(table) {
+    display: block;
     max-width: 100%;
     overflow-x: auto;
   }
 
-  .case-content :global(table) {
-    display: block;
-    max-width: 100%;
-    overflow-x: auto;
+  @media (max-width: 767px) {
+    .case-body {
+      margin-top: 2rem;
+    }
+
+    .case-body :global(h3) {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+    }
   }
 </style>
