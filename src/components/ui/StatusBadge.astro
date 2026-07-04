@@ -1,0 +1,16 @@
+---
+// src/components/ui/StatusBadge.astro
+import { badgeClasses, type StatusVariant } from '../../styles/design-system';
+
+interface Props {
+  variant: StatusVariant;
+  class?: string;
+}
+
+const { variant, class: className } = Astro.props;
+const classes = badgeClasses(variant, className);
+---
+
+<span class={classes}>
+  <slot />
+</span>

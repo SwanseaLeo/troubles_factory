@@ -4,60 +4,43 @@ import BrowseLayout from '@layouts/BrowseLayout.astro';
 ---
 
 <BrowseLayout
-  title='Search'
-  description='Search Troubles Factory cases'
-  pageTitle='Troubles Factory | Search'
+  title='Search verified troubleshooting cases'
+  description='Search verified, version-specific software troubleshooting cases by error message, tool, version, or topic.'
+  pageTitle='TroubleFactory | Search'
 >
   <div class='mx-auto max-w-3xl'>
-    <h1 class='sr-only' data-search-heading>Search</h1>
-    <SearchBar size='hero' />
-    <p
-      class='mt-4 poppins text-sm text-black/55'
-      data-search-meta
-    >
-    </p>
-    <ul class='mt-6 divide-y divide-black/10 rounded-lg border border-black/10 bg-white' data-search-results>
-    </ul>
+    <h1 class='tf-text-display-2xl dark:text-neutral-50' data-search-heading>Search cases</h1>
+    <div class='mt-4'>
+      <SearchBar size='hero' />
+    </div>
+    <p class='tf-text-body mt-4' data-search-meta></p>
+    <ul class='tf-list-panel mt-6 dark:border-neutral-800 dark:bg-neutral-950' data-search-results></ul>
   </div>
 </BrowseLayout>
 
 <script>
   import {
-    type SearchEntry,
     filterEntries,
     highlightText,
+    type SearchEntry,
   } from '../scripts/search-utils';
 
   function resultHtml(entry: SearchEntry, query: string) {
     const tags = entry.tags.map((tag) => highlightText(tag, query)).join(' · ');
-    return `<li>
-      <a href="${entry.url}" class="block px-4 py-3 transition-colors hover:bg-black/[0.03]">
-        <p class="poppins font-medium text-black leading-snug">${highlightText(entry.title, query)}</p>
-        <p class="mt-1 poppins text-sm text-black/55 line-clamp-2">${highlightText(entry.description, query)}</p>
-        ${tags ? `<p class="mt-2 poppins text-xs text-black/40">${tags}</p>` : ''}
-      </a>
-    </li>`;
+    return `<li><a href="${entry.url}" class="tf-list-panel__row not-prose"><p class="tf-ui font-medium text-tf-text leading-snug dark:text-neutral-100">${highlightText(entry.title, query)}</p><p class="tf-text-body mt-1 line-clamp-2">${highlightText(entry.description, query)}</p>${tags ? `<p class="tf-text-caption mt-2">${tags}</p>` : ''}</a></li>`;
   }
 
   async function init() {
-    const heading = document.querySelector<HTMLElement>(
-      '[data-search-heading]'
-    );
+    const heading = document.querySelector<HTMLElement>('[data-search-heading]');
     const meta = document.querySelector<HTMLElement>('[data-search-meta]');
-    const results = document.querySelector<HTMLUListElement>(
-      '[data-search-results]'
-    );
-    const input = document.querySelector<HTMLInputElement>(
-      '[data-tf-search-input]'
-    );
+    const results = document.querySelector<HTMLUListElement>('[data-search-results]');
+    const input = document.querySelector<HTMLInputElement>('[data-tf-search-input]');
     if (!heading || !meta || !results) return;
 
     const query = new URLSearchParams(window.location.search).get('q') ?? '';
     if (input && query) input.value = query;
 
-    heading.textContent = query
-      ? `Results for "${query}"`
-      : 'Search cases';
+    heading.textContent = query ? `Results for "${query}"` : 'Search cases';
 
     if (!query.trim()) {
       meta.textContent = 'Enter a keyword above to search documented cases.';
@@ -75,7 +58,7 @@ import BrowseLayout from '@layouts/BrowseLayout.astro';
 
     results.innerHTML = matches.length
       ? matches.map((entry) => resultHtml(entry, query)).join('')
-      : `<li class="px-4 py-6 poppins text-sm text-black/55">Try different error text, a tool name, or a topic tag.</li>`;
+      : '<li class="px-4 py-6 tf-text-body">Try different error text, a tool name, or a topic tag.</li>';
   }
 
   init();

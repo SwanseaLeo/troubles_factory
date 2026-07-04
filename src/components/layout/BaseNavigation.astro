@@ -26,21 +26,28 @@ const socialIcons: Array<{ name: string; url: string; icon: SocialIconName }> = 
 
 const { pageTitle, variant = 'default' } = Astro.props;
 const isMinimal = variant === 'minimal';
+
+const navLinkClass =
+  'tf-ui text-sm font-medium text-tf-text-secondary transition-colors hover:text-tf-brand dark:text-neutral-300 dark:hover:text-blue-400';
+const iconLinkClass =
+  'tf-focus-ring rounded-tf-md p-1 text-tf-text-muted transition-colors hover:text-tf-brand dark:text-neutral-400 dark:hover:text-blue-400';
 ---
 
 <header
   class:list={[
-    'flex flex-wrap items-center gap-4 p-4 md:gap-6 md:px-6',
-    isMinimal ? 'border-b border-black/10 bg-white' : 'border-b-4 border-black',
+    'flex flex-wrap items-center gap-4 border-b border-tf-border bg-tf-surface p-4 md:gap-6 md:px-6 dark:border-neutral-800 dark:bg-neutral-950',
+    !isMinimal && 'md:pb-4',
   ]}
 >
   {pageTitle && <span class='sr-only'>{pageTitle}</span>}
-  <a href='/' title='Back to Home'>
-    <span class='sr-only'>Troubles Factory</span>
+  <a href='/' class='tf-focus-ring rounded-tf-md' title='Back to Home'>
+    <span class='sr-only'>TroubleFactory</span>
     <img
       src='/logo_a.png'
-      alt='Troubles Factory'
-      class='h-10 md:h-14 w-auto'
+      alt='TroubleFactory'
+      class='h-10 w-auto md:h-14'
+      width='160'
+      height='56'
       loading='eager'
       decoding='async'
     />
@@ -53,21 +60,14 @@ const isMinimal = variant === 'minimal';
     )
   }
   <nav
-    class:list={[
-      'hidden md:block',
-      isMinimal && 'md:ml-auto',
-    ]}
+    class:list={['hidden md:block', isMinimal && 'md:ml-auto']}
+    aria-label='Primary'
   >
-    <h2 class='hidden'>Navigation</h2>
-    <ul class='flex items-center gap-6 poppins'>
+    <ul class='flex items-center gap-6'>
       {
         navigationItems.map((item) => (
           <li>
-            <a
-              class='text-lg font-medium hover:text-green-700 hover:underline transition-all duration-150 ease-in-out'
-              href={item.url}
-              title={`Go to ${item.name}`}
-            >
+            <a class:list={[navLinkClass, 'tf-focus-ring text-base']} href={item.url}>
               {item.name}
             </a>
           </li>
@@ -78,10 +78,10 @@ const isMinimal = variant === 'minimal';
           <li>
             <a
               href={item.url}
-              class='hover:text-green-700 hover:underline transition-all duration-150 ease-in-out'
+              class={iconLinkClass}
               target='_blank'
-              rel='noopener'
-              title={`Open ${item.name}`}
+              rel='noopener noreferrer'
+              aria-label={`Open ${item.name}`}
             >
               <SocialIcon icon={item.icon} class='h-6 w-6' />
             </a>
@@ -90,21 +90,20 @@ const isMinimal = variant === 'minimal';
       }
     </ul>
   </nav>
-  <nav class='flex ml-auto items-center md:hidden'>
-    <h2 class='hidden'>Mobile Navigation</h2>
-    <ul class='flex items-center gap-4 poppins'>
+  <nav class='ml-auto flex items-center md:hidden' aria-label='Mobile primary'>
+    <ul class='flex items-center gap-4'>
       <li>
-        <a href='/cases/' class='text-sm font-medium'>Cases</a>
+        <a href='/cases/' class={navLinkClass}>Cases</a>
       </li>
       {
         socialIcons.map((item) => (
           <li>
             <a
               href={item.url}
-              class='text-neutral-600 hover:text-neutral-900'
+              class={iconLinkClass}
               target='_blank'
               rel='noopener noreferrer'
-              title={`Open ${item.name}`}
+              aria-label={`Open ${item.name}`}
             >
               <SocialIcon icon={item.icon} class='h-5 w-5' />
             </a>

@@ -26,7 +26,7 @@ function isAllCasesActive() {
 
 function navClass(href: string, active?: boolean) {
   const selected = active ?? isActive(href);
-  return ['browse-nav-link poppins text-sm', selected && 'is-active']
+  return ['browse-nav-link tf-focus-ring text-sm', selected && 'is-active']
     .filter(Boolean)
     .join(' ');
 }
@@ -34,15 +34,15 @@ function navClass(href: string, active?: boolean) {
 
 <aside class='flex h-full flex-col gap-5' aria-label='Browse cases'>
   <div>
-    <p class='poppins text-xs font-medium text-neutral-400'>Index</p>
-    <p class='mt-0.5 poppins text-sm text-neutral-500'>
+    <p class='tf-text-label dark:text-neutral-500'>Index</p>
+    <p class='tf-text-body mt-0.5 text-sm dark:text-neutral-400'>
       {caseCount} {caseCount === 1 ? 'case' : 'cases'} · {tags.length}{' '}
       {tags.length === 1 ? 'topic' : 'topics'}
     </p>
   </div>
 
-  <nav>
-    <h2 class='poppins text-xs font-medium text-neutral-400'>Quick links</h2>
+  <nav aria-label='Quick links'>
+    <h2 class='tf-text-label dark:text-neutral-500'>Quick links</h2>
     <ul class='mt-1.5 space-y-0.5'>
       <li>
         <a href='/' class:list={[navClass('/'), 'px-3 py-2']}>Search</a>
@@ -57,8 +57,8 @@ function navClass(href: string, active?: boolean) {
 
   {
     tags.length > 0 && (
-      <nav class='min-h-0'>
-        <h2 class='poppins text-xs font-medium text-neutral-400'>Topics</h2>
+      <nav class='min-h-0' aria-label='Topics'>
+        <h2 class='tf-text-label dark:text-neutral-500'>Topics</h2>
         <ul class='browse-sidebar-scroll mt-1.5 max-h-64 space-y-0.5 overflow-y-auto'>
           {tags.map((tag) => {
             const href = `/cases/tags/${tag.slug}/`;
@@ -72,7 +72,9 @@ function navClass(href: string, active?: boolean) {
                   <span
                     class:list={[
                       'shrink-0 text-xs tabular-nums',
-                      isActive(href) ? 'text-blue-600/70' : 'text-neutral-400',
+                      isActive(href)
+                        ? 'text-tf-brand-active dark:text-blue-400'
+                        : 'text-tf-text-muted dark:text-neutral-500',
                     ]}
                   >
                     {tag.count}
@@ -88,8 +90,8 @@ function navClass(href: string, active?: boolean) {
 
   {
     recentPosts.length > 0 && (
-      <nav class='min-h-0 flex-1'>
-        <h2 class='poppins text-xs font-medium text-neutral-400'>Recent</h2>
+      <nav class='min-h-0 flex-1' aria-label='Recent cases'>
+        <h2 class='tf-text-label dark:text-neutral-500'>Recent</h2>
         <ul class='browse-sidebar-scroll mt-1.5 space-y-0.5 overflow-y-auto'>
           {recentPosts.slice(0, 5).map((post) => {
             const href = `/cases/${post.id}/`;

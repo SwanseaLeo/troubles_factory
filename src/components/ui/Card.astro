@@ -1,0 +1,60 @@
+---
+// src/components/ui/Card.astro
+import { cardClasses, type CardVariant } from '../../styles/design-system';
+
+interface Props {
+  variant?: CardVariant;
+  interactive?: boolean;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  class?: string;
+}
+
+const {
+  variant = 'default',
+  interactive = false,
+  padding = 'md',
+  class: className,
+} = Astro.props;
+
+const paddingClass =
+  padding === 'none'
+    ? ''
+    : padding === 'sm'
+      ? 'tf-card__body'
+      : padding === 'lg'
+        ? 'tf-card__body tf-card__body--md'
+        : 'tf-card__body';
+
+const classes = [
+  cardClasses(variant, className),
+  interactive && 'tf-card--interactive',
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class={classes}>
+  {
+    Astro.slots.has('header') && (
+      <div class='tf-card__header'>
+        <slot name='header' />
+      </div>
+    )
+  }
+  {
+    padding === 'none' ? (
+      <slot />
+    ) : (
+      <div class={paddingClass}>
+        <slot />
+      </div>
+    )
+  }
+  {
+    Astro.slots.has('footer') && (
+      <div class='tf-card__footer'>
+        <slot name='footer' />
+      </div>
+    )
+  }
+</div>

@@ -8,19 +8,17 @@ interface Props {
 
 const { count } = Astro.props;
 
-const posts = await getCollection('blog').then((posts) =>
-  posts
+const posts = await getCollection('blog').then((items) =>
+  items
     .sort((a, b) => b.id.localeCompare(a.id))
-    .slice(0, count ?? 3)
+    .slice(0, count ?? 3),
 );
 ---
 
-<section class='mt-8 border-t border-black/10 pt-8'>
+<section class='mt-8 border-t border-tf-border pt-8 dark:border-neutral-800'>
   <div class='mb-4 flex items-center justify-between gap-4'>
-    <h2 class='outfit text-xl font-semibold md:text-2xl'>Recent cases</h2>
-    <a href='/cases/' class='poppins text-sm text-[#0066cc] hover:underline'>
-      View all cases
-    </a>
+    <h2 class='tf-text-display-xl'>Recent cases</h2>
+    <a href='/cases/' class='tf-text-link text-sm font-medium'>View all cases</a>
   </div>
   <BlogList posts={posts} />
 </section>

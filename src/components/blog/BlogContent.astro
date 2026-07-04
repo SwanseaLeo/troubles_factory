@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import StatusBadge from '@components/ui/StatusBadge.astro';
+import Tag from '@components/ui/Tag.astro';
 
 interface Props {
   pubDate: Date;
@@ -21,50 +23,50 @@ const formattedDate = new Intl.DateTimeFormat('en', {
 }).format(pubDate);
 ---
 
-<article class='case-content w-full min-w-0 max-w-3xl poppins'>
-  <a href='/cases/' title='Back to cases'>&larr; Back to cases</a>
+<article class='case-content w-full min-w-0 max-w-3xl tf-ui'>
+  <a href='/cases/' class='tf-text-link text-sm' title='Back to cases'>&larr; Back to cases</a>
 
   <header class='not-prose mt-5'>
-    <h1 class='outfit text-3xl font-semibold leading-tight text-black md:text-4xl'>
+    <h1 class='tf-text-display-3xl md:text-4xl'>
       {title}
     </h1>
-    <p class='mt-3 poppins text-sm text-black/50'>
+    <p class='tf-text-caption mt-3'>
       Published <time datetime={pubDate.toISOString()}>{formattedDate}</time> by {author}
     </p>
   </header>
 
   <section
-    class='not-prose my-6 rounded-lg border border-black/10 bg-[#f7f8f8] p-4 md:p-5'
+    class='not-prose my-6 rounded-tf-lg border border-tf-border bg-tf-surface-inset p-4 md:p-5 dark:border-neutral-800 dark:bg-neutral-900'
     aria-labelledby='case-summary-title'
   >
     <div class='flex flex-wrap items-center gap-2'>
-      <h2 id='case-summary-title' class='outfit text-base font-semibold text-black'>
+      <h2 id='case-summary-title' class='tf-text-display-lg text-base'>
         Case summary
       </h2>
-      <span class='rounded border border-emerald-700/20 bg-emerald-50 px-2 py-1 poppins text-xs font-medium text-emerald-800'>
-        Documented case
-      </span>
+      <StatusBadge variant='documented'>Verified</StatusBadge>
     </div>
-    <p class='mt-3 poppins text-sm leading-relaxed text-black/70 md:text-base'>
+    <p class='tf-text-body mt-3 md:text-base'>
       {description}
     </p>
     {
       tags.length > 0 && (
-        <div class='mt-4 flex flex-wrap gap-2' aria-label='Case topics'>
+        <ul class='mt-4 flex flex-wrap gap-2'>
           {tags.map((tag) => (
-            <a
-              href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}
-              class='rounded border border-black/10 bg-white px-2 py-1 poppins text-xs text-black/60 hover:border-black/20 hover:text-black'
-            >
-              {tag}
-            </a>
+            <li>
+              <Tag
+                label={tag}
+                href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}
+              >
+                {tag}
+              </Tag>
+            </li>
           ))}
-        </div>
+        </ul>
       )
     }
   </section>
 
-  <div class='not-prose my-6 aspect-[2/1] overflow-hidden rounded-lg border border-black/15'>
+  <div class='not-prose my-6 aspect-[2/1] overflow-hidden rounded-tf-lg border border-tf-border-strong dark:border-neutral-700'>
     <Image
       src={imgSrc}
       alt={imgAlt}
@@ -76,9 +78,9 @@ const formattedDate = new Intl.DateTimeFormat('en', {
   <div class='case-body prose prose-slate md:prose-lg'>
     <slot />
   </div>
-  <footer class='mt-12 border-t border-black/10 pt-5'>
-    <p class='text-sm text-slate-600'>Written by {author}</p>
-    <a class='mt-2 inline-block' href='/cases/' title='Back to cases'>
+  <footer class='mt-12 border-t border-tf-border pt-5 dark:border-neutral-800'>
+    <p class='tf-text-caption'>Written by {author}</p>
+    <a class='tf-text-link mt-2 inline-block text-sm' href='/cases/' title='Back to cases'>
       &larr; Back to cases
     </a>
   </footer>

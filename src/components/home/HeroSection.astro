@@ -1,0 +1,69 @@
+---
+// src/components/home/HeroSection.astro
+import StatusBadge from '@components/ui/StatusBadge.astro';
+import HeroSearchCard from './HeroSearchCard.astro';
+
+interface Suggestion {
+  query: string;
+  label: string;
+}
+
+interface Props {
+  suggestions: Suggestion[];
+}
+
+const { suggestions } = Astro.props;
+
+const trustIndicators = [
+  'Verified',
+  'Version-aware',
+  'Reproducible',
+  'Production Tested',
+] as const;
+---
+
+<section
+  id='hero'
+  class='home-hero border-b border-tf-border px-4 py-16 md:px-8 md:py-24 lg:py-28 dark:border-neutral-800'
+  aria-labelledby='home-hero-title'
+>
+  <div class='mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-16'>
+    <div class='space-y-8'>
+      <StatusBadge variant='verified'>
+        Verified · Version-specific · Reproducible
+      </StatusBadge>
+
+      <div class='space-y-4'>
+        <h1
+          id='home-hero-title'
+          class='font-[family-name:var(--font-tf-display)] text-4xl font-semibold leading-[1.1] tracking-tight text-tf-text md:text-5xl lg:text-[3.25rem] dark:text-neutral-50'
+        >
+          Verified Software Fixes<br />
+          <span class='text-tf-brand dark:text-blue-400'>That Actually Work.</span>
+        </h1>
+        <p class='max-w-xl font-[family-name:var(--font-tf-ui)] text-base leading-relaxed text-tf-text-secondary md:text-lg dark:text-neutral-400'>
+          Search verified software troubleshooting cases validated in real
+          production environments — not forum guesses or AI hallucinations.
+        </p>
+      </div>
+
+      <ul class='flex flex-wrap gap-2' aria-label='Trust indicators'>
+        {
+          trustIndicators.map((item) => (
+            <li class='home-trust-pill'>
+              <span
+                class='inline-block h-1.5 w-1.5 rounded-full bg-tf-success'
+                aria-hidden='true'
+              />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <aside aria-label='Search verified cases'>
+      <HeroSearchCard suggestions={suggestions} />
+    </aside>
+  </div>
+</section>

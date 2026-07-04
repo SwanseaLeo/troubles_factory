@@ -1,0 +1,23 @@
+---
+// src/components/home/HomeSection.astro
+interface Props {
+  id?: string;
+  labelledBy?: string;
+  class?: string;
+}
+
+const { id, labelledBy, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={[
+    'border-b border-tf-border px-4 py-16 md:px-8 md:py-20 dark:border-neutral-800',
+    className,
+  ]}
+  aria-labelledby={labelledBy}
+>
+  <div class='mx-auto max-w-6xl'>
+    <slot />
+  </div>
+</section>

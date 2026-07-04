@@ -1,0 +1,64 @@
+---
+import Card from '@components/ui/Card.astro';
+import type { HomeStats } from '../../utils/home-data';
+import HomeSection from './HomeSection.astro';
+
+interface Props {
+  stats: HomeStats;
+}
+
+const { stats } = Astro.props;
+
+const items = [
+  {
+    label: 'Verified Cases',
+    value: String(stats.verifiedCases),
+    hint: 'Published, production-tested fixes',
+  },
+  {
+    label: 'Versions',
+    value: String(stats.versionCount),
+    hint: 'Distinct version references across cases',
+  },
+  {
+    label: 'Technologies',
+    value: String(stats.technologyCount),
+    hint: 'Active stacks with verified coverage',
+  },
+  {
+    label: 'Verified Rate',
+    value: stats.verifiedRate,
+    hint: 'Published cases with documented verification',
+  },
+] as const;
+---
+
+<HomeSection id='knowledge-statistics' labelledBy='stats-title'>
+  <div class='mb-10 max-w-2xl'>
+    <p class='tf-text-label mb-3'>Knowledge Statistics</p>
+    <h2 id='stats-title' class='tf-text-display-2xl dark:text-neutral-50'>
+      Built from real production evidence
+    </h2>
+  </div>
+
+  <dl class='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+    {
+      items.map((item) => (
+        <div>
+          <Card variant='inset' padding='md' class='h-full dark:border-neutral-800 dark:bg-neutral-900'>
+            <dt class='tf-text-caption'>{item.label}</dt>
+            <dd class='mt-2 font-[family-name:var(--font-tf-display)] text-3xl font-semibold tracking-tight text-tf-text dark:text-neutral-50'>
+              <span>{item.value}</span>
+              <span class='mt-2 block font-[family-name:var(--font-tf-ui)] text-xs font-normal leading-relaxed text-tf-text-subtle dark:text-neutral-500'>
+                {item.hint}
+              </span>
+            </dd>
+          </Card>
+        </div>
+      ))
+    }
+  </dl>
+  <p class='sr-only'>
+    <a href='/cases/'>Browse all {stats.verifiedCases} verified troubleshooting cases</a>
+  </p>
+</HomeSection>

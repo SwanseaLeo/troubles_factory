@@ -9,15 +9,11 @@ export type TagEntry = {
 
 export async function getPublishedCases() {
   return getCollection('blog').then((collection) =>
-    collection
-      .filter((post) => !post.data.draft)
-      .sort((a, b) => b.id.localeCompare(a.id))
+    collection.filter((post) => !post.data.draft).sort((a, b) => b.id.localeCompare(a.id)),
   );
 }
 
-export function buildTagIndex(
-  posts: CollectionEntry<'blog'>[]
-): TagEntry[] {
+export function buildTagIndex(posts: CollectionEntry<'blog'>[]): TagEntry[] {
   const tagCounts = new Map<string, { count: number; label: string }>();
 
   for (const post of posts) {

@@ -1,0 +1,33 @@
+---
+// src/components/ui/Tag.astro
+import {
+  tagClasses,
+  tagToneFromLabel,
+  type TagTone,
+} from '../../styles/design-system';
+
+interface Props {
+  tone?: TagTone;
+  pill?: boolean;
+  href?: string;
+  label?: string;
+  class?: string;
+}
+
+const { tone, pill = false, href, label, class: className } = Astro.props;
+
+const resolvedTone = tone ?? (label ? tagToneFromLabel(label) : 'neutral');
+const classes = tagClasses(resolvedTone, { pill }, className);
+---
+
+{
+  href ? (
+    <a href={href} class={classes}>
+      <slot />
+    </a>
+  ) : (
+    <span class={classes}>
+      <slot />
+    </span>
+  )
+}

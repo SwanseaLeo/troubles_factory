@@ -11,8 +11,8 @@ const { backToTop = false } = Astro.props;
     <button
       type='button'
       class:list={[
-        backToTop ? `backToTop` : null,
-        'fixed bottom-[10px] right-[30px] z-50 flex h-10 w-10 border border-black bg-white opacity-0 transition-all duration-300 card-shadow',
+        'backToTop',
+        'tf-focus-ring fixed bottom-3 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-tf-md border border-tf-border bg-tf-surface opacity-0 shadow-tf-sm transition-opacity duration-300 dark:border-neutral-700 dark:bg-neutral-900',
       ]}
       aria-label='Back to top'
     >
@@ -24,8 +24,8 @@ const { backToTop = false } = Astro.props;
         width='100%'
         stroke-width='1.5'
         stroke='currentColor'
+        aria-hidden='true'
       >
-        <title>Back to top</title>
         <path
           stroke-linecap='round'
           stroke-linejoin='round'
@@ -36,9 +36,10 @@ const { backToTop = false } = Astro.props;
   )
 }
 
-<footer class='bg-black text-white p-6'>
-  <h2 class='hidden'>Footer</h2>
-  <p class='outfit'>Troubles Factory - Built with Astro.</p>
+<footer class='border-t border-tf-border bg-tf-surface px-6 py-6 dark:border-neutral-800 dark:bg-neutral-950'>
+  <p class='tf-ui text-sm text-tf-text-muted dark:text-neutral-500'>
+    TroubleFactory — Built with Astro.
+  </p>
 </footer>
 
 <style>
@@ -60,10 +61,7 @@ const { backToTop = false } = Astro.props;
     };
 
     backToTop?.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     window.addEventListener('scroll', toggleBackToTopButton);

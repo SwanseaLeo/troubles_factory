@@ -1,16 +1,16 @@
 ---
+import Button from '@components/ui/Button.astro';
 ---
 
-<section class='flex flex-col gap-8 justify-between'>
-  <p class='text-9xl font-bold dm-serif'>404</p>
-  <h2 class='text-4xl outfit'>Page Not Found</h2>
-  <p class='text-xl sm:text-3xl sanchez'>
-    Sorry, we couldn't find the page you were looking for.
+<section class='flex flex-col gap-8'>
+  <p class='font-[family-name:var(--font-tf-display)] text-8xl font-bold tracking-tight text-tf-text md:text-9xl dark:text-neutral-50' aria-hidden='true'>
+    404
   </p>
-  <a
-    href='/'
-    title='Go back home'
-    class='w-48 border-2 border-black px-4 py-2 text-center transition-colors duration-150 ease-in-out hover:bg-red-300 poppins'
-    >&larr; Go Home</a
-  >
+  <h1 class='tf-text-display-2xl'>Page Not Found</h1>
+  <p class='tf-text-body-lg max-w-xl'>
+    Sorry, we could not find the page you were looking for. Try searching verified cases or return home.
+  </p>
+  <Button href='/' variant='secondary' size='lg' class='w-fit'>
+    &larr; Go Home
+  </Button>
 </section>

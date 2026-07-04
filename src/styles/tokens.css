@@ -1,0 +1,164 @@
+/* src/styles/tokens.css — design tokens (colors, type, space, motion) */
+
+@theme {
+  /* ---- Brand & semantic colors (preserve existing identity) ---- */
+  --color-tf-brand: #0066cc;
+  --color-tf-brand-hover: #0052a3;
+  --color-tf-brand-active: #1d4ed8;
+  --color-tf-brand-subtle: #eff6ff;
+  --color-tf-brand-muted: #dbeafe;
+
+  --color-tf-surface: #ffffff;
+  --color-tf-surface-page: #f5f5f5;
+  --color-tf-surface-sidebar: #fafafa;
+  --color-tf-surface-inset: #f7f8f8;
+  --color-tf-surface-hover: rgb(0 0 0 / 0.02);
+  --color-tf-surface-pressed: rgb(0 0 0 / 0.04);
+
+  --color-tf-text: #171717;
+  --color-tf-text-secondary: #525252;
+  --color-tf-text-muted: #737373;
+  --color-tf-text-subtle: #a3a3a3;
+  --color-tf-text-inverse: #ffffff;
+
+  --color-tf-border: rgb(0 0 0 / 0.1);
+  --color-tf-border-strong: rgb(0 0 0 / 0.15);
+  --color-tf-border-focus: #0066cc;
+
+  --color-tf-success: #047857;
+  --color-tf-success-subtle: #ecfdf5;
+  --color-tf-success-border: rgb(4 120 87 / 0.2);
+
+  --color-tf-warning: #b45309;
+  --color-tf-warning-subtle: #fffbeb;
+  --color-tf-warning-border: rgb(180 83 9 / 0.2);
+  --color-tf-highlight: #fef08a;
+  --color-tf-highlight-text: #713f12;
+
+  --color-tf-danger: #b42318;
+  --color-tf-danger-subtle: #fef2f2;
+  --color-tf-danger-border: rgb(180 35 24 / 0.2);
+
+  --color-tf-info: #0066cc;
+  --color-tf-info-subtle: #eff6ff;
+
+  /* Tag accent palette */
+  --color-tf-tag-blue-bg: #e8f2fa;
+  --color-tf-tag-blue-text: #0066cc;
+  --color-tf-tag-gray-bg: #e8e8ed;
+  --color-tf-tag-gray-text: #424245;
+  --color-tf-tag-green-bg: #f5fff6;
+  --color-tf-tag-green-text: #028907;
+  --color-tf-tag-orange-bg: #fff9f4;
+  --color-tf-tag-orange-text: #bf4800;
+  --color-tf-tag-red-bg: #fff2f4;
+  --color-tf-tag-red-text: #b30000;
+  --color-tf-tag-yellow-bg: #fffef2;
+  --color-tf-tag-yellow-text: #9a6700;
+
+  /* ---- Typography ---- */
+  --font-tf-display: 'Outfit', sans-serif;
+  --font-tf-ui: 'Poppins', sans-serif;
+  --font-tf-mono:
+    ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
+
+  --text-tf-2xs: 0.625rem;
+  --text-tf-2xs--line-height: 0.875rem;
+  --text-tf-xs: 0.75rem;
+  --text-tf-xs--line-height: 1rem;
+  --text-tf-sm: 0.875rem;
+  --text-tf-sm--line-height: 1.25rem;
+  --text-tf-base: 1rem;
+  --text-tf-base--line-height: 1.5rem;
+  --text-tf-md: 0.9375rem;
+  --text-tf-md--line-height: 1.375rem;
+  --text-tf-lg: 1.125rem;
+  --text-tf-lg--line-height: 1.75rem;
+  --text-tf-xl: 1.25rem;
+  --text-tf-xl--line-height: 1.75rem;
+  --text-tf-2xl: 1.5rem;
+  --text-tf-2xl--line-height: 2rem;
+  --text-tf-3xl: 1.875rem;
+  --text-tf-3xl--line-height: 2.25rem;
+  --text-tf-4xl: 2.25rem;
+  --text-tf-4xl--line-height: 2.5rem;
+
+  /* ---- Spacing (4px grid) ---- */
+  --spacing-tf-0: 0;
+  --spacing-tf-px: 1px;
+  --spacing-tf-0_5: 0.125rem;
+  --spacing-tf-1: 0.25rem;
+  --spacing-tf-1_5: 0.375rem;
+  --spacing-tf-2: 0.5rem;
+  --spacing-tf-2_5: 0.625rem;
+  --spacing-tf-3: 0.75rem;
+  --spacing-tf-4: 1rem;
+  --spacing-tf-5: 1.25rem;
+  --spacing-tf-6: 1.5rem;
+  --spacing-tf-8: 2rem;
+  --spacing-tf-10: 2.5rem;
+  --spacing-tf-12: 3rem;
+  --spacing-tf-16: 4rem;
+
+  /* ---- Border radius (max 8px per product guidelines) ---- */
+  --radius-tf-none: 0;
+  --radius-tf-sm: 0.25rem;
+  --radius-tf-md: 0.375rem;
+  --radius-tf-lg: 0.5rem;
+  --radius-tf-full: 9999px;
+
+  /* ---- Shadows (subtle, docs-platform) ---- */
+  --shadow-tf-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-tf-sm: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-tf-md: 0 4px 12px rgb(0 0 0 / 0.08);
+  --shadow-tf-lg: 0 8px 24px rgb(0 0 0 / 0.1);
+  --shadow-tf-focus: 0 0 0 2px var(--color-tf-surface), 0 0 0 4px var(--color-tf-border-focus);
+
+  /* ---- Container widths ---- */
+  --width-tf-content: 48rem;
+  --width-tf-narrow: 42rem;
+  --width-tf-wide: 64rem;
+  --width-tf-sidebar: 16rem;
+  --width-tf-sidebar-xl: 18rem;
+
+  /* ---- Breakpoints (documented; Tailwind defaults) ---- */
+  --breakpoint-tf-sm: 40rem;
+  --breakpoint-tf-md: 48rem;
+  --breakpoint-tf-lg: 64rem;
+  --breakpoint-tf-xl: 80rem;
+  --breakpoint-tf-2xl: 96rem;
+
+  /* ---- Motion ---- */
+  --ease-tf-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-tf-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-tf-out: cubic-bezier(0, 0, 0.2, 1);
+  --duration-tf-fast: 100ms;
+  --duration-tf-normal: 150ms;
+  --duration-tf-slow: 250ms;
+}
+
+:root {
+  /* Semantic aliases for non-Tailwind CSS */
+  --tf-color-link: var(--color-tf-brand);
+  --tf-color-link-hover: var(--color-tf-brand-hover);
+  --tf-color-link-active: var(--color-tf-brand-active);
+
+  --tf-font-display: var(--font-tf-display);
+  --tf-font-ui: var(--font-tf-ui);
+  --tf-font-mono: var(--font-tf-mono);
+
+  --tf-radius-sm: var(--radius-tf-sm);
+  --tf-radius-md: var(--radius-tf-md);
+  --tf-radius-lg: var(--radius-tf-lg);
+
+  --tf-shadow-sm: var(--shadow-tf-sm);
+  --tf-shadow-md: var(--shadow-tf-md);
+  --tf-shadow-focus: var(--shadow-tf-focus);
+
+  --tf-section-gap: var(--spacing-tf-8);
+  --tf-section-gap-lg: var(--spacing-tf-12);
+
+  /* Legacy scrollbar tokens */
+  --primary: var(--color-tf-surface);
+  --secondary: #000000;
+}

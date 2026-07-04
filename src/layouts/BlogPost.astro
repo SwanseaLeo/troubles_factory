@@ -30,7 +30,7 @@ const sectionHeadings = (headings ?? []).filter((heading) => heading.depth === 3
 ---
 
 <Layout title={title} description={description} ogImage={ogImage}>
-  <main class='flex justify-center gap-8 p-4 md:p-6 lg:grid lg:grid-cols-[16rem_minmax(0,48rem)]'>
+  <main id='main-content' class='flex justify-center gap-8 p-4 md:p-6 lg:grid lg:grid-cols-[16rem_minmax(0,48rem)]'>
     <BlogSideBar headings={sectionHeadings} />
     <BlogContent
       {pubDate}

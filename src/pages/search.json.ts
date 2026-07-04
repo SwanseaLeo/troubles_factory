@@ -20,7 +20,7 @@ export async function GET() {
           url: `/cases/${p.id}/`,
           img: img.src,
         };
-      })
+      }),
   );
   return new Response(JSON.stringify(index), {
     headers: { 'Content-Type': 'application/json' },

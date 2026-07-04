@@ -1,0 +1,116 @@
+---
+// src/components/home/TechIcon.astro
+interface Props {
+  id: string;
+  class?: string;
+}
+
+const { id, class: className = 'h-6 w-6' } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox='0 0 24 24'
+  fill='none'
+  stroke='currentColor'
+  stroke-width='1.75'
+  stroke-linecap='round'
+  stroke-linejoin='round'
+  aria-hidden='true'
+>
+  {
+    id === 'docker' && (
+      <>
+        <rect x='3' y='8' width='18' height='10' rx='1.5' />
+        <path d='M7 8V5M10 8V5M13 8V5M16 8V5' />
+      </>
+    )
+  }
+  {
+    id === 'linux' && (
+      <>
+        <path d='M12 3c-2 0-3.5 1.5-3.5 3.5S10 10 12 10s3.5-1.5 3.5-3.5S14 3 12 3Z' />
+        <path d='M8 12c-1.5 2-2 4.5-1 7 1.5 3.5 5 4 7 4s5.5-.5 7-4c1-2.5.5-5-1-7' />
+      </>
+    )
+  }
+  {
+    (id === 'cuda' || id === 'nvidia') && (
+      <>
+        <path d='M4 7h16v10H4z' />
+        <path d='M8 11h8M8 14h5' />
+      </>
+    )
+  }
+  {
+    id === 'tensorrt' && (
+      <>
+        <path d='M5 6h14v12H5z' />
+        <path d='m9 10 3 2-3 2V10Z' />
+      </>
+    )
+  }
+  {
+    id === 'onnx' && (
+      <>
+        <circle cx='12' cy='12' r='8' />
+        <path d='M8 12h8M12 8v8' />
+      </>
+    )
+  }
+  {
+    id === 'pytorch' && (
+      <>
+        <path d='M12 4c4 0 7 2.5 7 6s-3 6-7 6-7-2.5-7-6 3-6 7-6Z' />
+        <path d='M12 10v6' />
+      </>
+    )
+  }
+  {
+    id === 'ros' && (
+      <>
+        <circle cx='12' cy='12' r='3' />
+        <path d='M12 3v3M12 18v3M3 12h3M18 12h3' />
+      </>
+    )
+  }
+  {
+    id === 'opencv' && (
+      <>
+        <circle cx='12' cy='12' r='7' />
+        <circle cx='12' cy='12' r='2.5' />
+      </>
+    )
+  }
+  {
+    id === 'ffmpeg' && (
+      <>
+        <path d='M5 7h14v10H5z' />
+        <path d='m10 10 4 2-4 2v-4Z' />
+      </>
+    )
+  }
+  {
+    id === 'cmake' && (
+      <>
+        <path d='M4 20 12 4l8 16H4Z' />
+        <path d='M9.5 15h5' />
+      </>
+    )
+  }
+  {
+    ![
+      'docker',
+      'linux',
+      'cuda',
+      'nvidia',
+      'tensorrt',
+      'onnx',
+      'pytorch',
+      'ros',
+      'opencv',
+      'ffmpeg',
+      'cmake',
+    ].includes(id) && <circle cx='12' cy='12' r='8' />
+  }
+</svg>

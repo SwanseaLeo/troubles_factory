@@ -7,14 +7,14 @@ const posts = await getPublishedCases();
 ---
 
 <BrowseLayout
-  title='Cases'
-  description='Browse all documented software issues and solutions'
-  pageTitle='Troubles Factory Cases'
+  title='Verified software troubleshooting cases'
+  description='Browse all verified, version-specific software troubleshooting cases with reproducible fixes.'
+  pageTitle='TroubleFactory | All verified cases'
 >
   <div class='mb-6'>
-    <h1 class='outfit text-2xl font-semibold md:text-3xl'>All cases</h1>
-    <p class='mt-1 poppins text-sm text-black/55'>
-      {posts.length} documented {posts.length === 1 ? 'issue' : 'issues'}
+    <h1 class='tf-text-display-2xl dark:text-neutral-50'>All cases</h1>
+    <p class='tf-text-body mt-1'>
+      {posts.length} verified {posts.length === 1 ? 'case' : 'cases'}
     </p>
   </div>
   <BlogList posts={posts} />

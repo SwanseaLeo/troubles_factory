@@ -1,34 +1,33 @@
 ---
 // src/components/layout/SearchBar.astro
+import { searchFieldClasses } from '../../styles/design-system';
+
 interface Props {
   size?: 'default' | 'hero';
   autofocus?: boolean;
 }
 
 const { size = 'default', autofocus = false } = Astro.props;
-
 const isHero = size === 'hero';
-
-const inputClass = isHero
-  ? 'min-w-0 flex-1 border-0 bg-transparent px-5 py-4 poppins text-lg md:text-xl focus:outline-none'
-  : 'w-full border-2 border-black bg-white px-4 py-2 rounded poppins text-base focus:outline-none';
+const placeholder = isHero
+  ? 'Errors, tools, versions…'
+  : 'Search errors, tools, topics…';
 ---
 
 <div
-  class:list={[
-    'tf-search relative w-full',
-    isHero &&
-      'flex items-stretch overflow-hidden rounded-full border border-black/15 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] focus-within:border-black/30 focus-within:shadow-[0_4px_20px_rgba(0,0,0,0.12)] transition-shadow',
-  ]}
+  class:list={[searchFieldClasses(size), 'relative w-full']}
   data-tf-search
   data-tf-search-size={size}
 >
   <input
     type='search'
     autocomplete='off'
-    placeholder='Search error messages, tools, or topics...'
+    placeholder={placeholder}
     aria-label='Search cases'
-    class={inputClass}
+    class:list={[
+      'tf-search-input tf-focus-ring',
+      isHero ? 'tf-search-input--hero' : 'tf-search-input--default',
+    ]}
     data-tf-search-input
     autofocus={autofocus || undefined}
   />
@@ -36,7 +35,7 @@ const inputClass = isHero
     isHero && (
       <button
         type='button'
-        class='shrink-0 border-l border-black/10 px-5 poppins text-sm font-medium text-black/70 transition-colors hover:bg-black/5 hover:text-black'
+        class='tf-search-submit tf-focus-ring'
         data-tf-search-submit
       >
         Search
@@ -45,10 +44,8 @@ const inputClass = isHero
   }
   <ul
     class:list={[
-      'absolute left-0 right-0 mt-2 hidden max-h-80 overflow-y-auto bg-white z-50',
-      isHero
-        ? 'rounded-2xl border border-black/15 shadow-lg top-full'
-        : 'rounded border-2 border-black',
+      'tf-search-results hidden',
+      !isHero && 'tf-search-results--default',
     ]}
     data-tf-search-results
   >
@@ -57,9 +54,9 @@ const inputClass = isHero
 
 <script>
   import {
-    type SearchEntry,
     filterEntries,
     highlightText,
+    type SearchEntry,
   } from '../../scripts/search-utils';
 
   let cache: SearchEntry[] | null = null;
@@ -78,7 +75,7 @@ const inputClass = isHero
     document.addEventListener('click', (event) => {
       document.querySelectorAll<HTMLElement>('[data-tf-search]').forEach((root) => {
         const results = root.querySelector<HTMLUListElement>(
-          '[data-tf-search-results]'
+          '[data-tf-search-results]',
         );
         if (results && !root.contains(event.target as Node)) {
           results.classList.add('hidden');
@@ -90,12 +87,8 @@ const inputClass = isHero
   function initSearchBar(root: HTMLElement) {
     if (root.dataset.tfSearchBound === '1') return;
 
-    const input = root.querySelector<HTMLInputElement>(
-      '[data-tf-search-input]'
-    );
-    const results = root.querySelector<HTMLUListElement>(
-      '[data-tf-search-results]'
-    );
+    const input = root.querySelector<HTMLInputElement>('[data-tf-search-input]');
+    const results = root.querySelector<HTMLUListElement>('[data-tf-search-results]');
     if (!input || !results) return;
 
     root.dataset.tfSearchBound = '1';
@@ -111,7 +104,7 @@ const inputClass = isHero
       }
       if (matches.length === 0) {
         results.innerHTML =
-          '<li class="px-4 py-3 poppins text-sm">No matching cases.</li>';
+          '<li class="px-4 py-3 tf-ui text-sm text-tf-text-muted">No matching cases.</li>';
         results.classList.remove('hidden');
         return;
       }
@@ -119,7 +112,7 @@ const inputClass = isHero
       results.innerHTML = matches
         .map(
           (m) =>
-            `<li class="border-b-2 border-black last:border-b-0"><a href="${m.url}" class="block px-4 py-3 hover:bg-green-theme transition-colors"><span class="block poppins font-medium">${highlightText(m.title, query)}</span><span class="block text-sm mt-1 line-clamp-1">${highlightText(m.description, query)}</span></a></li>`
+            `<li><a href="${m.url}" class="tf-search-result"><span class="tf-search-result__title">${highlightText(m.title, query)}</span><span class="tf-search-result__description">${highlightText(m.description, query)}</span></a></li>`,
         )
         .join('');
       results.classList.remove('hidden');

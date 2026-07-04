@@ -1,5 +1,6 @@
 ---
 import BaseFooter from '@components/layout/BaseFooter.astro';
+import HomeFooter from '@components/home/HomeFooter.astro';
 import BaseNavigation from '@components/layout/BaseNavigation.astro';
 import BaseHead from '../components/layout/BaseHead.astro';
 import '../styles/global.css';
@@ -10,19 +11,48 @@ interface Props {
   classList?: string;
   pageTitle?: string;
   ogImage?: URL;
+  keywords?: string;
+  ogSiteName?: string;
+  robots?: string;
   navVariant?: 'default' | 'minimal';
+  footerVariant?: 'default' | 'home';
 }
 
-const { title, description, classList, pageTitle, ogImage, navVariant } =
-  Astro.props;
+const {
+  title,
+  description,
+  classList,
+  pageTitle,
+  ogImage,
+  keywords,
+  ogSiteName,
+  robots,
+  navVariant,
+  footerVariant = 'default',
+} = Astro.props;
 ---
 
 <html lang='en' class='h-full'>
-  <BaseHead ogImage={ogImage} title={title} description={description} />
+  <BaseHead
+    ogImage={ogImage}
+    title={title}
+    description={description}
+    keywords={keywords}
+    ogSiteName={ogSiteName}
+    robots={robots}
+  >
+    <slot name='head' />
+  </BaseHead>
 
   <body class:list={[classList]}>
+    <a
+      href='#main-content'
+      class='sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-tf-md focus:border focus:border-tf-border focus:bg-tf-surface focus:px-4 focus:py-2 focus:shadow-tf-md tf-ui text-sm font-medium text-tf-text dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-100'
+    >
+      Skip to main content
+    </a>
     <BaseNavigation {pageTitle} variant={navVariant} />
     <slot />
-    <BaseFooter />
+    {footerVariant === 'home' ? <HomeFooter /> : <BaseFooter />}
   </body>
 </html>

@@ -1,0 +1,53 @@
+---
+// src/components/ui/Button.astro
+import {
+  buttonClasses,
+  type ButtonSize,
+  type ButtonVariant,
+} from '../../styles/design-system';
+
+interface Props {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+  title?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  variant = 'secondary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  class: className,
+  title,
+  target,
+  rel,
+} = Astro.props;
+
+const classes = buttonClasses(variant, size, className);
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      title={title}
+      target={target}
+      rel={rel}
+      aria-disabled={disabled || undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled} title={title}>
+      <slot />
+    </button>
+  )
+}

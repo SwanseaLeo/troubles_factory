@@ -1,0 +1,72 @@
+---
+// src/components/home/HeroSearchCard.astro
+import SearchBar from '@components/layout/SearchBar.astro';
+import Card from '@components/ui/Card.astro';
+import SearchSuggestions from './SearchSuggestions.astro';
+
+interface Suggestion {
+  query: string;
+  label: string;
+}
+
+interface Props {
+  suggestions: Suggestion[];
+}
+
+const { suggestions } = Astro.props;
+---
+
+<Card variant='elevated' padding='lg' class='home-hero-search w-full'>
+  <div class='space-y-5'>
+    <div>
+      <p class='tf-text-label mb-2'>Search verified cases</p>
+      <SearchBar size='hero' />
+    </div>
+
+    <SearchSuggestions suggestions={suggestions} align='start' />
+  </div>
+</Card>
+
+<script>
+  function initHeroSearchCard(root: HTMLElement) {
+    if (root.dataset.homeSearchBound === '1') return;
+    root.dataset.homeSearchBound = '1';
+
+    const input = root.querySelector<HTMLInputElement>('[data-tf-search-input]');
+    if (!input) return;
+
+    const submit = () => {
+      const query = input.value.trim();
+      if (!query) return;
+      window.location.href = `/search?q=${encodeURIComponent(query)}`;
+    };
+
+    root
+      .querySelector<HTMLButtonElement>('[data-tf-search-submit]')
+      ?.addEventListener('click', submit);
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        submit();
+      }
+    });
+  }
+
+  function initHeroSearchCards() {
+    document
+      .querySelectorAll<HTMLElement>('.home-hero-search')
+      .forEach(initHeroSearchCard);
+  }
+
+  initHeroSearchCards();
+  document.addEventListener('astro:page-load', initHeroSearchCards);
+</script>
+
+<style>
+  .home-hero-search :global(.mt-5 p),
+  .home-hero-search :global(.mt-5 ul) {
+    text-align: left;
+    justify-content: flex-start;
+  }
+</style>

@@ -12,17 +12,15 @@ interface Props {
 const { headings = [] } = Astro.props;
 ---
 
-<aside>
-  <nav class='hidden lg:block sticky top-6 poppins'>
-    <p class='mb-3 text-xs font-semibold uppercase tracking-wider text-stone-400'>
-      On this page
-    </p>
-    <ul class='border-l border-stone-200'>
+<aside aria-label='On this page'>
+  <nav class='sticky top-6 hidden lg:block'>
+    <p class='tf-text-label mb-3'>On this page</p>
+    <ul class='border-l border-tf-border dark:border-neutral-700'>
       {
         headings.map((heading) => (
           <li>
             <a
-              class='block border-l-2 border-transparent py-1.5 text-sm text-stone-600 transition-colors duration-150 ease-in-out hover:border-stone-900 hover:text-stone-900'
+              class='tf-focus-ring block border-l-2 border-transparent py-1.5 text-sm text-tf-text-secondary transition-colors hover:border-tf-text hover:text-tf-text dark:text-neutral-400 dark:hover:border-neutral-200 dark:hover:text-neutral-100'
               style={`padding-left: ${(heading.depth - 1) * 0.75 + 0.75}rem`}
               href={`#${heading.slug}`}
             >

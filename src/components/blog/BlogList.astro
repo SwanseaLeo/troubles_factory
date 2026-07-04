@@ -1,5 +1,8 @@
 ---
+// src/components/blog/BlogList.astro
 import type { CollectionEntry } from 'astro:content';
+import StatusBadge from '@components/ui/StatusBadge.astro';
+import Tag from '@components/ui/Tag.astro';
 
 interface Props {
   posts: CollectionEntry<'blog'>[];
@@ -16,52 +19,45 @@ function formatDate(date: Date) {
 }
 ---
 
-<ul class='divide-y divide-black/10 overflow-hidden rounded-lg border border-black/10 bg-white'>
+<ul class='tf-list-panel dark:border-neutral-800 dark:bg-neutral-950'>
   {
-    posts.map((post) => {
-      return (
-        <li>
-          <article class='p-4 transition-colors hover:bg-black/[0.02] md:p-5'>
-            <div class='flex flex-col gap-3 md:flex-row md:items-start md:justify-between'>
-              <div class='min-w-0'>
-                <h2 class='outfit text-lg font-semibold leading-snug text-black md:text-xl'>
-                  <a
-                    href={`/cases/${post.id}/`}
-                    class='text-[#0066cc] hover:underline'
-                  >
-                    {post.data.title}
-                  </a>
-                </h2>
-                <p class='mt-2 max-w-4xl poppins text-sm leading-relaxed text-black/65 md:text-base'>
-                  {post.data.description}
-                </p>
-              </div>
-              <time
-                datetime={post.data.pubDate.toISOString()}
-                class='shrink-0 poppins text-xs tabular-nums text-black/45 md:pt-1'
-              >
-                {formatDate(post.data.pubDate)}
-              </time>
+    posts.map((post) => (
+      <li>
+        <article class='block border-b border-tf-border px-4 py-3 transition-colors hover:bg-tf-surface-hover md:px-5 md:py-4 dark:border-neutral-800 dark:hover:bg-neutral-900/60'>
+          <div class='flex flex-col gap-3 md:flex-row md:items-start md:justify-between'>
+            <div class='min-w-0'>
+              <h2 class='tf-text-display-lg text-base md:text-lg'>
+                <a href={`/cases/${post.id}/`} class='tf-text-link font-semibold'>
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class='tf-text-body mt-2 max-w-4xl md:text-base'>
+                {post.data.description}
+              </p>
             </div>
+            <time
+              datetime={post.data.pubDate.toISOString()}
+              class='tf-text-caption shrink-0 tabular-nums md:pt-1'
+            >
+              {formatDate(post.data.pubDate)}
+            </time>
+          </div>
 
-            <div class='mt-3 flex flex-wrap items-center gap-2'>
-              <span class='rounded border border-emerald-700/20 bg-emerald-50 px-2 py-1 poppins text-xs font-medium text-emerald-800'>
-                Documented case
-              </span>
-              {
-                post.data.tags.map((tag) => (
-                  <a
-                    href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}
-                    class='rounded border border-black/10 bg-black/[0.025] px-2 py-1 poppins text-xs text-black/60 hover:border-black/20 hover:text-black'
-                  >
-                    {tag}
-                  </a>
-                ))
-              }
-            </div>
-          </article>
-        </li>
-      );
-    })
+          <div class='mt-3 flex flex-wrap items-center gap-2'>
+            <StatusBadge variant='documented'>Verified</StatusBadge>
+            {
+              post.data.tags.map((tag) => (
+                <Tag
+                  label={tag}
+                  href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}
+                >
+                  {tag}
+                </Tag>
+              ))
+            }
+          </div>
+        </article>
+      </li>
+    ))
   }
 </ul>

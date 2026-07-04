@@ -3,7 +3,7 @@ import rss from '@astrojs/rss';
 
 export async function GET(context) {
   const blog = await getCollection('blog').then((collection) =>
-    collection.sort((a, b) => b.id.localeCompare(a.id))
+    collection.sort((a, b) => b.id.localeCompare(a.id)),
   );
   return rss({
     title: 'Troubles Factory Cases',

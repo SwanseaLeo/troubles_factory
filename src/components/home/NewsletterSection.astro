@@ -1,0 +1,58 @@
+---
+import Button from '@components/ui/Button.astro';
+import Card from '@components/ui/Card.astro';
+import { communityLinks } from '../../data/community-links';
+import HomeSection from './HomeSection.astro';
+
+const discord = communityLinks.find((link) => link.type === 'discord');
+---
+
+<HomeSection labelledBy='newsletter-title'>
+  <Card
+    variant='inset'
+    padding='lg'
+    class='mx-auto max-w-3xl text-center dark:border-neutral-800 dark:bg-neutral-900'
+  >
+    <p class='tf-text-label mb-3'>Stay current</p>
+    <h2 id='newsletter-title' class='tf-text-display-xl dark:text-neutral-50'>
+      New verified cases, without the noise
+    </h2>
+    <p id='newsletter-description' class='tf-text-body-lg mx-auto mt-3 max-w-xl'>
+      Follow new troubleshooting cases via RSS or Discord. No forum threads. No
+      unverified tips.
+    </p>
+
+    <div
+      class='mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row sm:items-center sm:justify-center'
+      aria-describedby='newsletter-description newsletter-note'
+    >
+      <Button
+        href='/feed.xml'
+        variant='primary'
+        size='lg'
+        class='shrink-0'
+        title='Open RSS feed for your reader'
+      >
+        Subscribe via RSS
+      </Button>
+      {
+        discord && (
+          <Button
+            href={discord.url}
+            variant='secondary'
+            size='lg'
+            class='shrink-0'
+            target='_blank'
+            rel='noopener noreferrer'
+          >
+            Join Discord
+          </Button>
+        )
+      }
+    </div>
+    <p id='newsletter-note' class='tf-text-caption mt-3'>
+      Add <code class='tf-mono text-xs'>/feed.xml</code> to your RSS reader, or
+      join Discord for community updates.
+    </p>
+  </Card>
+</HomeSection>

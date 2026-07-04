@@ -1,87 +1,86 @@
 ---
-import CompactCaseList from '@components/home/CompactCaseList.astro';
-import SearchSuggestions from '@components/home/SearchSuggestions.astro';
-import BrowseSidebar from '@components/layout/BrowseSidebar.astro';
-import SearchBar from '@components/layout/SearchBar.astro';
+import ComparisonSection from '@components/home/ComparisonSection.astro';
+import HeroSection from '@components/home/HeroSection.astro';
+import LatestCasesSection from '@components/home/LatestCasesSection.astro';
+import NewsletterSection from '@components/home/NewsletterSection.astro';
+import StatsSection from '@components/home/StatsSection.astro';
+import TechnologyGrid from '@components/home/TechnologyGrid.astro';
+import WhySection from '@components/home/WhySection.astro';
+import HomeSeoContent from '@components/seo/HomeSeoContent.astro';
+import HomeStructuredData from '@components/seo/HomeStructuredData.astro';
 import Layout from '@layouts/Default.astro';
+import '../styles/home.css';
 import { buildTagIndex, getPublishedCases } from '../utils/cases';
+import {
+  buildHomeStats,
+  buildPopularSearches,
+  buildTechnologyStats,
+  buildTrendingCases,
+} from '../utils/home-data';
+import {
+  buildHomeKeywords,
+  buildLatestUpdatedCases,
+  buildPopularTechnologies,
+  buildPopularVersionLinks,
+  type HomeSeoContext,
+} from '../utils/home-seo';
 
 const posts = await getPublishedCases();
 const tags = buildTagIndex(posts);
-const caseCount = posts.length;
+const suggestions = buildPopularSearches(tags);
+const technologies = buildTechnologyStats(posts);
+const stats = buildHomeStats(posts);
+const trendingPosts = buildTrendingCases(posts);
+const latestPosts = posts.slice(0, 4);
+const latestUpdatedCases = buildLatestUpdatedCases(posts);
+const popularTechnologies = buildPopularTechnologies(technologies);
+const popularVersions = buildPopularVersionLinks(posts);
 
-const suggestions = [
-  ...new Set(
-    posts.flatMap((post) => post.data.tags).slice(0, 6)
-  ),
-]
-  .slice(0, 5)
-  .map((tag) => ({ query: tag, label: tag }));
+const siteUrl = Astro.site?.toString() ?? 'https://troubles-factory.com/';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const pageTitle =
+  'Verified Software Troubleshooting Database | Docker, Linux, NVIDIA, TensorRT';
+const pageDescription =
+  'Search verified, version-specific, reproducible software troubleshooting cases for Docker, Linux, NVIDIA, CUDA, TensorRT, ONNX, PyTorch, OpenCV, and production environments.';
+const keywords = buildHomeKeywords(posts, technologies);
+
+const seoContext: HomeSeoContext = {
+  siteUrl,
+  canonicalUrl,
+  title: pageTitle,
+  description: pageDescription,
+  posts,
+  technologies,
+  stats,
+};
 ---
 
 <Layout
-  title='Home'
-  pageTitle='Troubles Factory | Software issue search'
-  description='Search software issues, errors, and architecture problems with proven, implementable solutions.'
+  title={pageTitle}
+  pageTitle='TroubleFactory | Verified software fixes that actually work'
+  description={pageDescription}
+  keywords={keywords}
+  ogSiteName='TroubleFactory'
   navVariant='minimal'
-  classList='bg-[#f5f5f5]'
+  footerVariant='home'
+  classList='home-page bg-tf-surface-page dark:bg-neutral-950'
 >
-  <main class='min-h-[calc(100dvh-4.5rem)]'>
-    <div class='flex min-h-[calc(100dvh-4.5rem)] flex-col lg:flex-row'>
-      <div
-        class='hidden shrink-0 border-b border-neutral-200 bg-[#fafafa] lg:block lg:w-60 lg:border-b-0 lg:border-r xl:w-64'
-      >
-        <div class='browse-sidebar-scroll sticky top-0 h-[calc(100dvh-4.5rem)] overflow-y-auto p-4'>
-          <BrowseSidebar
-            tags={tags}
-            recentPosts={posts}
-            caseCount={caseCount}
-          />
-        </div>
-      </div>
+  <HomeStructuredData slot='head' context={seoContext} />
 
-      <div class='flex min-w-0 flex-1 flex-col px-4 py-6 md:px-8 md:py-10'>
-        {
-          tags.length > 0 && (
-            <div class='mb-6 lg:hidden'>
-              <p class='poppins mb-2 text-xs font-semibold uppercase tracking-wide text-black/45'>
-                Topics
-              </p>
-              <ul class='flex gap-2 overflow-x-auto pb-1'>
-                {tags.slice(0, 8).map((tag) => (
-                  <li class='shrink-0'>
-                    <a
-                      href={`/cases/tags/${tag.slug}/`}
-                      class='inline-block rounded-full border border-black/15 bg-white px-3 py-1 poppins text-sm text-black/70'
-                    >
-                      {tag.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        }
-
-        <section
-          id='hero'
-          class='flex flex-1 flex-col items-center justify-center py-8 md:py-14'
-        >
-          <h1 class='sr-only'>Troubles Factory — software issue search</h1>
-          <p class='mb-8 max-w-xl text-center poppins text-lg text-black/60 md:text-xl'>
-            Search documented software problems and proven fixes
-          </p>
-
-          <div class='w-full max-w-2xl'>
-            <SearchBar size='hero' autofocus />
-            <SearchSuggestions suggestions={suggestions} />
-          </div>
-        </section>
-
-        <div class='mx-auto w-full max-w-2xl'>
-          <CompactCaseList posts={posts.slice(0, 5)} />
-        </div>
-      </div>
-    </div>
+  <main id='main-content'>
+    <HeroSection suggestions={suggestions} />
+    <WhySection />
+    <TechnologyGrid technologies={technologies} />
+    <LatestCasesSection latestPosts={latestPosts} trendingPosts={trendingPosts} />
+    <StatsSection stats={stats} />
+    <ComparisonSection />
+    <NewsletterSection />
+    <HomeSeoContent
+      popularTechnologies={popularTechnologies}
+      popularVersions={popularVersions}
+      latestVerifiedCases={latestPosts}
+      latestUpdatedCases={latestUpdatedCases}
+      stats={stats}
+    />
   </main>
 </Layout>

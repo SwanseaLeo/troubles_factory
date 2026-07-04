@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import CaseCard from './CaseCard.astro';
+import HomeSection from './HomeSection.astro';
+import TrendingPanel from './TrendingPanel.astro';
+
+interface Props {
+  latestPosts: CollectionEntry<'blog'>[];
+  trendingPosts: CollectionEntry<'blog'>[];
+}
+
+const { latestPosts, trendingPosts } = Astro.props;
+---
+
+<HomeSection id='latest-verified-cases' labelledBy='latest-cases-title'>
+  <div class='mb-10 flex flex-wrap items-end justify-between gap-4'>
+    <div>
+      <p class='tf-text-label mb-3'>Latest Verified Cases</p>
+      <h2 id='latest-cases-title' class='tf-text-display-2xl dark:text-neutral-50'>
+        Recently validated fixes
+      </h2>
+    </div>
+    <a href='/cases/' class='tf-text-link text-sm font-medium'>
+      Browse all cases →
+    </a>
+  </div>
+
+  <div class='grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]'>
+    <ul class='grid gap-4 sm:grid-cols-2'>
+      {
+        latestPosts.map((post) => (
+          <li class='min-h-0'>
+            <CaseCard post={post} />
+          </li>
+        ))
+      }
+    </ul>
+    <TrendingPanel posts={trendingPosts} />
+  </div>
+</HomeSection>

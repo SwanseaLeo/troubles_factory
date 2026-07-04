@@ -1,0 +1,13 @@
+---
+// src/components/seo/HomeStructuredData.astro
+import { buildHomeJsonLd, type HomeSeoContext } from '../../utils/home-seo';
+
+interface Props {
+  context: HomeSeoContext;
+}
+
+const { context } = Astro.props;
+const jsonLd = buildHomeJsonLd(context);
+---
+
+<script is:inline type='application/ld+json' set:html={JSON.stringify(jsonLd)} />

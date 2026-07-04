@@ -1,0 +1,145 @@
+---
+// src/components/seo/HomeSeoContent.astro
+import type { CollectionEntry } from 'astro:content';
+import { homeFaq } from '../../data/home-faq';
+import { formatVerifiedDate } from '../../utils/home-data';
+import type { HomeStats, TechnologyStat } from '../../utils/home-data';
+import type { PopularVersionLink } from '../../utils/home-seo';
+
+interface Props {
+  popularTechnologies: TechnologyStat[];
+  popularVersions: PopularVersionLink[];
+  latestVerifiedCases: CollectionEntry<'blog'>[];
+  latestUpdatedCases: CollectionEntry<'blog'>[];
+  stats: HomeStats;
+}
+
+const {
+  popularTechnologies,
+  popularVersions,
+  latestVerifiedCases,
+  latestUpdatedCases,
+  stats,
+} = Astro.props;
+---
+
+<div class='sr-only'>
+  <nav aria-label='Breadcrumb'>
+    <ol>
+      <li>
+        <a href='/'>Home</a>
+      </li>
+    </ol>
+  </nav>
+
+  <section id='seo-popular-technologies' aria-labelledby='seo-popular-technologies-title'>
+    <h2 id='seo-popular-technologies-title'>Popular Technologies</h2>
+    <p>
+      Browse verified troubleshooting cases by technology stack, framework, and
+      production tooling.
+    </p>
+    <ul>
+      {
+        popularTechnologies.map((tech) => (
+          <li>
+            <a href={tech.href}>
+              {tech.label} — {tech.count} verified {tech.count === 1 ? 'case' : 'cases'}
+            </a>
+          </li>
+        ))
+      }
+      <li>
+        <a href='/cases/'>View all verified cases</a>
+      </li>
+    </ul>
+  </section>
+
+  <section id='seo-popular-versions' aria-labelledby='seo-popular-versions-title'>
+    <h2 id='seo-popular-versions-title'>Popular Versions</h2>
+    <p>
+      Search version-specific troubleshooting fixes validated for real software
+      releases and runtime builds.
+    </p>
+    <ul>
+      {
+        popularVersions.length > 0 ? (
+          popularVersions.map((version) => (
+            <li>
+              <a href={version.href}>Verified fixes for {version.label}</a>
+            </li>
+          ))
+        ) : (
+          <li>
+            <a href='/search'>Search verified cases by version</a>
+          </li>
+        )
+      }
+    </ul>
+  </section>
+
+  <section id='seo-latest-verified-cases' aria-labelledby='seo-latest-verified-title'>
+    <h2 id='seo-latest-verified-title'>Latest Verified Cases</h2>
+    <ul>
+      {
+        latestVerifiedCases.map((post) => (
+          <li>
+            <a href={`/cases/${post.id}/`}>
+              {post.data.title} — verified {formatVerifiedDate(post.data.pubDate)}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id='seo-latest-updated-cases' aria-labelledby='seo-latest-updated-title'>
+    <h2 id='seo-latest-updated-title'>Latest Updated Cases</h2>
+    <ul>
+      {
+        latestUpdatedCases.map((post) => (
+          <li>
+            <a href={`/cases/${post.id}/`}>
+              {post.data.title} — updated {formatVerifiedDate(post.data.pubDate)}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id='seo-knowledge-statistics' aria-labelledby='seo-knowledge-stats-title'>
+    <h2 id='seo-knowledge-stats-title'>Knowledge Statistics</h2>
+    <dl>
+      <dt>Verified Cases</dt>
+      <dd>{stats.verifiedCases}</dd>
+      <dt>Versions</dt>
+      <dd>{stats.versionCount}</dd>
+      <dt>Technologies</dt>
+      <dd>{stats.technologyCount}</dd>
+      <dt>Verified Rate</dt>
+      <dd>{stats.verifiedRate}</dd>
+    </dl>
+  </section>
+
+  <section id='seo-faq' aria-labelledby='seo-faq-title'>
+    <h2 id='seo-faq-title'>Frequently Asked Questions</h2>
+    <dl>
+      {
+        homeFaq.map((item) => (
+          <div>
+            <dt>{item.question}</dt>
+            <dd>{item.answer}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <nav aria-label='Homepage internal links'>
+    <ul>
+      <li><a href='/search'>Search verified troubleshooting cases</a></li>
+      <li><a href='/cases/'>Browse all verified cases</a></li>
+      <li><a href='/feed.xml'>Subscribe to verified case updates</a></li>
+    </ul>
+  </nav>
+</div>

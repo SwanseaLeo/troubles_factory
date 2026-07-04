@@ -1,0 +1,52 @@
+---
+// src/components/home/TrendingPanel.astro
+import type { CollectionEntry } from 'astro:content';
+import Card from '@components/ui/Card.astro';
+import StatusBadge from '@components/ui/StatusBadge.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<aside aria-labelledby='trending-title'>
+  <Card variant='elevated' padding='md' class='dark:border-neutral-800 dark:bg-neutral-950'>
+    <div class='mb-4 flex items-center justify-between gap-3'>
+      <h3
+        id='trending-title'
+        class='font-[family-name:var(--font-tf-display)] text-base font-semibold text-tf-text dark:text-neutral-100'
+      >
+        Trending Problems
+      </h3>
+      <StatusBadge variant='caution'>This week</StatusBadge>
+    </div>
+
+    {
+      posts.length > 0 ? (
+        <ol class='space-y-3'>
+          {posts.map((post, index) => (
+            <li>
+              <a
+                href={`/cases/${post.id}/`}
+                class='group block rounded-tf-md border border-transparent px-2 py-2 transition-colors hover:border-tf-border hover:bg-tf-surface-hover dark:hover:border-neutral-700 dark:hover:bg-neutral-900'
+              >
+                <span class='font-[family-name:var(--font-tf-mono)] text-xs text-tf-text-subtle dark:text-neutral-500'>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <p class='mt-1 font-[family-name:var(--font-tf-ui)] text-sm font-medium leading-snug text-tf-text group-hover:text-tf-brand dark:text-neutral-200 dark:group-hover:text-blue-400'>
+                  {post.data.title}
+                </p>
+              </a>
+            </li>
+          ))}
+        </ol>
+      ) : (
+        <p class='font-[family-name:var(--font-tf-ui)] text-sm text-tf-text-muted dark:text-neutral-500'>
+          New verified cases will appear here as they are published.
+        </p>
+      )
+    }
+  </Card>
+</aside>

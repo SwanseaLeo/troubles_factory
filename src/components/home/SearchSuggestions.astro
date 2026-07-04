@@ -6,21 +6,34 @@ interface Suggestion {
 
 interface Props {
   suggestions: Suggestion[];
+  align?: 'center' | 'start';
 }
 
-const { suggestions } = Astro.props;
+const { suggestions, align = 'center' } = Astro.props;
 ---
 
 {
   suggestions.length > 0 && (
     <div class='mt-5 w-full'>
-      <p class='poppins text-center text-xs text-black/45 mb-2'>Try searching for</p>
-      <ul class='flex flex-wrap justify-center gap-2'>
+      <p
+        class:list={[
+          'tf-text-caption mb-2',
+          align === 'center' ? 'text-center' : 'text-left',
+        ]}
+      >
+        Try searching for
+      </p>
+      <ul
+        class:list={[
+          'flex flex-wrap gap-2',
+          align === 'center' ? 'justify-center' : 'justify-start',
+        ]}
+      >
         {suggestions.map((item) => (
           <li>
             <a
               href={`/search?q=${encodeURIComponent(item.query)}`}
-              class='inline-block rounded-full border border-black/15 bg-white px-3 py-1 poppins text-sm text-black/70 transition-colors hover:border-black/30 hover:bg-black/5 hover:text-black'
+              class='tf-tag tf-tag--neutral tf-tag--pill tf-focus-ring'
             >
               {item.label}
             </a>
