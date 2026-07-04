@@ -1,0 +1,13 @@
+---
+// src/components/ui/Sidebar.astro
+interface Props {
+  class?: string;
+  labelledBy?: string;
+}
+
+const { class: className, labelledBy } = Astro.props;
+---
+
+<aside class:list={['tf-sidebar', className]} aria-labelledby={labelledBy}>
+  <slot />
+</aside>

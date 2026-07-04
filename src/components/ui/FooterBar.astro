@@ -1,0 +1,12 @@
+---
+// src/components/ui/FooterBar.astro
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['tf-footer__bar', className]}>
+  <slot />
+</div>

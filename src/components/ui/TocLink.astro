@@ -1,0 +1,18 @@
+---
+// src/components/ui/TocLink.astro
+import { tocLinkClasses } from '../../styles/design-system';
+
+interface Props {
+  href: string;
+  active?: boolean;
+  class?: string;
+  style?: string;
+}
+
+const { href, active = false, class: className, style } = Astro.props;
+const classes = tocLinkClasses(active, className);
+---
+
+<a href={href} class={classes} style={style}>
+  <slot />
+</a>

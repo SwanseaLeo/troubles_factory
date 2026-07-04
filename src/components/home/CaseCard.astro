@@ -18,39 +18,43 @@ const { post, meta = inferCaseMeta(post) } = Astro.props;
 const href = `/cases/${post.id}/`;
 ---
 
-<article class='home-case-card h-full rounded-tf-lg border border-tf-border bg-tf-surface dark:border-neutral-800 dark:bg-neutral-950' itemscope itemtype='https://schema.org/TechArticle'>
-  <a href={href} class='flex h-full flex-col p-5' itemprop='url'>
-    <div class='mb-3 flex flex-wrap items-center gap-2'>
-      <StatusBadge variant='verified'>Verified</StatusBadge>
+<article
+  class='home-case-card'
+  itemscope
+  itemtype='https://schema.org/TechArticle'
+>
+  <a href={href} class='home-case-card__link' itemprop='url'>
+    <div class='home-case-card__badges'>
+      <StatusBadge variant='verified' dot>Verified</StatusBadge>
       <StatusBadge variant='reproduced'>Production tested</StatusBadge>
     </div>
 
-    <h3 class='font-[family-name:var(--font-tf-display)] text-lg font-semibold leading-snug text-tf-brand dark:text-blue-400' itemprop='headline'>
+    <h3 class='home-case-card__title' itemprop='headline'>
       {post.data.title}
     </h3>
 
-    <p class='mt-2 flex-1 font-[family-name:var(--font-tf-ui)] text-sm leading-relaxed text-tf-text-secondary line-clamp-3 dark:text-neutral-400' itemprop='description'>
+    <p class='home-case-card__description' itemprop='description'>
       {post.data.description}
     </p>
 
-    <dl class='mt-4 grid gap-2 font-[family-name:var(--font-tf-ui)] text-xs text-tf-text-muted dark:text-neutral-500'>
-      <div class='flex gap-2'>
-        <dt class='w-24 shrink-0 font-medium text-tf-text-subtle'>Environment</dt>
-        <dd class='text-tf-text-secondary dark:text-neutral-400'>{meta.environment}</dd>
+    <dl class='home-case-card__meta'>
+      <div class='home-case-card__meta-row'>
+        <dt class='home-case-card__meta-dt'>Environment</dt>
+        <dd class='home-case-card__meta-dd'>{meta.environment}</dd>
       </div>
-      <div class='flex gap-2'>
-        <dt class='w-24 shrink-0 font-medium text-tf-text-subtle'>Version</dt>
-        <dd class='font-[family-name:var(--font-tf-mono)] text-tf-text-secondary dark:text-neutral-400'>
+      <div class='home-case-card__meta-row'>
+        <dt class='home-case-card__meta-dt'>Version</dt>
+        <dd class='home-case-card__meta-dd home-case-card__meta-dd--mono'>
           {meta.version}
         </dd>
       </div>
-      <div class='flex gap-2'>
-        <dt class='w-24 shrink-0 font-medium text-tf-text-subtle'>Framework</dt>
-        <dd class='text-tf-text-secondary dark:text-neutral-400'>{meta.framework}</dd>
+      <div class='home-case-card__meta-row'>
+        <dt class='home-case-card__meta-dt'>Framework</dt>
+        <dd class='home-case-card__meta-dd'>{meta.framework}</dd>
       </div>
-      <div class='flex gap-2'>
-        <dt class='w-24 shrink-0 font-medium text-tf-text-subtle'>Verified</dt>
-        <dd>
+      <div class='home-case-card__meta-row'>
+        <dt class='home-case-card__meta-dt'>Verified</dt>
+        <dd class='home-case-card__meta-dd'>
           <time datetime={post.data.pubDate.toISOString()}>
             {formatVerifiedDate(post.data.pubDate)}
           </time>
@@ -60,7 +64,7 @@ const href = `/cases/${post.id}/`;
 
     {
       post.data.tags.length > 0 && (
-        <div class='mt-4 flex flex-wrap gap-1.5'>
+        <div class='home-case-card__tags'>
           {post.data.tags.slice(0, 4).map((tag) => (
             <Tag label={tag} pill>
               {tag}

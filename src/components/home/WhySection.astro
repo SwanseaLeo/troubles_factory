@@ -1,70 +1,64 @@
 ---
-import Card from '@components/ui/Card.astro';
+import Icon from '@components/ui/Icon.astro';
+import type { LucideIconName } from '../../utils/lucide-icon';
 import HomeSection from './HomeSection.astro';
 
-const features = [
+const features: Array<{
+  title: string;
+  description: string;
+  icon: LucideIconName;
+}> = [
   {
     title: 'Verified',
     description:
       'Every published case is documented with reproducible steps and expected output — not anecdotal fixes.',
-    icon: 'M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
+    icon: 'shield-check',
   },
   {
     title: 'Version Specific',
     description:
       'Cases call out the exact software, driver, and runtime versions where the fix was validated.',
-    icon: 'M7.5 8.25h9m-9 3H12m-9.75 1.5c0 1.24 4.03 2.25 9 2.25s9-1.01 9-2.25',
+    icon: 'tag',
   },
   {
     title: 'Reproducible',
     description:
       'Numbered procedures, prerequisites, and command output make it straightforward to confirm the same result.',
-    icon: 'M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M2.985 19.644l3.181-3.183',
+    icon: 'refresh-cw',
   },
   {
     title: 'Production Ready',
     description:
       'Written for operators shipping real workloads — rollback paths, risk notes, and verification included.',
-    icon: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z',
+    icon: 'zap',
   },
-] as const;
+];
 ---
 
 <HomeSection labelledBy='why-title'>
-  <div class='mb-10 max-w-2xl'>
-    <p class='tf-text-label mb-3'>Why TroubleFactory</p>
-    <h2 id='why-title' class='tf-text-display-2xl dark:text-neutral-50'>
-      A troubleshooting database, not a discussion board
-    </h2>
-    <p class='mt-3 tf-text-body-lg dark:text-neutral-400'>
-      Built for engineers who need the exact fix for their stack — with proof
-      it works in production.
-    </p>
+  <div class='home-section__header home-section__header--narrow'>
+    <div>
+      <p class='tf-text-label home-section__eyebrow'>Why TroubleFactory</p>
+      <h2 id='why-title' class='tf-text-display-2xl'>
+        A troubleshooting database, not a discussion board
+      </h2>
+      <p class='mt-3 tf-text-body-lg'>
+        Built for engineers who need the exact fix for their stack — with proof
+        it works in production.
+      </p>
+    </div>
   </div>
 
-  <div class='grid gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+  <div class='home-features-grid'>
     {
       features.map((feature) => (
-        <Card variant='default' padding='md' class='h-full dark:border-neutral-800 dark:bg-neutral-950'>
-          <div class='mb-4 flex h-10 w-10 items-center justify-center rounded-tf-md bg-tf-brand-subtle text-tf-brand dark:bg-blue-950 dark:text-blue-400'>
-            <svg
-              class='h-5 w-5'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              stroke-width='1.75'
-              aria-hidden='true'
-            >
-              <path stroke-linecap='round' stroke-linejoin='round' d={feature.icon} />
-            </svg>
+        <article class='home-feature-card'>
+          <div class='home-feature-card__icon'>
+            <Icon name={feature.icon} size={20} tone='brand' />
           </div>
-          <h3 class='tf-text-display-lg text-lg'>
-            {feature.title}
-          </h3>
-          <p class='tf-text-body mt-2'>
-            {feature.description}
-          </p>
-        </Card>
+          <h3 class='home-feature-card__title'>{feature.title}</h3>
+          <p class='home-feature-card__body'>{feature.description}</p>
+        </article>
       ))
     }
   </div>

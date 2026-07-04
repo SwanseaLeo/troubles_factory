@@ -1,0 +1,99 @@
+---
+import IconButton from '@components/ui/IconButton.astro';
+import FooterColumn from '@components/ui/FooterColumn.astro';
+import FooterLink from '@components/ui/FooterLink.astro';
+import { communityLinks } from '../../data/community-links';
+
+const discordLink = communityLinks.find((link) => link.type === 'discord');
+
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Search cases', href: '/search' },
+      { label: 'All cases', href: '/cases/' },
+      { label: 'RSS feed', href: '/feed.xml' },
+    ],
+  },
+  {
+    title: 'Technologies',
+    links: [
+      { label: 'Docker', href: '/cases/tags/docker/' },
+      { label: 'Linux', href: '/cases/tags/linux/' },
+      { label: 'NVIDIA', href: '/cases/tags/nvidia/' },
+      { label: 'PyTorch', href: '/cases/tags/pytorch/' },
+    ],
+  },
+  {
+    title: 'Community',
+    links: [
+      ...(discordLink
+        ? [{ label: 'Discord', href: discordLink.url, external: true }]
+        : []),
+      { label: 'RSS feed', href: '/feed.xml', external: false },
+    ],
+  },
+] as const;
+---
+
+<footer class='tf-site-footer'>
+  <div class='tf-site-footer__inner'>
+    <div class='tf-site-footer__grid'>
+      <div>
+        <a href='/' title='TroubleFactory home'>
+          <img
+            src='/logo_a.png'
+            alt='TroubleFactory'
+            class='h-10 w-auto'
+            width='160'
+            height='40'
+            loading='lazy'
+            decoding='async'
+          />
+        </a>
+        <p class='tf-site-footer__brand-text'>
+          Verified software troubleshooting knowledge — version-specific,
+          reproducible, and production tested.
+        </p>
+        <ul class='tf-site-footer__social'>
+          {
+            discordLink && (
+              <li>
+                <IconButton
+                  icon='message-circle'
+                  href={discordLink.url}
+                  label='Discord'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                />
+              </li>
+            )
+          }
+          <li>
+            <IconButton icon='rss' href='/feed.xml' label='RSS feed' />
+          </li>
+        </ul>
+      </div>
+
+      {
+        columns.map((column) => (
+          <FooterColumn title={column.title}>
+            {column.links.map((link) => (
+              <FooterLink
+                href={link.href}
+                external={'external' in link && link.external}
+              >
+                {link.label}
+              </FooterLink>
+            ))}
+          </FooterColumn>
+        ))
+      }
+    </div>
+
+    <div class='tf-site-footer__bar'>
+      <p>© {new Date().getFullYear()} TroubleFactory. Built with Astro.</p>
+      <p>Every published case is verified before it ships.</p>
+    </div>
+  </div>
+</footer>

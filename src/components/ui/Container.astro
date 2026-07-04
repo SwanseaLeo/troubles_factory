@@ -1,0 +1,17 @@
+---
+// src/components/ui/Container.astro
+import { containerClasses, type ContainerWidth } from '../../styles/design-system';
+
+interface Props {
+  width?: ContainerWidth;
+  class?: string;
+  id?: string;
+}
+
+const { width, class: className, id } = Astro.props;
+const classes = containerClasses(width, className);
+---
+
+<div id={id} class={classes}>
+  <slot />
+</div>

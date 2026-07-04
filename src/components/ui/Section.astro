@@ -1,0 +1,18 @@
+---
+// src/components/ui/Section.astro
+import { sectionClasses } from '../../styles/design-system';
+
+interface Props {
+  lg?: boolean;
+  class?: string;
+  id?: string;
+  labelledBy?: string;
+}
+
+const { lg = false, class: className, id, labelledBy } = Astro.props;
+const classes = sectionClasses({ lg }, className);
+---
+
+<section id={id} class={classes} aria-labelledby={labelledBy}>
+  <slot />
+</section>

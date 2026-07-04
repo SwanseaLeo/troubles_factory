@@ -1,5 +1,6 @@
 ---
 import BlogList from '@components/blog/BlogList.astro';
+import BrowsePageHeader from '@components/layout/BrowsePageHeader.astro';
 import BrowseLayout from '@layouts/BrowseLayout.astro';
 import { getPublishedCases } from '../../utils/cases';
 
@@ -11,11 +12,10 @@ const posts = await getPublishedCases();
   description='Browse all verified, version-specific software troubleshooting cases with reproducible fixes.'
   pageTitle='TroubleFactory | All verified cases'
 >
-  <div class='mb-6'>
-    <h1 class='tf-text-display-2xl dark:text-neutral-50'>All cases</h1>
-    <p class='tf-text-body mt-1'>
-      {posts.length} verified {posts.length === 1 ? 'case' : 'cases'}
-    </p>
-  </div>
+  <BrowsePageHeader
+    eyebrow='Archive'
+    title='All cases'
+    description={`${posts.length} verified ${posts.length === 1 ? 'case' : 'cases'} with reproducible fixes.`}
+  />
   <BlogList posts={posts} />
 </BrowseLayout>

@@ -1,0 +1,144 @@
+---
+import Icon from '@components/ui/Icon.astro';
+import Tag from '@components/ui/Tag.astro';
+import type { CollectionEntry } from 'astro:content';
+import type { CaseDisplayMeta } from '../../utils/home-data';
+import { formatVerifiedDate } from '../../utils/home-data';
+
+interface Props {
+  author: string;
+  pubDate: Date;
+  tags: string[];
+  meta: CaseDisplayMeta;
+  versions: string[];
+  relatedCases: CollectionEntry<'blog'>[];
+  slug: string;
+}
+
+const { author, pubDate, tags, meta, versions, relatedCases, slug } = Astro.props;
+const verifiedDate = formatVerifiedDate(pubDate);
+const publishedDate = new Intl.DateTimeFormat('en', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+}).format(pubDate);
+
+function splitMetaParts(...values: (string | null | undefined)[]) {
+  return values
+    .filter((value): value is string => Boolean(value))
+    .flatMap((value) => value.split(' · ').map((part) => part.trim()))
+    .filter(Boolean);
+}
+
+const appliesTo = splitMetaParts(
+  meta.environment !== 'Linux' ? meta.environment : null,
+  meta.framework,
+  meta.architecture !== 'Multi-arch' ? meta.architecture : null,
+);
+---
+
+<aside class='case-sidebar not-prose' aria-label='Case metadata'>
+  <section class='case-sidebar-card' aria-labelledby='case-meta-title'>
+    <h2 id='case-meta-title' class='case-sidebar-card__title'>Metadata</h2>
+    <dl class='case-sidebar-meta'>
+      <div class='case-sidebar-meta__row'>
+        <dt class='case-sidebar-meta__label'>Author</dt>
+        <dd class='case-sidebar-meta__value'>{author}</dd>
+      </div>
+      <div class='case-sidebar-meta__row'>
+        <dt class='case-sidebar-meta__label'>Published</dt>
+        <dd class='case-sidebar-meta__value'>
+          <time datetime={pubDate.toISOString()}>{publishedDate}</time>
+        </dd>
+      </div>
+      <div class='case-sidebar-meta__row'>
+        <dt class='case-sidebar-meta__label'>Verified</dt>
+        <dd class='case-sidebar-meta__value'>{verifiedDate}</dd>
+      </div>
+      <div class='case-sidebar-meta__row'>
+        <dt class='case-sidebar-meta__label'>Case ID</dt>
+        <dd class='case-sidebar-meta__value case-env-list__value--mono'>{slug}</dd>
+      </div>
+    </dl>
+  </section>
+
+  {
+    versions.length > 0 && (
+      <section class='case-sidebar-card' aria-labelledby='case-versions-title'>
+        <h2 id='case-versions-title' class='case-sidebar-card__title'>Affected versions</h2>
+        <ul class='case-sidebar-chips'>
+          {versions.map((version) => (
+            <li>
+              <Tag label={version} pill>
+                {version}
+              </Tag>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    appliesTo.length > 0 && (
+      <section class='case-sidebar-card' aria-labelledby='case-applies-title'>
+        <h2 id='case-applies-title' class='case-sidebar-card__title'>Applies to</h2>
+        <ul class='case-sidebar-chips'>
+          {appliesTo.map((item) => (
+            <li>
+              <Tag label={item ?? ''}>{item}</Tag>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    tags.length > 0 && (
+      <section class='case-sidebar-card' aria-labelledby='case-tags-title'>
+        <h2 id='case-tags-title' class='case-sidebar-card__title'>Tags</h2>
+        <ul class='case-sidebar-chips'>
+          {tags.map((tag) => (
+            <li>
+              <Tag label={tag} href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}>
+                {tag}
+              </Tag>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    relatedCases.length > 0 && (
+      <section class='case-sidebar-card' aria-labelledby='case-related-title'>
+        <h2 id='case-related-title' class='case-sidebar-card__title'>Related cases</h2>
+        <ul class='case-sidebar-list'>
+          {relatedCases.map((post) => (
+            <li>
+              <a href={`/cases/${post.id}/`} class='case-sidebar-list__link'>
+                {post.data.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <section class='case-sidebar-card' aria-labelledby='case-share-title'>
+    <h2 id='case-share-title' class='case-sidebar-card__title'>Share &amp; export</h2>
+    <div class='case-sidebar-actions'>
+      <button type='button' class='case-sidebar-actions__btn tf-focus-ring' data-case-copy-link>
+        <Icon name='copy' size={14} tone='muted' />
+        <span data-case-copy-label>Copy link</span>
+      </button>
+      <button type='button' class='case-sidebar-actions__btn tf-focus-ring' data-case-export-print>
+        <Icon name='download' size={14} tone='muted' />
+        Export / Print
+      </button>
+    </div>
+  </section>
+</aside>

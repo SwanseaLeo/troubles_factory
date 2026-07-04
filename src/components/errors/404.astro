@@ -1,16 +1,24 @@
 ---
 import Button from '@components/ui/Button.astro';
+import SearchBar from '@components/layout/SearchBar.astro';
 ---
 
-<section class='flex flex-col gap-8'>
-  <p class='font-[family-name:var(--font-tf-display)] text-8xl font-bold tracking-tight text-tf-text md:text-9xl dark:text-neutral-50' aria-hidden='true'>
-    404
+<section class='error-page not-prose'>
+  <p class='error-page__code' aria-hidden='true'>404</p>
+  <h1 class='error-page__title'>Page not found</h1>
+  <p class='error-page__description'>
+    We could not find the page you were looking for. Search verified cases or browse the archive.
   </p>
-  <h1 class='tf-text-display-2xl'>Page Not Found</h1>
-  <p class='tf-text-body-lg max-w-xl'>
-    Sorry, we could not find the page you were looking for. Try searching verified cases or return home.
-  </p>
-  <Button href='/' variant='secondary' size='lg' class='w-fit'>
-    &larr; Go Home
-  </Button>
+  <div class='error-page__actions'>
+    <Button href='/' variant='secondary' size='lg'>
+      &larr; Go home
+    </Button>
+    <Button href='/cases/' variant='ghost' size='lg'>
+      Browse all cases
+    </Button>
+  </div>
+  <div class='error-page__section'>
+    <h2 class='error-page__section-title'>Search cases</h2>
+    <SearchBar size='hero' />
+  </div>
 </section>

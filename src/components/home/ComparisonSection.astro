@@ -1,5 +1,4 @@
 ---
-import Card from '@components/ui/Card.astro';
 import StatusBadge from '@components/ui/StatusBadge.astro';
 import HomeSection from './HomeSection.astro';
 
@@ -17,48 +16,54 @@ const factoryPoints = [
 ] as const;
 ---
 
-<HomeSection id='why-not-ai' labelledBy='comparison-title'>
-  <div class='mb-10 text-center'>
-    <p class='tf-text-label mb-3'>Comparison</p>
-    <h2 id='comparison-title' class='tf-text-display-2xl dark:text-neutral-50'>
-      Why not AI?
-    </h2>
-    <p class='tf-text-body-lg mx-auto mt-3 max-w-2xl'>
-      AI can suggest ideas. TroubleFactory documents fixes that were run,
-      checked, and shipped in real environments.
-    </p>
+<HomeSection id='why-not-ai' labelledBy='comparison-title' muted>
+  <div class='home-section__header home-section__header--center'>
+    <div>
+      <p class='tf-text-label home-section__eyebrow'>Comparison</p>
+      <h2 id='comparison-title' class='tf-text-display-2xl'>Why not AI?</h2>
+      <p class='tf-text-body-lg mx-auto mt-3 max-w-2xl'>
+        AI can suggest ideas. TroubleFactory documents fixes that were run,
+        checked, and shipped in real environments.
+      </p>
+    </div>
   </div>
 
-  <div class='grid gap-4 md:grid-cols-2'>
-    <Card variant='default' padding='lg' class='dark:border-neutral-800 dark:bg-neutral-950'>
+  <div class='home-comparison-grid'>
+    <article class='home-comparison-card'>
       <h3 class='tf-text-display-lg text-lg'>AI Answers</h3>
-      <ul class='mt-4 space-y-3'>
+      <ul class='home-comparison-list mt-4'>
         {
           aiPoints.map((point) => (
-            <li class='tf-text-body flex gap-3'>
-              <span class='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-tf-danger' aria-hidden='true' />
+            <li class='home-comparison-list__item'>
+              <span
+                class='home-comparison-list__dot home-comparison-list__dot--danger'
+                aria-hidden='true'
+              />
               {point}
             </li>
           ))
         }
       </ul>
-    </Card>
+    </article>
 
-    <Card variant='elevated' padding='lg' class='border-tf-brand/20 dark:border-blue-900 dark:bg-neutral-950'>
-      <div class='mb-4 flex items-center gap-2'>
+    <article class='home-comparison-card home-comparison-card--highlight'>
+      <div class='home-comparison-card__title-row'>
         <h3 class='tf-text-display-lg text-lg'>TroubleFactory</h3>
-        <StatusBadge variant='verified'>Verified</StatusBadge>
+        <StatusBadge variant='verified' dot>Verified</StatusBadge>
       </div>
-      <ul class='space-y-3'>
+      <ul class='home-comparison-list'>
         {
           factoryPoints.map((point) => (
-            <li class='tf-text-body flex gap-3 dark:text-neutral-300'>
-              <span class='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-tf-success' aria-hidden='true' />
+            <li class='home-comparison-list__item'>
+              <span
+                class='home-comparison-list__dot home-comparison-list__dot--success'
+                aria-hidden='true'
+              />
               {point}
             </li>
           ))
         }
       </ul>
-    </Card>
+    </article>
   </div>
 </HomeSection>

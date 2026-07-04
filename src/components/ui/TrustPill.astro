@@ -1,0 +1,15 @@
+---
+// src/components/ui/TrustPill.astro
+import { trustPillClasses } from '../../styles/design-system';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<li class={trustPillClasses(className)}>
+  <span class='tf-trust-pill__dot' aria-hidden='true'></span>
+  <slot />
+</li>

@@ -1,0 +1,64 @@
+---
+// src/components/ui/SearchField.astro — presentational search field (no JS)
+import Icon from './Icon.astro';
+import { searchFieldClasses, type SearchFieldSize } from '../../styles/design-system';
+
+interface Props {
+  size?: SearchFieldSize;
+  placeholder?: string;
+  name?: string;
+  id?: string;
+  value?: string;
+  showIcon?: boolean;
+  showSubmit?: boolean;
+  submitLabel?: string;
+  class?: string;
+}
+
+const {
+  size = 'default',
+  placeholder = 'Search errors, tools, topics…',
+  name = 'q',
+  id,
+  value,
+  showIcon = size === 'default',
+  showSubmit = size === 'hero',
+  submitLabel = 'Search',
+  class: className,
+} = Astro.props;
+
+const isHero = size === 'hero';
+const fieldClass = searchFieldClasses(size, className);
+---
+
+<div class:list={[fieldClass, 'relative w-full']}>
+  {
+    showIcon && !isHero && (
+      <span class='tf-search-field__icon' aria-hidden='true'>
+        <Icon name='search' size={16} tone='muted' />
+      </span>
+    )
+  }
+  <input
+    type='search'
+    id={id}
+    name={name}
+    value={value}
+    autocomplete='off'
+    placeholder={placeholder}
+    aria-label='Search cases'
+    class:list={[
+      'tf-search-input tf-focus-ring',
+      isHero ? 'tf-search-input--hero' : 'tf-search-input--default',
+    ]}
+  />
+  {
+    showSubmit && (
+      <button type='submit' class='tf-search-submit tf-focus-ring'>
+        <Icon name='search' size={16} tone='muted' />
+        {submitLabel}
+      </button>
+    )
+  }
+  <slot />
+</div>

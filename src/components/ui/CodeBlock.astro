@@ -1,0 +1,67 @@
+---
+// src/components/ui/CodeBlock.astro
+import Icon from './Icon.astro';
+
+interface Props {
+  language?: string;
+  copyable?: boolean;
+  class?: string;
+}
+
+const { language, copyable = true, class: className } = Astro.props;
+---
+
+<div class:list={['tf-code-block not-prose', className]} data-tf-code-block>
+  {
+    (language || copyable) && (
+      <div class='tf-code-block__header'>
+        {language ? <span>{language}</span> : <span aria-hidden='true'>&nbsp;</span>}
+        {copyable && (
+          <button
+            type='button'
+            class='tf-code-block__copy tf-focus-ring'
+            data-tf-code-copy
+            aria-label='Copy code'
+          >
+            <Icon name='copy' size={14} tone='muted' />
+            <span data-tf-code-copy-label>Copy</span>
+          </button>
+        )}
+      </div>
+    )
+  }
+  <pre class='tf-code-block__body' tabindex='0'>
+    <code><slot /></code>
+  </pre>
+</div>
+
+<script>
+  function initCodeCopy() {
+    document.querySelectorAll<HTMLElement>('[data-tf-code-block]').forEach((block) => {
+      const button = block.querySelector<HTMLButtonElement>('[data-tf-code-copy]');
+      const label = button?.querySelector<HTMLElement>('[data-tf-code-copy-label]');
+      const code = block.querySelector('code');
+      if (!button || !code || button.dataset.bound === '1') return;
+      button.dataset.bound = '1';
+
+      button.addEventListener('click', async () => {
+        const text = code.textContent ?? '';
+        try {
+          await navigator.clipboard.writeText(text);
+          if (label) {
+            const original = label.textContent ?? 'Copy';
+            label.textContent = 'Copied';
+            window.setTimeout(() => {
+              label.textContent = original;
+            }, 1500);
+          }
+        } catch {
+          /* clipboard unavailable */
+        }
+      });
+    });
+  }
+
+  initCodeCopy();
+  document.addEventListener('astro:page-load', initCodeCopy);
+</script>

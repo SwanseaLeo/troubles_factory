@@ -1,0 +1,18 @@
+---
+// src/components/ui/SidebarLink.astro
+import { sidebarLinkClasses } from '../../styles/design-system';
+
+interface Props {
+  href: string;
+  active?: boolean;
+  muted?: boolean;
+  class?: string;
+}
+
+const { href, active = false, muted = false, class: className } = Astro.props;
+const classes = sidebarLinkClasses({ active, muted }, className);
+---
+
+<a href={href} class={classes}>
+  <slot />
+</a>

@@ -1,0 +1,170 @@
+/* src/styles/search.css — search field and results */
+
+.tf-search-field {
+  position: relative;
+  width: 100%;
+}
+
+.tf-search-field--hero {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border-radius: var(--radius-tf-full);
+  border: 1px solid var(--color-tf-border-strong);
+  background-color: var(--color-tf-surface);
+  box-shadow: var(--shadow-tf-sm);
+  transition:
+    border-color var(--duration-tf-normal) var(--ease-tf-default),
+    box-shadow var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-search-field--hero:focus-within {
+  border-color: var(--color-tf-border-brand);
+  box-shadow: var(--shadow-tf-brand);
+}
+
+.tf-search-field--default {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-tf-md);
+  border: 1px solid var(--color-tf-border-strong);
+  background-color: var(--color-tf-surface);
+  transition:
+    border-color var(--duration-tf-normal) var(--ease-tf-default),
+    box-shadow var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-search-field--default:focus-within {
+  border-color: var(--color-tf-brand);
+  box-shadow: var(--shadow-tf-focus);
+}
+
+.tf-search-field__icon {
+  flex-shrink: 0;
+  margin-left: var(--spacing-tf-3);
+  color: var(--color-tf-icon-muted);
+  pointer-events: none;
+}
+
+.tf-search-input {
+  min-width: 0;
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-tf-ui);
+  color: var(--color-tf-text);
+}
+
+.tf-search-input::placeholder {
+  color: var(--color-tf-text-subtle);
+}
+
+.tf-search-input:focus {
+  outline: none;
+}
+
+.tf-search-input--default {
+  padding: var(--spacing-tf-2) var(--spacing-tf-4);
+  font-size: var(--text-tf-sm);
+}
+
+.tf-search-field--default .tf-search-input--default {
+  padding-left: var(--spacing-tf-2);
+}
+
+.tf-search-input--hero {
+  padding: var(--spacing-tf-3) var(--spacing-tf-4);
+  font-size: var(--text-tf-base);
+}
+
+@media (min-width: 48rem) {
+  .tf-search-input--hero {
+    padding: var(--spacing-tf-4) var(--spacing-tf-5);
+    font-size: var(--text-tf-lg);
+  }
+}
+
+.tf-search-submit {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-tf-1_5);
+  border-left: 1px solid var(--color-tf-border);
+  padding-inline: var(--spacing-tf-5);
+  font-family: var(--font-tf-ui);
+  font-size: var(--text-tf-sm);
+  font-weight: 500;
+  color: var(--color-tf-text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-tf-normal) var(--ease-tf-default),
+    color var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-search-submit:hover {
+  background-color: var(--color-tf-surface-hover);
+  color: var(--color-tf-text);
+}
+
+.tf-search-submit:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-tf-border-focus);
+}
+
+.tf-search-results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: var(--z-tf-dropdown);
+  margin-top: var(--spacing-tf-2);
+  max-height: 20rem;
+  overflow-y: auto;
+  background-color: var(--color-tf-surface-elevated);
+  border: 1px solid var(--color-tf-border);
+  border-radius: var(--radius-tf-lg);
+  box-shadow: var(--shadow-tf-lg);
+}
+
+.tf-search-results--default {
+  border-radius: var(--radius-tf-md);
+  box-shadow: var(--shadow-tf-md);
+}
+
+.tf-search-result {
+  display: block;
+  padding: var(--spacing-tf-3) var(--spacing-tf-4);
+  border-bottom: 1px solid var(--color-tf-border-subtle);
+  text-decoration: none;
+  transition: background-color var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-search-result:last-child {
+  border-bottom: none;
+}
+
+.tf-search-result:hover {
+  background-color: var(--color-tf-surface-hover);
+}
+
+.tf-search-result__title {
+  font-family: var(--font-tf-ui);
+  font-size: var(--text-tf-sm);
+  font-weight: 500;
+  color: var(--color-tf-text);
+  line-height: 1.375;
+}
+
+.tf-search-result__description {
+  margin-top: var(--spacing-tf-1);
+  font-family: var(--font-tf-ui);
+  font-size: var(--text-tf-sm);
+  color: var(--color-tf-text-muted);
+  line-height: 1.375;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

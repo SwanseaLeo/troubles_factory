@@ -1,0 +1,95 @@
+---
+import ImageFrame from '@components/ui/ImageFrame.astro';
+import Icon from '@components/ui/Icon.astro';
+import StatusBadge from '@components/ui/StatusBadge.astro';
+import Tag from '@components/ui/Tag.astro';
+import type { ImageMetadata } from 'astro';
+import type { CaseDisplayMeta } from '../../utils/home-data';
+import { formatVerifiedDate } from '../../utils/home-data';
+
+interface Props {
+  title: string;
+  description: string;
+  author: string;
+  pubDate: Date;
+  imgSrc: ImageMetadata;
+  tags: string[];
+  meta: CaseDisplayMeta;
+}
+
+const { title, description, author, pubDate, imgSrc, tags, meta } = Astro.props;
+const verifiedDate = formatVerifiedDate(pubDate);
+---
+
+<header class='case-hero not-prose'>
+  <a href='/cases/' class='case-back-link' title='Back to cases'>
+    <Icon name='arrow-left' size={14} tone='brand' />
+    Back to cases
+  </a>
+
+  <h1 class='case-hero__title'>{title}</h1>
+
+  <div class='case-hero__badges'>
+    <StatusBadge variant='documented' dot icon='shield-check'>Verified</StatusBadge>
+    <StatusBadge variant='success' dot icon='check-circle'>Production tested</StatusBadge>
+  </div>
+
+  <div class='case-hero__grid'>
+    <section class='case-panel case-panel--inset' aria-labelledby='case-env-title'>
+      <h2 id='case-env-title' class='case-panel__title'>
+        <Icon name='server' size={16} tone='muted' />
+        Environment
+      </h2>
+      <ul class='case-env-list'>
+        <li class='case-env-list__row'>
+          <span class='case-env-list__label'>OS</span>
+          <span class='case-env-list__value'>{meta.environment}</span>
+        </li>
+        <li class='case-env-list__row'>
+          <span class='case-env-list__label'>Stack</span>
+          <span class='case-env-list__value'>{meta.framework}</span>
+        </li>
+        <li class='case-env-list__row'>
+          <span class='case-env-list__label'>Version</span>
+          <span class='case-env-list__value case-env-list__value--mono'>{meta.version}</span>
+        </li>
+        <li class='case-env-list__row'>
+          <span class='case-env-list__label'>Arch</span>
+          <span class='case-env-list__value case-env-list__value--mono'>{meta.architecture}</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class='case-panel' aria-labelledby='case-verify-title'>
+      <h2 id='case-verify-title' class='case-panel__title'>
+        <Icon name='badge-check' size={16} tone='success' />
+        Verification
+      </h2>
+      <div class='case-panel__body'>
+        <p>
+          Procedure verified on <time datetime={pubDate.toISOString()}>{verifiedDate}</time> by{' '}
+          {author}.
+        </p>
+        <p class='mt-3'>{description}</p>
+      </div>
+    </section>
+  </div>
+
+  <div class='case-hero__image'>
+    <ImageFrame src={imgSrc} alt={title} hero width={1200} height={600} />
+  </div>
+
+  {
+    tags.length > 0 && (
+      <ul class='case-hero__tags'>
+        {tags.map((tag) => (
+          <li>
+            <Tag label={tag} href={`/cases/tags/${encodeURIComponent(tag.toLowerCase())}/`}>
+              {tag}
+            </Tag>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</header>

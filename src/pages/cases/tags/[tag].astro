@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 import BlogList from '@components/blog/BlogList.astro';
-import Button from '@components/ui/Button.astro';
+import BrowsePageHeader from '@components/layout/BrowsePageHeader.astro';
 import BrowseLayout from '@layouts/BrowseLayout.astro';
 
 export async function getStaticPaths() {
@@ -45,14 +45,12 @@ const tagLabel = blogposts[0]?.data.tags.find(
   description={`Verified software troubleshooting cases tagged with ${tagLabel}.`}
   pageTitle={`TroubleFactory | Cases tagged with ${tagLabel}`}
 >
-  <div class='mb-6'>
-    <Button href='/cases/' variant='ghost' size='sm' class='mb-4'>
-      &larr; Back to cases
-    </Button>
-    <h1 class='tf-text-display-2xl dark:text-neutral-50'>Cases: {tagLabel}</h1>
-    <p class='tf-text-body mt-1'>
-      {blogposts.length} verified {blogposts.length === 1 ? 'case' : 'cases'}
-    </p>
-  </div>
+  <BrowsePageHeader
+    eyebrow='Topic'
+    title={tagLabel}
+    description={`${blogposts.length} verified ${blogposts.length === 1 ? 'case' : 'cases'} for ${tagLabel}.`}
+    backHref='/cases/'
+    backLabel='All cases'
+  />
   <BlogList posts={blogposts} />
 </BrowseLayout>

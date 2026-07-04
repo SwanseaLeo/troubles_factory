@@ -10,36 +10,29 @@ interface Props {
 const { technologies } = Astro.props;
 ---
 
-<HomeSection id='popular-technologies' labelledBy='technologies-title'>
-  <div class='mb-10 flex flex-wrap items-end justify-between gap-4'>
+<HomeSection id='popular-technologies' labelledBy='technologies-title' muted>
+  <div class='home-section__header'>
     <div>
-      <p class='tf-text-label mb-3'>Browse Technologies</p>
-      <h2 id='technologies-title' class='tf-text-display-2xl dark:text-neutral-50'>
+      <p class='tf-text-label home-section__eyebrow'>Browse Technologies</p>
+      <h2 id='technologies-title' class='tf-text-display-2xl'>
         Find fixes by stack
       </h2>
     </div>
-    <a href='/cases/' class='tf-text-link text-sm font-medium'>
-      View all cases →
-    </a>
+    <a href='/cases/' class='home-section__link'>View all cases →</a>
   </div>
 
   <nav aria-label='Popular technologies'>
-    <ul class='grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+    <ul class='home-tech-grid'>
       {
         technologies.map((tech) => (
           <li>
-            <a
-              href={tech.href}
-              class='home-tech-card flex h-full items-center gap-4 rounded-tf-lg border border-tf-border bg-tf-surface p-4 dark:border-neutral-800 dark:bg-neutral-950'
-            >
-              <span class='flex h-11 w-11 shrink-0 items-center justify-center rounded-tf-md border border-tf-border bg-tf-surface-inset text-tf-brand dark:border-neutral-700 dark:bg-neutral-900 dark:text-blue-400'>
+            <a href={tech.href} class='home-tech-card'>
+              <span class='home-tech-card__icon'>
                 <TechIcon id={tech.id} />
               </span>
               <span class='min-w-0'>
-                <span class='block tf-text-display-lg text-sm'>
-                  {tech.label}
-                </span>
-                <span class='tf-text-caption mt-0.5 block'>
+                <span class='home-tech-card__label'>{tech.label}</span>
+                <span class='home-tech-card__count'>
                   {tech.count} verified {tech.count === 1 ? 'case' : 'cases'}
                 </span>
               </span>

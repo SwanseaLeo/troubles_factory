@@ -1,30 +1,48 @@
-/* src/styles/tokens.css — design tokens (colors, type, space, motion) */
+/* src/styles/tokens.css — design tokens (Tailwind @theme + runtime CSS variables) */
 
 @theme {
-  /* ---- Brand & semantic colors (preserve existing identity) ---- */
+  /* ---- Brand ---- */
   --color-tf-brand: #0066cc;
   --color-tf-brand-hover: #0052a3;
   --color-tf-brand-active: #1d4ed8;
   --color-tf-brand-subtle: #eff6ff;
   --color-tf-brand-muted: #dbeafe;
+  --color-tf-brand-glow: rgb(0 102 204 / 0.12);
 
+  /* ---- Surfaces ---- */
   --color-tf-surface: #ffffff;
   --color-tf-surface-page: #f5f5f5;
   --color-tf-surface-sidebar: #fafafa;
   --color-tf-surface-inset: #f7f8f8;
+  --color-tf-surface-elevated: #ffffff;
   --color-tf-surface-hover: rgb(0 0 0 / 0.02);
   --color-tf-surface-pressed: rgb(0 0 0 / 0.04);
+  --color-tf-surface-overlay: rgb(255 255 255 / 0.92);
 
+  /* ---- Text ---- */
   --color-tf-text: #171717;
   --color-tf-text-secondary: #525252;
   --color-tf-text-muted: #737373;
   --color-tf-text-subtle: #a3a3a3;
   --color-tf-text-inverse: #ffffff;
+  --color-tf-text-brand: #0066cc;
 
-  --color-tf-border: rgb(0 0 0 / 0.1);
-  --color-tf-border-strong: rgb(0 0 0 / 0.15);
+  /* ---- Borders ---- */
+  --color-tf-border: rgb(0 0 0 / 0.08);
+  --color-tf-border-subtle: rgb(0 0 0 / 0.05);
+  --color-tf-border-strong: rgb(0 0 0 / 0.12);
   --color-tf-border-focus: #0066cc;
+  --color-tf-border-brand: rgb(0 102 204 / 0.22);
 
+  /* ---- Icons ---- */
+  --color-tf-icon: #737373;
+  --color-tf-icon-muted: #a3a3a3;
+  --color-tf-icon-brand: #0066cc;
+  --color-tf-icon-success: #047857;
+  --color-tf-icon-warning: #b45309;
+  --color-tf-icon-danger: #b42318;
+
+  /* ---- Semantic ---- */
   --color-tf-success: #047857;
   --color-tf-success-subtle: #ecfdf5;
   --color-tf-success-border: rgb(4 120 87 / 0.2);
@@ -32,6 +50,7 @@
   --color-tf-warning: #b45309;
   --color-tf-warning-subtle: #fffbeb;
   --color-tf-warning-border: rgb(180 83 9 / 0.2);
+
   --color-tf-highlight: #fef08a;
   --color-tf-highlight-text: #713f12;
 
@@ -42,7 +61,7 @@
   --color-tf-info: #0066cc;
   --color-tf-info-subtle: #eff6ff;
 
-  /* Tag accent palette */
+  /* ---- Tag palette ---- */
   --color-tf-tag-blue-bg: #e8f2fa;
   --color-tf-tag-blue-text: #0066cc;
   --color-tf-tag-gray-bg: #e8e8ed;
@@ -55,6 +74,18 @@
   --color-tf-tag-red-text: #b30000;
   --color-tf-tag-yellow-bg: #fffef2;
   --color-tf-tag-yellow-text: #9a6700;
+
+  /* ---- Prose / code ---- */
+  --color-tf-code-bg: #171717;
+  --color-tf-code-border: #262626;
+  --color-tf-code-text: #f5f5f5;
+  --color-tf-code-inline-bg: #f3f4f6;
+  --color-tf-code-inline-text: #b42318;
+  --color-tf-blockquote-border: #d97706;
+  --color-tf-blockquote-bg: #fffbeb;
+  --color-tf-blockquote-text: #525252;
+  --color-tf-table-border: rgb(0 0 0 / 0.1);
+  --color-tf-table-stripe: rgb(0 0 0 / 0.02);
 
   /* ---- Typography ---- */
   --font-tf-display: 'Outfit', sans-serif;
@@ -82,6 +113,8 @@
   --text-tf-3xl--line-height: 2.25rem;
   --text-tf-4xl: 2.25rem;
   --text-tf-4xl--line-height: 2.5rem;
+  --text-tf-5xl: 3rem;
+  --text-tf-5xl--line-height: 1.1;
 
   /* ---- Spacing (4px grid) ---- */
   --spacing-tf-0: 0;
@@ -99,29 +132,40 @@
   --spacing-tf-10: 2.5rem;
   --spacing-tf-12: 3rem;
   --spacing-tf-16: 4rem;
+  --spacing-tf-20: 5rem;
+  --spacing-tf-24: 6rem;
 
-  /* ---- Border radius (max 8px per product guidelines) ---- */
+  /* ---- Radius (max 8px) ---- */
   --radius-tf-none: 0;
   --radius-tf-sm: 0.25rem;
   --radius-tf-md: 0.375rem;
   --radius-tf-lg: 0.5rem;
   --radius-tf-full: 9999px;
 
-  /* ---- Shadows (subtle, docs-platform) ---- */
+  /* ---- Shadows ---- */
   --shadow-tf-xs: 0 1px 2px rgb(0 0 0 / 0.04);
   --shadow-tf-sm: 0 1px 3px rgb(0 0 0 / 0.06), 0 1px 2px rgb(0 0 0 / 0.04);
   --shadow-tf-md: 0 4px 12px rgb(0 0 0 / 0.08);
   --shadow-tf-lg: 0 8px 24px rgb(0 0 0 / 0.1);
+  --shadow-tf-xl: 0 16px 40px rgb(0 0 0 / 0.12);
   --shadow-tf-focus: 0 0 0 2px var(--color-tf-surface), 0 0 0 4px var(--color-tf-border-focus);
+  --shadow-tf-brand: 0 4px 14px var(--color-tf-brand-glow);
 
-  /* ---- Container widths ---- */
+  /* ---- Layout widths ---- */
   --width-tf-content: 48rem;
   --width-tf-narrow: 42rem;
   --width-tf-wide: 64rem;
+  --width-tf-max: 72rem;
   --width-tf-sidebar: 16rem;
   --width-tf-sidebar-xl: 18rem;
 
-  /* ---- Breakpoints (documented; Tailwind defaults) ---- */
+  /* ---- Grid ---- */
+  --grid-tf-gap-sm: var(--spacing-tf-3);
+  --grid-tf-gap-md: var(--spacing-tf-4);
+  --grid-tf-gap-lg: var(--spacing-tf-6);
+  --grid-tf-gap-xl: var(--spacing-tf-8);
+
+  /* ---- Breakpoints ---- */
   --breakpoint-tf-sm: 40rem;
   --breakpoint-tf-md: 48rem;
   --breakpoint-tf-lg: 64rem;
@@ -135,10 +179,20 @@
   --duration-tf-fast: 100ms;
   --duration-tf-normal: 150ms;
   --duration-tf-slow: 250ms;
+
+  /* ---- Z-index ---- */
+  --z-tf-base: 0;
+  --z-tf-dropdown: 50;
+  --z-tf-sticky: 40;
+  --z-tf-header: 60;
+  --z-tf-overlay: 70;
+  --z-tf-modal: 80;
 }
 
 :root {
-  /* Semantic aliases for non-Tailwind CSS */
+  color-scheme: light;
+
+  /* Runtime theme aliases (used by component CSS) */
   --tf-color-link: var(--color-tf-brand);
   --tf-color-link-hover: var(--color-tf-brand-hover);
   --tf-color-link-active: var(--color-tf-brand-active);
@@ -151,14 +205,35 @@
   --tf-radius-md: var(--radius-tf-md);
   --tf-radius-lg: var(--radius-tf-lg);
 
+  --tf-shadow-xs: var(--shadow-tf-xs);
   --tf-shadow-sm: var(--shadow-tf-sm);
   --tf-shadow-md: var(--shadow-tf-md);
+  --tf-shadow-lg: var(--shadow-tf-lg);
   --tf-shadow-focus: var(--shadow-tf-focus);
+  --tf-shadow-brand: var(--shadow-tf-brand);
 
   --tf-section-gap: var(--spacing-tf-8);
   --tf-section-gap-lg: var(--spacing-tf-12);
 
-  /* Legacy scrollbar tokens */
-  --primary: var(--color-tf-surface);
-  --secondary: #000000;
+  /* Gradients */
+  --tf-gradient-hero: linear-gradient(
+    180deg,
+    var(--color-tf-surface) 0%,
+    var(--color-tf-surface-page) 100%
+  );
+  --tf-gradient-brand-subtle: linear-gradient(
+    135deg,
+    var(--color-tf-brand-subtle) 0%,
+    var(--color-tf-surface) 100%
+  );
+  --tf-gradient-surface-inset: linear-gradient(
+    180deg,
+    var(--color-tf-surface-inset) 0%,
+    var(--color-tf-surface) 100%
+  );
+
+  /* Scrollbar */
+  --tf-scrollbar-track: var(--color-tf-surface-page);
+  --tf-scrollbar-thumb: rgb(0 0 0 / 0.18);
+  --tf-scrollbar-thumb-hover: rgb(0 0 0 / 0.28);
 }

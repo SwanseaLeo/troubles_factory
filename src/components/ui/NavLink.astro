@@ -1,0 +1,19 @@
+---
+// src/components/ui/NavLink.astro
+import { navLinkClasses } from '../../styles/design-system';
+
+interface Props {
+  href: string;
+  active?: boolean;
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const { href, active = false, class: className, target, rel } = Astro.props;
+const classes = navLinkClasses(active, className);
+---
+
+<a href={href} class={classes} target={target} rel={rel}>
+  <slot />
+</a>

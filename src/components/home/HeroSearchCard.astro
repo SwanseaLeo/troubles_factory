@@ -1,7 +1,6 @@
 ---
 // src/components/home/HeroSearchCard.astro
 import SearchBar from '@components/layout/SearchBar.astro';
-import Card from '@components/ui/Card.astro';
 import SearchSuggestions from './SearchSuggestions.astro';
 
 interface Suggestion {
@@ -16,16 +15,18 @@ interface Props {
 const { suggestions } = Astro.props;
 ---
 
-<Card variant='elevated' padding='lg' class='home-hero-search w-full'>
-  <div class='space-y-5'>
-    <div>
-      <p class='tf-text-label mb-2'>Search verified cases</p>
-      <SearchBar size='hero' />
-    </div>
-
-    <SearchSuggestions suggestions={suggestions} align='start' />
+<div class='home-search-card home-hero-search'>
+  <div>
+    <p class='tf-text-label home-search-card__label'>Search verified cases</p>
+    <SearchBar size='hero' />
   </div>
-</Card>
+
+  <SearchSuggestions
+    suggestions={suggestions}
+    align='start'
+    class='home-search-card__suggestions'
+  />
+</div>
 
 <script>
   function initHeroSearchCard(root: HTMLElement) {
@@ -62,11 +63,3 @@ const { suggestions } = Astro.props;
   initHeroSearchCards();
   document.addEventListener('astro:page-load', initHeroSearchCards);
 </script>
-
-<style>
-  .home-hero-search :global(.mt-5 p),
-  .home-hero-search :global(.mt-5 ul) {
-    text-align: left;
-    justify-content: flex-start;
-  }
-</style>

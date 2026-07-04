@@ -62,17 +62,16 @@ const seoContext: HomeSeoContext = {
   keywords={keywords}
   ogSiteName='TroubleFactory'
   navVariant='minimal'
-  footerVariant='home'
-  classList='home-page bg-tf-surface-page dark:bg-neutral-950'
+  classList='home-page'
 >
   <HomeStructuredData slot='head' context={seoContext} />
 
   <main id='main-content'>
     <HeroSection suggestions={suggestions} />
-    <WhySection />
     <TechnologyGrid technologies={technologies} />
     <LatestCasesSection latestPosts={latestPosts} trendingPosts={trendingPosts} />
     <StatsSection stats={stats} />
+    <WhySection />
     <ComparisonSection />
     <NewsletterSection />
     <HomeSeoContent

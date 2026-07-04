@@ -43,10 +43,12 @@ const classes = buttonClasses(variant, size, className);
       rel={rel}
       aria-disabled={disabled || undefined}
     >
+      <slot name='icon' />
       <slot />
     </a>
   ) : (
     <button type={type} class={classes} disabled={disabled} title={title}>
+      <slot name='icon' />
       <slot />
     </button>
   )

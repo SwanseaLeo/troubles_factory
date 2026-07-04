@@ -1,0 +1,196 @@
+/* src/styles/prose.css — markdown content: code, tables, images */
+
+.tf-prose {
+  font-family: var(--font-tf-ui);
+  color: var(--color-tf-text-secondary);
+  line-height: 1.8;
+}
+
+.tf-prose :where(h2, h3, h4) {
+  font-family: var(--font-tf-display);
+  font-weight: 600;
+  color: var(--color-tf-text);
+  letter-spacing: -0.01em;
+}
+
+.tf-prose :where(h3) {
+  margin-top: 3rem;
+  border-top: 1px solid var(--color-tf-border);
+  padding-top: 2rem;
+}
+
+.tf-prose :where(h4) {
+  margin-top: 2rem;
+}
+
+.tf-prose :where(p, li) {
+  line-height: 1.8;
+}
+
+.tf-prose :where(strong) {
+  color: var(--color-tf-text);
+  font-weight: 600;
+}
+
+.tf-prose :where(a) {
+  color: var(--color-tf-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-prose :where(a:hover) {
+  color: var(--color-tf-brand-hover);
+}
+
+/* ---- Code blocks ---- */
+.tf-prose :where(pre) {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--color-tf-code-border);
+  border-radius: var(--radius-tf-md);
+  background-color: var(--color-tf-code-bg);
+  color: var(--color-tf-code-text);
+  scrollbar-color: var(--color-tf-text-muted) var(--color-tf-code-border);
+  scrollbar-width: thin;
+}
+
+.tf-prose :where(pre code) {
+  font-family: var(--font-tf-mono);
+  font-size: var(--text-tf-sm);
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.tf-prose :where(:not(pre) > code) {
+  border-radius: var(--radius-tf-sm);
+  background-color: var(--color-tf-code-inline-bg);
+  padding: 0.15rem 0.35rem;
+  font-family: var(--font-tf-mono);
+  font-size: 0.875em;
+  color: var(--color-tf-code-inline-text);
+}
+
+.tf-code-block {
+  position: relative;
+  border: 1px solid var(--color-tf-code-border);
+  border-radius: var(--radius-tf-md);
+  background-color: var(--color-tf-code-bg);
+  overflow: hidden;
+}
+
+.tf-code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-tf-2);
+  border-bottom: 1px solid var(--color-tf-code-border);
+  padding: var(--spacing-tf-2) var(--spacing-tf-3);
+  font-family: var(--font-tf-mono);
+  font-size: var(--text-tf-xs);
+  color: var(--color-tf-text-muted);
+}
+
+.tf-code-block__body {
+  overflow-x: auto;
+  padding: var(--spacing-tf-4);
+  font-family: var(--font-tf-mono);
+  font-size: var(--text-tf-sm);
+  line-height: 1.6;
+  color: var(--color-tf-code-text);
+}
+
+.tf-code-block__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-tf-1);
+  border-radius: var(--radius-tf-sm);
+  border: 1px solid var(--color-tf-code-border);
+  padding: var(--spacing-tf-1) var(--spacing-tf-2);
+  font-family: var(--font-tf-ui);
+  font-size: var(--text-tf-xs);
+  color: var(--color-tf-text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-tf-normal) var(--ease-tf-default),
+    color var(--duration-tf-normal) var(--ease-tf-default);
+}
+
+.tf-code-block__copy:hover {
+  background-color: var(--color-tf-surface-hover);
+  color: var(--color-tf-text);
+}
+
+/* ---- Blockquotes ---- */
+.tf-prose :where(blockquote) {
+  border-left: 3px solid var(--color-tf-blockquote-border);
+  background-color: var(--color-tf-blockquote-bg);
+  padding: var(--spacing-tf-3) var(--spacing-tf-4);
+  color: var(--color-tf-blockquote-text);
+}
+
+/* ---- Tables ---- */
+.tf-prose :where(table) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  border: 1px solid var(--color-tf-table-border);
+  border-radius: var(--radius-tf-md);
+}
+
+.tf-prose :where(th, td) {
+  border: 1px solid var(--color-tf-table-border);
+  padding: var(--spacing-tf-2) var(--spacing-tf-3);
+  text-align: left;
+}
+
+.tf-prose :where(th) {
+  background-color: var(--color-tf-surface-inset);
+  font-weight: 600;
+  color: var(--color-tf-text);
+}
+
+.tf-prose :where(tr:nth-child(even)) {
+  background-color: var(--color-tf-table-stripe);
+}
+
+/* ---- Images ---- */
+.tf-image-frame {
+  overflow: hidden;
+  border-radius: var(--radius-tf-lg);
+  border: 1px solid var(--color-tf-border-strong);
+  background-color: var(--color-tf-surface-inset);
+}
+
+.tf-image-frame--hero {
+  aspect-ratio: 2 / 1;
+}
+
+.tf-image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tf-image-frame--contain img {
+  object-fit: contain;
+}
+
+.tf-image-caption {
+  margin-top: var(--spacing-tf-2);
+  font-family: var(--font-tf-ui);
+  font-size: var(--text-tf-xs);
+  color: var(--color-tf-text-muted);
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .tf-prose :where(h3) {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+  }
+}

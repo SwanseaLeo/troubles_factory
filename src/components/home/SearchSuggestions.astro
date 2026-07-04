@@ -7,14 +7,15 @@ interface Suggestion {
 interface Props {
   suggestions: Suggestion[];
   align?: 'center' | 'start';
+  class?: string;
 }
 
-const { suggestions, align = 'center' } = Astro.props;
+const { suggestions, align = 'center', class: className } = Astro.props;
 ---
 
 {
   suggestions.length > 0 && (
-    <div class='mt-5 w-full'>
+    <div class:list={['mt-5 w-full', className]}>
       <p
         class:list={[
           'tf-text-caption mb-2',

@@ -1,0 +1,14 @@
+---
+// src/components/ui/ListPanel.astro
+import { listPanelClasses } from '../../styles/design-system';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<ul class={listPanelClasses(className)}>
+  <slot />
+</ul>

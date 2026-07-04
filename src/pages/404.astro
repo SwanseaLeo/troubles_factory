@@ -1,17 +1,31 @@
 ---
 import ErrorPage from '@components/errors/404.astro';
-import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import BlogList from '@components/blog/BlogList.astro';
 import Layout from '@layouts/Default.astro';
+import { getPublishedCases } from '../utils/cases';
+import '../styles/browse.css';
+
+const posts = (await getPublishedCases()).slice(0, 3);
 ---
 
 <Layout
   title='Page Not Found'
   description='The page you requested could not be found. Search verified troubleshooting cases or browse all cases.'
-  classList='bg-tf-surface-page dark:bg-neutral-950'
+  classList='browse-page'
   pageTitle='Page Not Found'
+  robots='noindex, follow'
 >
-  <main id='main-content' class='mx-auto max-w-5xl px-6 py-24'>
+  <main id='main-content' class='browse-layout__main mx-auto max-w-3xl'>
     <ErrorPage />
-    <RecentBlogPosts />
+    {
+      posts.length > 0 && (
+        <section class='error-page__section not-prose' aria-labelledby='recent-cases-title'>
+          <h2 id='recent-cases-title' class='error-page__section-title'>
+            Recent cases
+          </h2>
+          <BlogList posts={posts} />
+        </section>
+      )
+    }
   </main>
 </Layout>

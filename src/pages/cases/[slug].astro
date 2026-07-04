@@ -1,6 +1,8 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '@layouts/BlogPost.astro';
+import { extractCaseVersions, getPublishedCases, getRelatedCases } from '../../utils/cases';
+import { inferCaseMeta } from '../../utils/home-data';
 
 export async function getStaticPaths() {
   const blogEntries = await getCollection('blog');
@@ -19,6 +21,11 @@ interface Heading {
 const { blogpost } = Astro.props;
 const { Content } = await render(blogpost);
 const headings = blogpost.rendered?.metadata?.headings as Heading[] | undefined;
+
+const allPosts = await getPublishedCases();
+const relatedCases = getRelatedCases(allPosts, blogpost);
+const versions = extractCaseVersions(blogpost);
+const meta = inferCaseMeta(blogpost);
 ---
 
 <Layout
@@ -29,6 +36,10 @@ const headings = blogpost.rendered?.metadata?.headings as Heading[] | undefined;
   headings={headings}
   imgSrc={blogpost.data.imgUrl}
   tags={blogpost.data.tags}
+  slug={blogpost.id}
+  {relatedCases}
+  {versions}
+  {meta}
 >
   <Content />
 </Layout>

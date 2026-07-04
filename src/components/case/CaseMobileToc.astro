@@ -1,0 +1,52 @@
+---
+import Icon from '@components/ui/Icon.astro';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+---
+
+{
+  headings.length > 0 && (
+    <div class='case-mobile-toc not-prose'>
+      <button
+        type='button'
+        class='case-mobile-toc__toggle tf-focus-ring'
+        data-case-mobile-toc-toggle
+        aria-expanded='false'
+        aria-controls='case-mobile-toc-panel'
+      >
+        <span>On this page</span>
+        <Icon name='chevron-down' size={16} tone='muted' />
+      </button>
+      <div
+        id='case-mobile-toc-panel'
+        class='case-mobile-toc__panel'
+        data-case-mobile-toc-panel
+        hidden
+      >
+        <ul class='case-nav__list'>
+          {headings.map((heading) => (
+            <li>
+              <a
+                href={`#${heading.slug}`}
+                class='case-nav__link'
+                data-case-toc-link
+              >
+                {heading.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}

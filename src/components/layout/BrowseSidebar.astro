@@ -1,4 +1,5 @@
 ---
+import SidebarLink from '@components/ui/SidebarLink.astro';
 import type { CollectionEntry } from 'astro:content';
 import type { TagEntry } from '../../utils/cases';
 
@@ -13,7 +14,6 @@ const { tags, recentPosts, caseCount, activePath = Astro.url.pathname } =
   Astro.props;
 
 function isActive(href: string) {
-  if (href === '/') return activePath === '/';
   const normalized = href.replace(/\/$/, '');
   const path = activePath.replace(/\/$/, '');
   return path === normalized || path.startsWith(`${normalized}/`);
@@ -23,34 +23,29 @@ function isAllCasesActive() {
   const path = activePath.replace(/\/$/, '');
   return (path === '/cases' || path.startsWith('/cases/')) && !path.includes('/tags/');
 }
-
-function navClass(href: string, active?: boolean) {
-  const selected = active ?? isActive(href);
-  return ['browse-nav-link tf-focus-ring text-sm', selected && 'is-active']
-    .filter(Boolean)
-    .join(' ');
-}
 ---
 
-<aside class='flex h-full flex-col gap-5' aria-label='Browse cases'>
+<div class='flex h-full flex-col gap-5'>
   <div>
-    <p class='tf-text-label dark:text-neutral-500'>Index</p>
-    <p class='tf-text-body mt-0.5 text-sm dark:text-neutral-400'>
+    <p class='tf-text-label'>Index</p>
+    <p class='tf-text-body mt-0.5 text-sm'>
       {caseCount} {caseCount === 1 ? 'case' : 'cases'} · {tags.length}{' '}
       {tags.length === 1 ? 'topic' : 'topics'}
     </p>
   </div>
 
   <nav aria-label='Quick links'>
-    <h2 class='tf-text-label dark:text-neutral-500'>Quick links</h2>
+    <h2 class='tf-text-label'>Quick links</h2>
     <ul class='mt-1.5 space-y-0.5'>
       <li>
-        <a href='/' class:list={[navClass('/'), 'px-3 py-2']}>Search</a>
+        <SidebarLink href='/search' active={isActive('/search')} class='px-3 py-2'>
+          Search
+        </SidebarLink>
       </li>
       <li>
-        <a href='/cases/' class:list={[navClass('/cases/', isAllCasesActive()), 'px-3 py-2']}>
+        <SidebarLink href='/cases/' active={isAllCasesActive()} class='px-3 py-2'>
           All cases
-        </a>
+        </SidebarLink>
       </li>
     </ul>
   </nav>
@@ -58,28 +53,27 @@ function navClass(href: string, active?: boolean) {
   {
     tags.length > 0 && (
       <nav class='min-h-0' aria-label='Topics'>
-        <h2 class='tf-text-label dark:text-neutral-500'>Topics</h2>
-        <ul class='browse-sidebar-scroll mt-1.5 max-h-64 space-y-0.5 overflow-y-auto'>
+        <h2 class='tf-text-label'>Topics</h2>
+        <ul class='tf-sidebar-scroll mt-1.5 max-h-64 space-y-0.5 overflow-y-auto'>
           {tags.map((tag) => {
             const href = `/cases/tags/${tag.slug}/`;
             return (
               <li>
-                <a
+                <SidebarLink
                   href={href}
-                  class:list={[navClass(href), 'flex items-center justify-between gap-2 px-3 py-2']}
+                  active={isActive(href)}
+                  class='flex items-center justify-between gap-2 px-3 py-2'
                 >
                   <span class='truncate'>{tag.label}</span>
                   <span
                     class:list={[
                       'shrink-0 text-xs tabular-nums',
-                      isActive(href)
-                        ? 'text-tf-brand-active dark:text-blue-400'
-                        : 'text-tf-text-muted dark:text-neutral-500',
+                      isActive(href) ? 'text-tf-brand-active' : 'text-tf-text-muted',
                     ]}
                   >
                     {tag.count}
                   </span>
-                </a>
+                </SidebarLink>
               </li>
             );
           })}
@@ -91,21 +85,15 @@ function navClass(href: string, active?: boolean) {
   {
     recentPosts.length > 0 && (
       <nav class='min-h-0 flex-1' aria-label='Recent cases'>
-        <h2 class='tf-text-label dark:text-neutral-500'>Recent</h2>
-        <ul class='browse-sidebar-scroll mt-1.5 space-y-0.5 overflow-y-auto'>
+        <h2 class='tf-text-label'>Recent</h2>
+        <ul class='tf-sidebar-scroll mt-1.5 space-y-0.5 overflow-y-auto'>
           {recentPosts.slice(0, 5).map((post) => {
             const href = `/cases/${post.id}/`;
             return (
               <li>
-                <a
-                  href={href}
-                  class:list={[
-                    navClass(href),
-                    'browse-nav-link-muted px-3 py-2 leading-snug',
-                  ]}
-                >
+                <SidebarLink href={href} active={isActive(href)} muted class='px-3 py-2 leading-snug'>
                   {post.data.title}
-                </a>
+                </SidebarLink>
               </li>
             );
           })}
@@ -113,4 +101,4 @@ function navClass(href: string, active?: boolean) {
       </nav>
     )
   }
-</aside>
+</div>

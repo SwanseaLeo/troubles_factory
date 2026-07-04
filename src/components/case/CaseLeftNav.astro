@@ -1,0 +1,34 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+---
+
+{
+  headings.length > 0 && (
+    <nav class='case-nav not-prose' aria-label='On this page'>
+      <p class='case-nav__title'>On this page</p>
+      <ul class='case-nav__list'>
+        {headings.map((heading) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class='case-nav__link'
+              data-case-toc-link
+            >
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

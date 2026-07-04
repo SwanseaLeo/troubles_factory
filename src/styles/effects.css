@@ -1,0 +1,130 @@
+/* src/styles/effects.css — icons, scrollbars, hover utilities, motion */
+
+.tf-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  vertical-align: middle;
+  stroke: currentColor;
+  fill: none;
+}
+
+.tf-icon--muted {
+  color: var(--color-tf-icon-muted);
+}
+
+.tf-icon--brand {
+  color: var(--color-tf-icon-brand);
+}
+
+.tf-icon--success {
+  color: var(--color-tf-icon-success);
+}
+
+.tf-icon--warning {
+  color: var(--color-tf-icon-warning);
+}
+
+.tf-icon--danger {
+  color: var(--color-tf-icon-danger);
+}
+
+/* ---- Scrollbars ---- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--tf-scrollbar-thumb) var(--tf-scrollbar-track);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--tf-scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--radius-tf-full);
+  background: var(--tf-scrollbar-thumb);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--tf-scrollbar-thumb-hover);
+}
+
+.browse-sidebar-scroll,
+.tf-sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.browse-sidebar-scroll::-webkit-scrollbar,
+.tf-sidebar-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+::selection {
+  background-color: var(--color-tf-brand-subtle);
+  color: var(--color-tf-text);
+}
+
+/* ---- Surface utilities ---- */
+.tf-surface-page {
+  background-color: var(--color-tf-surface-page);
+}
+
+.tf-surface-elevated {
+  background-color: var(--color-tf-surface-elevated);
+}
+
+.tf-gradient-hero {
+  background: var(--tf-gradient-hero);
+}
+
+.tf-gradient-brand-subtle {
+  background: var(--tf-gradient-brand-subtle);
+}
+
+/* ---- Hover lift (cards, tech tiles) ---- */
+.tf-hover-lift {
+  transition:
+    border-color var(--duration-tf-normal) var(--ease-tf-default),
+    box-shadow var(--duration-tf-normal) var(--ease-tf-default),
+    transform var(--duration-tf-fast) var(--ease-tf-default);
+}
+
+.tf-hover-lift:hover {
+  border-color: var(--color-tf-border-brand);
+  box-shadow: var(--shadow-tf-md);
+  transform: translateY(-1px);
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .tf-btn,
+  .tf-card--interactive,
+  .tf-tag,
+  .tf-search-field,
+  .tf-search-result,
+  .browse-nav-link,
+  .tf-list-panel__row,
+  .tf-text-link,
+  .tf-nav-link,
+  .tf-icon-link,
+  .tf-footer__link,
+  .tf-toc-link,
+  .tf-hover-lift,
+  .tf-code-block__copy {
+    transition: none;
+  }
+
+  .tf-hover-lift:hover {
+    transform: none;
+  }
+}

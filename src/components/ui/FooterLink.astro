@@ -1,0 +1,21 @@
+---
+// src/components/ui/FooterLink.astro
+interface Props {
+  href: string;
+  external?: boolean;
+  class?: string;
+}
+
+const { href, external = false, class: className } = Astro.props;
+---
+
+<li>
+  <a
+    href={href}
+    class:list={['tf-footer__link', className]}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+  >
+    <slot />
+  </a>
+</li>

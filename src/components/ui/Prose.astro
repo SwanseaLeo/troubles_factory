@@ -1,0 +1,14 @@
+---
+// src/components/ui/Prose.astro
+import { proseClasses } from '../../styles/design-system';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={proseClasses(className)}>
+  <slot />
+</div>

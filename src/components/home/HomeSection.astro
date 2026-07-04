@@ -4,20 +4,18 @@ interface Props {
   id?: string;
   labelledBy?: string;
   class?: string;
+  muted?: boolean;
 }
 
-const { id, labelledBy, class: className } = Astro.props;
+const { id, labelledBy, class: className, muted = false } = Astro.props;
 ---
 
 <section
   id={id}
-  class:list={[
-    'border-b border-tf-border px-4 py-16 md:px-8 md:py-20 dark:border-neutral-800',
-    className,
-  ]}
+  class:list={['home-section', muted && 'home-section--muted', className]}
   aria-labelledby={labelledBy}
 >
-  <div class='mx-auto max-w-6xl'>
+  <div class='home-section__inner'>
     <slot />
   </div>
 </section>

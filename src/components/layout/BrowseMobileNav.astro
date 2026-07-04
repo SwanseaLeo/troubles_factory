@@ -1,0 +1,84 @@
+---
+import Icon from '@components/ui/Icon.astro';
+import SidebarLink from '@components/ui/SidebarLink.astro';
+import type { TagEntry } from '../../utils/cases';
+
+interface Props {
+  tags: TagEntry[];
+  caseCount: number;
+  activePath?: string;
+}
+
+const { tags, caseCount, activePath = Astro.url.pathname } = Astro.props;
+
+function isActive(href: string) {
+  const normalized = href.replace(/\/$/, '');
+  const path = activePath.replace(/\/$/, '');
+  return path === normalized || path.startsWith(`${normalized}/`);
+}
+
+function isAllCasesActive() {
+  const path = activePath.replace(/\/$/, '');
+  return (path === '/cases' || path.startsWith('/cases/')) && !path.includes('/tags/');
+}
+---
+
+<div class='browse-mobile-nav not-prose'>
+  <button
+    type='button'
+    class='browse-mobile-nav__toggle tf-focus-ring'
+    data-browse-mobile-toggle
+    aria-expanded='false'
+    aria-controls='browse-mobile-panel'
+  >
+    <span>Browse · {caseCount} cases</span>
+    <Icon name='chevron-down' size={16} tone='muted' />
+  </button>
+  <div
+    id='browse-mobile-panel'
+    class='browse-mobile-nav__panel'
+    data-browse-mobile-panel
+    hidden
+  >
+    <nav aria-label='Browse'>
+      <ul class='space-y-0.5'>
+        <li>
+          <SidebarLink href='/search' active={isActive('/search')} class='px-3 py-2'>
+            Search
+          </SidebarLink>
+        </li>
+        <li>
+          <SidebarLink href='/cases/' active={isAllCasesActive()} class='px-3 py-2'>
+            All cases
+          </SidebarLink>
+        </li>
+      </ul>
+    </nav>
+    {
+      tags.length > 0 && (
+        <nav class='mt-4' aria-label='Topics'>
+          <p class='tf-text-label'>Topics</p>
+          <ul class='tf-sidebar-scroll mt-1.5 max-h-48 space-y-0.5 overflow-y-auto'>
+            {tags.slice(0, 12).map((tag) => {
+              const href = `/cases/tags/${tag.slug}/`;
+              return (
+                <li>
+                  <SidebarLink
+                    href={href}
+                    active={isActive(href)}
+                    class='flex items-center justify-between gap-2 px-3 py-2'
+                  >
+                    <span class='truncate'>{tag.label}</span>
+                    <span class='shrink-0 text-xs tabular-nums text-tf-text-muted'>
+                      {tag.count}
+                    </span>
+                  </SidebarLink>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )
+    }
+  </div>
+</div>

@@ -1,0 +1,20 @@
+---
+import Prose from '@components/ui/Prose.astro';
+
+interface Props {
+  author: string;
+}
+
+const { author } = Astro.props;
+---
+
+<Prose class='case-prose'>
+  <slot />
+</Prose>
+
+<footer class='case-footer not-prose'>
+  <p class='tf-text-caption'>Written by {author}</p>
+  <a href='/cases/' class='case-back-link mt-2' title='Back to cases'>
+    &larr; Back to cases
+  </a>
+</footer>

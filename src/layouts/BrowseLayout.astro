@@ -1,48 +1,51 @@
 ---
+import BrowseMobileNav from '@components/layout/BrowseMobileNav.astro';
 import BrowseSidebar from '@components/layout/BrowseSidebar.astro';
 import Layout from '@layouts/Default.astro';
 import { buildTagIndex, getPublishedCases } from '../utils/cases';
+import '../styles/browse.css';
 
 interface Props {
   title: string;
   description: string;
   pageTitle?: string;
   ogImage?: URL;
-  mainClass?: string;
 }
 
-const { title, description, pageTitle, ogImage, mainClass } = Astro.props;
+const { title, description, pageTitle, ogImage } = Astro.props;
 
 const posts = await getPublishedCases();
 const tags = buildTagIndex(posts);
 ---
 
-<Layout
-  {title}
-  {description}
-  {pageTitle}
-  {ogImage}
-  classList='bg-tf-surface-page dark:bg-neutral-950'
->
-  <main
-    id='main-content'
-    class:list={['min-h-[calc(100dvh-4.5rem)]', mainClass]}
-  >
-    <div class='flex min-h-[calc(100dvh-4.5rem)] flex-col lg:flex-row'>
-      <div
-        class='hidden shrink-0 border-b border-tf-border bg-tf-surface-sidebar lg:block lg:w-60 lg:border-b-0 lg:border-r xl:w-64 dark:border-neutral-800 dark:bg-neutral-900'
-      >
-        <div class='browse-sidebar-scroll sticky top-0 h-[calc(100dvh-4.5rem)] overflow-y-auto p-4'>
-          <BrowseSidebar
-            tags={tags}
-            recentPosts={posts}
-            caseCount={posts.length}
-          />
-        </div>
+<Layout {title} {description} {pageTitle} {ogImage} classList='browse-page'>
+  <main id='main-content' class='browse-layout'>
+    <aside class='browse-layout__sidebar' aria-label='Browse cases'>
+      <div class='browse-layout__sidebar-inner tf-sidebar-scroll'>
+        <BrowseSidebar tags={tags} recentPosts={posts} caseCount={posts.length} />
       </div>
-      <div class='min-w-0 flex-1 p-4 md:p-6 lg:p-8'>
-        <slot />
-      </div>
+    </aside>
+
+    <div class='browse-layout__main'>
+      <BrowseMobileNav tags={tags} caseCount={posts.length} />
+      <slot />
     </div>
   </main>
+
+  <script>
+    function initBrowseMobileNav() {
+      const toggle = document.querySelector<HTMLButtonElement>('[data-browse-mobile-toggle]');
+      const panel = document.querySelector<HTMLElement>('[data-browse-mobile-panel]');
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        panel.hidden = expanded;
+      });
+    }
+
+    initBrowseMobileNav();
+    document.addEventListener('astro:page-load', initBrowseMobileNav);
+  </script>
 </Layout>

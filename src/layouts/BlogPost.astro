@@ -1,11 +1,14 @@
 ---
-import BlogContent from '@components/blog/BlogContent.astro';
-import BlogSideBar from '@components/blog/BlogSideBar.astro';
-import RecentBlogPosts from '@components/generic/RecentBlogPosts.astro';
+import CaseHero from '@components/case/CaseHero.astro';
+import CaseLeftNav from '@components/case/CaseLeftNav.astro';
+import CaseMobileToc from '@components/case/CaseMobileToc.astro';
+import CaseProse from '@components/case/CaseProse.astro';
+import CaseRightSidebar from '@components/case/CaseRightSidebar.astro';
+import type { CollectionEntry } from 'astro:content';
 import type { ImageMetadata } from 'astro';
+import type { CaseDisplayMeta } from '../utils/home-data';
 import Layout from './Default.astro';
-
-const ogImage = new URL(`/v1/generate/og/${Astro.params.slug}.png`, Astro.url);
+import '../styles/case.css';
 
 interface Heading {
   depth: number;
@@ -21,30 +24,70 @@ interface Props {
   title: string;
   imgSrc: ImageMetadata;
   tags: string[];
+  slug: string;
+  relatedCases: CollectionEntry<'blog'>[];
+  versions: string[];
+  meta: CaseDisplayMeta;
 }
 
-const { author, pubDate, headings, description, title, imgSrc, tags } =
-  Astro.props;
+const {
+  author,
+  pubDate,
+  headings,
+  description,
+  title,
+  imgSrc,
+  tags,
+  slug,
+  relatedCases,
+  versions,
+  meta,
+} = Astro.props;
 
+const ogImage = new URL(`/v1/generate/og/${slug}.png`, Astro.url);
 const sectionHeadings = (headings ?? []).filter((heading) => heading.depth === 3);
 ---
 
-<Layout title={title} description={description} ogImage={ogImage}>
-  <main id='main-content' class='flex justify-center gap-8 p-4 md:p-6 lg:grid lg:grid-cols-[16rem_minmax(0,48rem)]'>
-    <BlogSideBar headings={sectionHeadings} />
-    <BlogContent
-      {pubDate}
+<Layout title={title} description={description} ogImage={ogImage} classList='case-page'>
+  <main id='main-content' class='case-layout'>
+    <CaseLeftNav headings={sectionHeadings} />
+
+    <div class='case-main'>
+      <CaseMobileToc headings={sectionHeadings} />
+      <CaseHero
+        {title}
+        {description}
+        {author}
+        {pubDate}
+        imgSrc={imgSrc}
+        {tags}
+        {meta}
+      />
+      <CaseProse {author}>
+        <slot />
+      </CaseProse>
+    </div>
+
+    <CaseRightSidebar
       {author}
-      {imgSrc}
-      {title}
-      {description}
+      {pubDate}
       {tags}
-      imgAlt={title}
-    >
-      <slot />
-    </BlogContent>
+      {meta}
+      {versions}
+      {relatedCases}
+      {slug}
+    />
   </main>
-  <section class='mx-auto max-w-5xl p-4 md:p-6'>
-    <RecentBlogPosts count={6} />
-  </section>
+
+  <script>
+    import '../scripts/case-page.ts';
+  </script>
 </Layout>
+
+<style is:global>
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(.case-page) {
+      scroll-behavior: smooth;
+    }
+  }
+</style>

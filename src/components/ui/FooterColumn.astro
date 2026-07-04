@@ -1,0 +1,16 @@
+---
+// src/components/ui/FooterColumn.astro
+interface Props {
+  title: string;
+  class?: string;
+}
+
+const { title, class: className } = Astro.props;
+---
+
+<nav class={className} aria-label={title}>
+  <h3 class='tf-footer__column-title'>{title}</h3>
+  <ul class='mt-4 space-y-2'>
+    <slot />
+  </ul>
+</nav>

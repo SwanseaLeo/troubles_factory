@@ -1,0 +1,109 @@
+/* src/styles/theme.css — dark mode variable overrides */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --color-tf-brand: #3b9eff;
+    --color-tf-brand-hover: #60b0ff;
+    --color-tf-brand-active: #93c5fd;
+    --color-tf-brand-subtle: rgb(0 102 204 / 0.12);
+    --color-tf-brand-muted: rgb(0 102 204 / 0.2);
+    --color-tf-brand-glow: rgb(59 158 255 / 0.18);
+
+    --color-tf-surface: #171717;
+    --color-tf-surface-page: #0a0a0a;
+    --color-tf-surface-sidebar: #111111;
+    --color-tf-surface-inset: #141414;
+    --color-tf-surface-elevated: #1a1a1a;
+    --color-tf-surface-hover: rgb(255 255 255 / 0.04);
+    --color-tf-surface-pressed: rgb(255 255 255 / 0.06);
+    --color-tf-surface-overlay: rgb(10 10 10 / 0.92);
+
+    --color-tf-text: #f5f5f5;
+    --color-tf-text-secondary: #a3a3a3;
+    --color-tf-text-muted: #737373;
+    --color-tf-text-subtle: #525252;
+    --color-tf-text-inverse: #171717;
+    --color-tf-text-brand: #60b0ff;
+
+    --color-tf-border: rgb(255 255 255 / 0.08);
+    --color-tf-border-subtle: rgb(255 255 255 / 0.05);
+    --color-tf-border-strong: rgb(255 255 255 / 0.12);
+    --color-tf-border-focus: #3b9eff;
+    --color-tf-border-brand: rgb(59 158 255 / 0.28);
+
+    --color-tf-icon: #a3a3a3;
+    --color-tf-icon-muted: #737373;
+    --color-tf-icon-brand: #60b0ff;
+    --color-tf-icon-success: #34d399;
+    --color-tf-icon-warning: #fbbf24;
+    --color-tf-icon-danger: #f87171;
+
+    --color-tf-success: #34d399;
+    --color-tf-success-subtle: rgb(4 120 87 / 0.15);
+    --color-tf-success-border: rgb(52 211 153 / 0.25);
+
+    --color-tf-warning: #fbbf24;
+    --color-tf-warning-subtle: rgb(180 83 9 / 0.15);
+    --color-tf-warning-border: rgb(251 191 36 / 0.25);
+
+    --color-tf-highlight: rgb(254 240 138 / 0.25);
+    --color-tf-highlight-text: #fde68a;
+
+    --color-tf-danger: #f87171;
+    --color-tf-danger-subtle: rgb(180 35 24 / 0.15);
+    --color-tf-danger-border: rgb(248 113 113 / 0.25);
+
+    --color-tf-info: #60b0ff;
+    --color-tf-info-subtle: rgb(0 102 204 / 0.15);
+
+    --color-tf-tag-blue-bg: rgb(0 102 204 / 0.15);
+    --color-tf-tag-blue-text: #93c5fd;
+    --color-tf-tag-gray-bg: rgb(255 255 255 / 0.06);
+    --color-tf-tag-gray-text: #d4d4d4;
+    --color-tf-tag-green-bg: rgb(4 120 87 / 0.15);
+    --color-tf-tag-green-text: #6ee7b7;
+    --color-tf-tag-orange-bg: rgb(180 83 9 / 0.15);
+    --color-tf-tag-orange-text: #fdba74;
+    --color-tf-tag-red-bg: rgb(180 35 24 / 0.15);
+    --color-tf-tag-red-text: #fca5a5;
+    --color-tf-tag-yellow-bg: rgb(154 103 0 / 0.15);
+    --color-tf-tag-yellow-text: #fde047;
+
+    --color-tf-code-bg: #0f0f0f;
+    --color-tf-code-border: #262626;
+    --color-tf-code-text: #e5e5e5;
+    --color-tf-code-inline-bg: rgb(255 255 255 / 0.08);
+    --color-tf-code-inline-text: #fca5a5;
+    --color-tf-blockquote-border: #fbbf24;
+    --color-tf-blockquote-bg: rgb(180 83 9 / 0.1);
+    --color-tf-blockquote-text: #a3a3a3;
+    --color-tf-table-border: rgb(255 255 255 / 0.1);
+    --color-tf-table-stripe: rgb(255 255 255 / 0.03);
+
+    --shadow-tf-xs: 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-tf-sm: 0 1px 3px rgb(0 0 0 / 0.4), 0 1px 2px rgb(0 0 0 / 0.3);
+    --shadow-tf-md: 0 4px 12px rgb(0 0 0 / 0.45);
+    --shadow-tf-lg: 0 8px 24px rgb(0 0 0 / 0.5);
+    --shadow-tf-xl: 0 16px 40px rgb(0 0 0 / 0.55);
+    --shadow-tf-focus:
+      0 0 0 2px var(--color-tf-surface-page), 0 0 0 4px var(--color-tf-border-focus);
+
+    --tf-gradient-hero: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
+    --tf-gradient-brand-subtle: linear-gradient(
+      135deg,
+      rgb(0 102 204 / 0.12) 0%,
+      var(--color-tf-surface) 100%
+    );
+    --tf-gradient-surface-inset: linear-gradient(
+      180deg,
+      var(--color-tf-surface-inset) 0%,
+      var(--color-tf-surface) 100%
+    );
+
+    --tf-scrollbar-track: #111111;
+    --tf-scrollbar-thumb: rgb(255 255 255 / 0.15);
+    --tf-scrollbar-thumb-hover: rgb(255 255 255 / 0.25);
+  }
+}

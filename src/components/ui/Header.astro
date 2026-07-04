@@ -1,0 +1,12 @@
+---
+// src/components/ui/Header.astro
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<header class:list={['tf-header', className]}>
+  <slot />
+</header>

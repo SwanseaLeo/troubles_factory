@@ -1,0 +1,56 @@
+---
+// src/components/ui/IconButton.astro
+import Icon from './Icon.astro';
+import { iconButtonClasses, type ButtonSize } from '../../styles/design-system';
+import type { LucideIconName } from '../../utils/lucide-icon';
+import type { IconTone } from '../../styles/design-system';
+
+interface Props {
+  icon: LucideIconName | string;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  size?: ButtonSize;
+  label: string;
+  disabled?: boolean;
+  iconTone?: IconTone;
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  icon,
+  href,
+  type = 'button',
+  size = 'md',
+  label,
+  disabled = false,
+  iconTone = 'default',
+  class: className,
+  target,
+  rel,
+} = Astro.props;
+
+const classes = iconButtonClasses(size, className);
+const iconSize = size === 'sm' ? 16 : size === 'lg' ? 20 : 18;
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      title={label}
+      aria-label={label}
+      target={target}
+      rel={rel}
+      aria-disabled={disabled || undefined}
+    >
+      <Icon name={icon} size={iconSize} tone={iconTone} />
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled} title={label} aria-label={label}>
+      <Icon name={icon} size={iconSize} tone={iconTone} />
+    </button>
+  )
+}

@@ -1,16 +1,22 @@
 ---
 // src/components/ui/StatusBadge.astro
+import Icon from './Icon.astro';
 import { badgeClasses, type StatusVariant } from '../../styles/design-system';
+import type { LucideIconName } from '../../utils/lucide-icon';
 
 interface Props {
   variant: StatusVariant;
+  dot?: boolean;
+  icon?: LucideIconName | string;
   class?: string;
 }
 
-const { variant, class: className } = Astro.props;
+const { variant, dot = false, icon, class: className } = Astro.props;
 const classes = badgeClasses(variant, className);
 ---
 
 <span class={classes}>
+  {dot && <span class='tf-badge__dot' aria-hidden='true'></span>}
+  {icon && <Icon name={icon} size={12} />}
   <slot />
 </span>

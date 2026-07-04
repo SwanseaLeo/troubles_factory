@@ -1,0 +1,34 @@
+---
+// src/components/ui/Icon.astro
+import type { IconTone } from '../../styles/design-system';
+import {
+  isLucideIconName,
+  renderLucideIcon,
+  type LucideIconName,
+} from '../../utils/lucide-icon';
+
+interface Props {
+  name: LucideIconName | string;
+  size?: number;
+  strokeWidth?: number;
+  tone?: IconTone;
+  class?: string;
+  label?: string;
+}
+
+const { name, size = 16, strokeWidth = 2, tone = 'default', class: className, label } =
+  Astro.props;
+
+if (!isLucideIconName(name)) {
+  throw new Error(`Unknown Lucide icon: "${name}"`);
+}
+
+const svg = renderLucideIcon(name, { size, strokeWidth, tone, className });
+---
+
+<span
+  class:list={['inline-flex shrink-0', label && 'tf-icon-wrap']}
+  aria-hidden={label ? undefined : 'true'}
+  aria-label={label}
+  set:html={svg}
+/>

@@ -1,0 +1,17 @@
+---
+// src/components/ui/Grid.astro
+import { gridClasses, type GridGap } from '../../styles/design-system';
+
+interface Props {
+  gap?: GridGap;
+  cols?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { gap, cols, class: className } = Astro.props;
+const classes = gridClasses({ gap, cols }, className);
+---
+
+<div class={classes}>
+  <slot />
+</div>

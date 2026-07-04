@@ -13,20 +13,18 @@ const { latestPosts, trendingPosts } = Astro.props;
 ---
 
 <HomeSection id='latest-verified-cases' labelledBy='latest-cases-title'>
-  <div class='mb-10 flex flex-wrap items-end justify-between gap-4'>
+  <div class='home-section__header'>
     <div>
-      <p class='tf-text-label mb-3'>Latest Verified Cases</p>
-      <h2 id='latest-cases-title' class='tf-text-display-2xl dark:text-neutral-50'>
+      <p class='tf-text-label home-section__eyebrow'>Latest Verified Cases</p>
+      <h2 id='latest-cases-title' class='tf-text-display-2xl'>
         Recently validated fixes
       </h2>
     </div>
-    <a href='/cases/' class='tf-text-link text-sm font-medium'>
-      Browse all cases →
-    </a>
+    <a href='/cases/' class='home-section__link'>Browse all cases →</a>
   </div>
 
-  <div class='grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem]'>
-    <ul class='grid gap-4 sm:grid-cols-2'>
+  <div class='home-cases-layout'>
+    <ul class='home-cases-grid'>
       {
         latestPosts.map((post) => (
           <li class='min-h-0'>

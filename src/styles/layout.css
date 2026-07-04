@@ -1,0 +1,118 @@
+/* src/styles/layout.css — container, grid, section spacing */
+
+.tf-container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--spacing-tf-4);
+}
+
+@media (min-width: 48rem) {
+  .tf-container {
+    padding-inline: var(--spacing-tf-6);
+  }
+}
+
+@media (min-width: 64rem) {
+  .tf-container {
+    padding-inline: var(--spacing-tf-8);
+  }
+}
+
+.tf-container--narrow {
+  max-width: var(--width-tf-narrow);
+}
+
+.tf-container--content {
+  max-width: var(--width-tf-content);
+}
+
+.tf-container--wide {
+  max-width: var(--width-tf-wide);
+}
+
+.tf-container--max {
+  max-width: var(--width-tf-max);
+}
+
+.tf-section {
+  padding-block: var(--tf-section-gap);
+}
+
+.tf-section--lg {
+  padding-block: var(--tf-section-gap-lg);
+}
+
+.tf-section + .tf-section {
+  border-top: 1px solid var(--color-tf-border);
+}
+
+.tf-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-tf-4);
+  margin-bottom: var(--spacing-tf-4);
+}
+
+.tf-grid {
+  display: grid;
+  gap: var(--grid-tf-gap-md);
+}
+
+.tf-grid--sm {
+  gap: var(--grid-tf-gap-sm);
+}
+
+.tf-grid--lg {
+  gap: var(--grid-tf-gap-lg);
+}
+
+.tf-grid--xl {
+  gap: var(--grid-tf-gap-xl);
+}
+
+.tf-grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tf-grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tf-grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 47.99rem) {
+  .tf-grid-cols-2,
+  .tf-grid-cols-3,
+  .tf-grid-cols-4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .tf-grid-cols-3,
+  .tf-grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.tf-split {
+  display: grid;
+  gap: var(--grid-tf-gap-lg);
+}
+
+@media (min-width: 64rem) {
+  .tf-split--sidebar {
+    grid-template-columns: var(--width-tf-sidebar) minmax(0, 1fr);
+  }
+
+  .tf-split--sidebar-xl {
+    grid-template-columns: var(--width-tf-sidebar-xl) minmax(0, 1fr);
+  }
+
+  .tf-split--content-sidebar {
+    grid-template-columns: minmax(0, 1fr) var(--width-tf-sidebar);
+  }
+}
