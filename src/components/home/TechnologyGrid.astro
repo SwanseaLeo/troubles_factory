@@ -12,16 +12,13 @@ const { technologies } = Astro.props;
 
 <HomeSection id='popular-technologies' labelledBy='technologies-title' muted>
   <div class='home-section__header'>
-    <div>
-      <p class='tf-text-label home-section__eyebrow'>Browse Technologies</p>
-      <h2 id='technologies-title' class='tf-text-display-2xl'>
-        Find fixes by stack
-      </h2>
-    </div>
-    <a href='/cases/' class='home-section__link'>View all cases →</a>
+    <h2 id='technologies-title' class='tf-text-display-2xl'>
+      Browse by Technology
+    </h2>
+    <a href='/cases/' class='home-section__link'>View all topics →</a>
   </div>
 
-  <nav aria-label='Popular technologies'>
+  <nav aria-label='Browse by technology'>
     <ul class='home-tech-grid'>
       {
         technologies.map((tech) => (
@@ -30,16 +27,27 @@ const { technologies } = Astro.props;
               <span class='home-tech-card__icon'>
                 <TechIcon id={tech.id} />
               </span>
-              <span class='min-w-0'>
+              <span class='home-tech-card__text'>
                 <span class='home-tech-card__label'>{tech.label}</span>
                 <span class='home-tech-card__count'>
-                  {tech.count} verified {tech.count === 1 ? 'case' : 'cases'}
+                  {tech.count} {tech.count === 1 ? 'case' : 'cases'}
                 </span>
               </span>
             </a>
           </li>
         ))
       }
+      <li>
+        <a href='/cases/' class='home-tech-card home-tech-card--more'>
+          <span class='home-tech-card__icon'>
+            <TechIcon id='more' />
+          </span>
+          <span class='home-tech-card__text'>
+            <span class='home-tech-card__label'>More</span>
+            <span class='home-tech-card__count'>View all</span>
+          </span>
+        </a>
+      </li>
     </ul>
   </nav>
 </HomeSection>

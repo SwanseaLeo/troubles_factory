@@ -2,9 +2,9 @@
 
 .home-page {
   --home-hero-gradient: var(--tf-gradient-hero);
-  --home-section-py: var(--spacing-tf-12);
-  --home-section-py-md: var(--spacing-tf-16);
-  --home-section-py-lg: var(--spacing-tf-20);
+  --home-section-py: var(--spacing-tf-10);
+  --home-section-py-md: var(--spacing-tf-12);
+  --home-section-py-lg: var(--spacing-tf-16);
   --home-container: var(--width-tf-max);
 }
 
@@ -25,7 +25,7 @@
 
 @media (min-width: 64rem) {
   .home-hero {
-    padding-block: 7rem;
+    padding-block: var(--spacing-tf-20);
   }
 }
 
@@ -181,7 +181,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--spacing-tf-4);
-  margin-bottom: var(--spacing-tf-10);
+  margin-bottom: var(--spacing-tf-8);
 }
 
 .home-section__header--center {
@@ -192,7 +192,7 @@
 
 .home-section__header--narrow {
   max-width: 42rem;
-  margin-bottom: var(--spacing-tf-10);
+  margin-bottom: var(--spacing-tf-8);
 }
 
 .home-section__eyebrow {
@@ -241,27 +241,32 @@
   }
 }
 
+@media (min-width: 80rem) {
+  .home-tech-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
 .home-tech-card {
   display: flex;
   align-items: center;
-  gap: var(--spacing-tf-4);
+  gap: var(--spacing-tf-3);
   height: 100%;
+  min-height: 4.5rem;
   border-radius: var(--radius-tf-lg);
   border: 1px solid var(--color-tf-border);
   background-color: var(--color-tf-surface);
-  padding: var(--spacing-tf-4);
+  padding: var(--spacing-tf-3) var(--spacing-tf-4);
   text-decoration: none;
   color: inherit;
   transition:
     border-color var(--duration-tf-normal) var(--ease-tf-default),
-    box-shadow var(--duration-tf-normal) var(--ease-tf-default),
-    transform var(--duration-tf-fast) var(--ease-tf-default);
+    box-shadow var(--duration-tf-normal) var(--ease-tf-default);
 }
 
 .home-tech-card:hover {
-  border-color: var(--color-tf-border-brand);
-  box-shadow: var(--shadow-tf-md);
-  transform: translateY(-1px);
+  border-color: var(--color-tf-border-strong);
+  box-shadow: var(--shadow-tf-sm);
 }
 
 .home-tech-card__icon {
@@ -269,13 +274,18 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: var(--radius-tf-md);
-  border: 1px solid var(--color-tf-border);
-  background: var(--tf-gradient-surface-inset);
-  background-color: var(--color-tf-surface-inset);
-  color: var(--color-tf-icon-brand);
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.home-tech-card__logo {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.home-tech-card__text {
+  min-width: 0;
 }
 
 .home-tech-card__label {
@@ -293,6 +303,10 @@
   font-family: var(--font-tf-ui);
   font-size: var(--text-tf-xs);
   color: var(--color-tf-text-muted);
+}
+
+.home-tech-card--more .home-tech-card__count {
+  color: var(--color-tf-text-subtle);
 }
 
 /* ---- Latest cases layout ---- */
@@ -691,6 +705,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-tech-card:hover {
-    transform: none;
+    box-shadow: none;
   }
 }
